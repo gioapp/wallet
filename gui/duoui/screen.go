@@ -43,7 +43,7 @@ func (ui *DuoUI) DuoUIsplashScreen() {
 func (ui *DuoUI) DuoUImainScreen() {
 	container.DuoUIcontainer(ui.ly.Theme, 0, ui.ly.Theme.Colors["Dark"]).Layout(ui.ly.Context, layout.Center, func(gtx layout.Context) layout.Dimensions {
 		return layout.Flex{Axis: layout.Vertical}.Layout(gtx,
-			//layout.Rigid(ui.DuoUIheader()),
+			layout.Rigid(ui.DuoUIheader()),
 			layout.Flexed(1, ui.DuoUIbody()),
 			//layout.Rigid(ui.DuoUIfooter()),
 		)

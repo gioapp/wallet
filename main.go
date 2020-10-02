@@ -3,50 +3,73 @@ package main
 import (
 	"fmt"
 	"gioui.org/app"
+	_ "gioui.org/app/permission/storage"
+	"gioui.org/io/system"
+	"gioui.org/layout"
+	gwallet "github.com/gioapp/wallet/app"
 	"github.com/gioapp/wallet/cfg"
-	"github.com/gioapp/wallet/cfg/ini"
-	"github.com/gioapp/wallet/gui"
-	"github.com/gioapp/wallet/gui/duoui"
-	"github.com/gioapp/wallet/gui/rcd"
+	in "github.com/gioapp/wallet/cfg/ini"
+	"log"
+	"os"
 	"time"
 )
 
 func main() {
-	//coins := c.Coins{}
-	in.Init()
+
+	g := gwallet.NewGioWallet("bitcoin")
+
 	if cfg.Initial {
 		fmt.Println("running initial sync")
-		time.Sleep(time.Second * 2)
 	}
+	in.Init(g.Settings.File)
+	ticker(g.Tik())
 
 	go func() {
-		rc := rcd.RcInit()
-		//if !apputil.FileExists(*cx.Config.WalletFile) {
-		//	rc.Boot.IsFirstRun = true
-		//}
-		duo, err := duoui.DuOuI(rc)
-		rc.DuoUIloggerController()
-		//interrupt.AddHandler(func(gtx layout.Context)layout.Dimensions{
-		//Debug("guiHandle interrupt")
-		//close(rc.Quit)
-		//})
-		//Info("IsFirstRun? ", rc.Boot.IsFirstRun)
-		// signal the GUI that the back end is ready
-		//Debug("sending ready signal")
-		// we can do this without blocking because the channel has 1 buffer this way it falls immediately the GUI starts
-		if !rc.Boot.IsFirstRun {
-			//go rc.StartServices()
+		defer os.Exit(0)
+		if err := loop(g); err != nil {
+			log.Fatal(err)
 		}
-		// Start up GUI
-		//Debug("starting up GUI")
-		err = gui.WalletGUI(duo, rc)
-		if err != nil {
-			//Error(err)
-		}
-
 	}()
 	app.Main()
+}
 
-	// exp.SrcNode().GetAddrs()
+func loop(g *gwallet.GioWallet) error {
+	for {
+		select {
+		case e := <-g.UI.Window.Events():
+			switch e := e.(type) {
+			case system.DestroyEvent:
+				return e.Err
+			case system.FrameEvent:
+				g.UI.Context = layout.NewContext(&g.UI.Ops, e)
+				g.Resposnsivity()
+				g.BeforeMain()
+				//if !g.API.OK {
+				//g.GreskaEkran()
+				//} else {
+				g.AppMain()
+				//}
+				g.AfterMain()
 
+				e.Frame(g.UI.Context.Ops)
+			}
+			g.UI.Window.Invalidate()
+		}
+	}
+}
+
+func ticker(f func()) {
+	ticker := time.NewTicker(1 * time.Second)
+	quit := make(chan struct{})
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				f()
+			case <-quit:
+				ticker.Stop()
+				return
+			}
+		}
+	}()
 }

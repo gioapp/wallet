@@ -1,23 +1,16 @@
 package cfg
 
-import (
-	"path/filepath"
-
-	"github.com/gioapp/wallet/pkg/appdata"
-)
-
-// Conf is the configuration for accessing bitnodes endpoint
+// Conf is the configuration for accessing rpc endpoint
 type Conf struct {
-	Username, Password, CloudFlareAPI, CloudFlareEmail, CloudFlareAPIkey string
+	Username, Password string
 }
 
-// configurations for jorm
+// configurations for wallet
 var (
-	Dir  = appdata.Dir("jorm", false)
-	File = filepath.Join(Dir, "conf.json")
-	// Web is a subfolder because otherwise the config above would be served by the http.Dir webserver
-	TSL         = Dir + "/tsl/"
-	Web         = "/www/"
+	//File = filepath.Join(Dir, "conf.json")
+	//Web is a subfolder because otherwise the config above would be served by the http.Dir webserver
+	//TSL = Dir + "/tsl/"
+	//Web         = "/www/"
 	Credentials = Conf{}
 	Initial     bool
 )

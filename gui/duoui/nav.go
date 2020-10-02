@@ -6,8 +6,8 @@ import (
 	"github.com/gioapp/wallet/gui/component"
 )
 
-func (ui *DuoUI) DuoUImenu() func() {
-	return func() {
+func (ui *DuoUI) DuoUImenu() func(gtx layout.Context) layout.Dimensions {
+	return func(gtx layout.Context) layout.Dimensions {
 		ui.ly.Navigation.Width = 48
 		ui.ly.Navigation.Height = 48
 		ui.ly.Navigation.TextSize = 0
@@ -26,8 +26,9 @@ func (ui *DuoUI) DuoUImenu() func() {
 		layout.Flex{
 			Axis:      layout.Vertical,
 			Alignment: layout.Middle,
-			Spacing:   layout.SpaceEvenly}.Layout(ui.ly.Context,
-			layout.Rigid(component.MainNavigation(ui.rc, ui.ly.Context, ui.ly.Theme, ui.ly.Pages, ui.ly.Navigation)),
+			Spacing:   layout.SpaceEvenly}.Layout(gtx,
+			layout.Rigid(component.MainNavigation(ui.rc, gtx, ui.ly.Theme, ui.ly.Pages, ui.ly.Navigation)),
 		)
+		return layout.Dimensions{}
 	}
 }

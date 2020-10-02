@@ -1,14 +1,10 @@
 package pages
 
 import (
-	"fmt"
-
 	"gioui.org/layout"
-	"gioui.org/unit"
-
-	"github.com/gioapp/wallet/gui/component"
+	"github.com/gioapp/gel/page"
+	"github.com/gioapp/gel/theme"
 	"github.com/gioapp/wallet/gui/rcd"
-	"github.com/gioapp/wallet/pkg/gelook"
 )
 
 var (
@@ -17,18 +13,18 @@ var (
 //	OperateValue: 1,
 //	From:         0,
 //	To:           15,
-//	CounterInput: &gel.Editor{
+//	CounterInput: &widget.Editor{
 //		Alignment:  text.Middle,
 //		SingleLine: true,
 //	},
-//	CounterIncrease: new(gel.Button),
+//	CounterIncrease: new(widget.Clickable),
 //	//CounterDecrease: new(controller.Button),
-//	CounterReset: new(gel.Button),
+//	CounterReset: new(widget.Clickable),
 // }
 )
 
-func Network(rc *rcd.RcVar, gtx *layout.Context, th *gelook.DuoUItheme) *gelook.DuoUIpage {
-	page := gelook.DuoUIpage{
+func Network(rc *rcd.RcVar, gtx layout.Context, th *theme.DuoUItheme) *page.DuoUIpage {
+	p := page.DuoUIpage{
 		Title:         "NETWORK",
 		TxColor:       "",
 		Command:       rc.GetPeerInfo(),
@@ -40,36 +36,38 @@ func Network(rc *rcd.RcVar, gtx *layout.Context, th *gelook.DuoUItheme) *gelook.
 		Body:          networkBody(rc, gtx, th),
 		BodyBgColor:   th.Colors["Light"],
 		BodyPadding:   0,
-		Footer:        func() {},
+		//Footer:        func(gtx layout.Context)layout.Dimensions{},
 		FooterBgColor: "",
 		FooterPadding: 0,
 	}
-	return th.DuoUIpage(page)
+	return page.NewDuoUIpage(th, p)
 }
 
-func networkHeader(rc *rcd.RcVar, gtx *layout.Context, th *gelook.DuoUItheme) func() {
-	return func() {
-		layout.Flex{
-			Spacing: layout.SpaceBetween,
-		}.Layout(gtx,
-			// layout.Rigid(component.TransactionsFilter(rc, gtx, th)),
-			layout.Rigid(func() {
-				th.DuoUIcounter(rc.GetPeerInfo()).Layout(gtx, rc.Network.PerPage, "Peers per page: ", fmt.Sprint(rc.Network.PerPage.Value))
-			}),
-			layout.Rigid(func() {
-				th.DuoUIcounter(rc.GetPeerInfo()).Layout(gtx, rc.Network.Page, "Peers page: ", fmt.Sprint(rc.Network.Page.Value))
-			}),
-		)
+func networkHeader(rc *rcd.RcVar, gtx layout.Context, th *theme.DuoUItheme) func(gtx layout.Context) layout.Dimensions {
+	return func(gtx layout.Context) layout.Dimensions {
+		//layout.Flex{
+		//	Spacing: layout.SpaceBetween,
+		//}.Layout(gtx,
+		//	// layout.Rigid(component.TransactionsFilter(rc, gtx, th)),
+		//	layout.Rigid(func(gtx layout.Context)layout.Dimensions {
+		//		th.DuoUIcounter(rc.GetPeerInfo()).Layout(gtx, rc.Network.PerPage, "Peers per page: ", fmt.Sprint(rc.Network.PerPage.Value))
+		//	}),
+		//	layout.Rigid(func(gtx layout.Context)layout.Dimensions {
+		//		th.DuoUIcounter(rc.GetPeerInfo()).Layout(gtx, rc.Network.Page, "Peers page: ", fmt.Sprint(rc.Network.Page.Value))
+		//	}),
+		//)
+		return layout.Dimensions{}
 	}
 }
 
-func networkBody(rc *rcd.RcVar, gtx *layout.Context, th *gelook.DuoUItheme) func() {
-	return func() {
-		layout.UniformInset(unit.Dp(16)).Layout(gtx, func() {
-			layout.Flex{
-				Axis: layout.Vertical,
-			}.Layout(gtx,
-				layout.Rigid(component.PeersList(rc, gtx, th)))
-		})
+func networkBody(rc *rcd.RcVar, gtx layout.Context, th *theme.DuoUItheme) func(gtx layout.Context) layout.Dimensions {
+	return func(gtx layout.Context) layout.Dimensions {
+		//layout.UniformInset(unit.Dp(16)).Layout(gtx, func(gtx layout.Context)layout.Dimensions{
+		//	layout.Flex{
+		//		Axis: layout.Vertical,
+		//	}.Layout(gtx,
+		//		layout.Rigid(component.PeersList(rc, gtx, th)))
+		//})
+		return layout.Dimensions{}
 	}
 }

@@ -2,8 +2,7 @@ package model
 
 import (
 	"gioui.org/op/paint"
-
-	"github.com/gioapp/wallet/pkg/gel"
+	"gioui.org/widget"
 )
 
 type DuoUIbalance struct {
@@ -32,7 +31,7 @@ type DuoUItransactionExcerpt struct {
 	Time          string  `json:"time"`
 	TxID          string  `json:"txid"`
 	Comment       string  `json:"comment,omitempty"`
-	Link          *gel.Button
+	Link          *widget.Clickable
 }
 
 type DuoUIaddress struct {
@@ -41,8 +40,8 @@ type DuoUIaddress struct {
 	Account string  `json:"account"`
 	Address string  `json:"address"`
 	Amount  float64 `json:"amount"`
-	Copy    *gel.Button
-	QrCode  *gel.Button
+	Copy    *widget.Clickable
+	QrCode  *widget.Clickable
 }
 type DuoUIaddressBook struct {
 	ShowMiningAddresses bool

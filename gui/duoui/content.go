@@ -1,7 +1,10 @@
 package duoui
 
-func (ui *DuoUI) DuoUIcontent() func() {
-	return func() {
-		ui.rc.CurrentPage.Layout(ui.ly.Context)
+import "gioui.org/layout"
+
+func (ui *DuoUI) DuoUIcontent() func(gtx layout.Context) layout.Dimensions {
+	return func(gtx layout.Context) layout.Dimensions {
+		ui.rc.CurrentPage.Layout(gtx)
+		return layout.Dimensions{}
 	}
 }

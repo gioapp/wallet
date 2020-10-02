@@ -100,7 +100,7 @@ func Format(gtx *layout.Context, format string, widgets ...layout.Widget) {
 		orig: format,
 		expr: format,
 	}
-	defer func() {
+	defer func(gtx layout.Context) layout.Dimensions {
 		if err := recover(); err != nil {
 			if _, ok := err.(formatError); !ok {
 				panic(err)
@@ -122,13 +122,13 @@ func formatExpr(gtx *layout.Context, f *formatter, widgets []layout.Widget) {
 	}
 }
 
-func formatLayout(gtx *layout.Context, f *formatter, widgets []layout.Widget) {
+func formatLayout(gtx layout.Context, f *formatter, widgets []layout.Widget) {
 	name := parseName(f)
 	if name == "" {
 		errorf("missing layout name")
 	}
 	expect(f, "(")
-	fexpr := func() {
+	fexpr := func(gtx layout.Context) layout.Dimensions {
 		formatExpr(gtx, f, widgets)
 	}
 	// align, ok := dirFor(name)
@@ -150,39 +150,39 @@ func formatLayout(gtx *layout.Context, f *formatter, widgets []layout.Widget) {
 	case "hmax":
 		cs := gtx.Constraints
 		cs.Width.Min = cs.Width.Max
-		ctxLayout(gtx, cs, func() {
+		ctxLayout(gtx, cs, func(gtx layout.Context) layout.Dimensions {
 			formatExpr(gtx, f, widgets)
 		})
 	case "vmax":
 		cs := gtx.Constraints
 		cs.Height.Min = cs.Height.Max
-		ctxLayout(gtx, cs, func() {
+		ctxLayout(gtx, cs, func(gtx layout.Context) layout.Dimensions {
 			formatExpr(gtx, f, widgets)
 		})
 	case "max":
 		cs := gtx.Constraints
 		cs.Width.Min = cs.Width.Max
 		cs.Height.Min = cs.Height.Max
-		ctxLayout(gtx, cs, func() {
+		ctxLayout(gtx, cs, func(gtx layout.Context) layout.Dimensions {
 			formatExpr(gtx, f, widgets)
 		})
 	case "hmin":
 		cs := gtx.Constraints
 		cs.Width.Max = cs.Width.Min
-		ctxLayout(gtx, cs, func() {
+		ctxLayout(gtx, cs, func(gtx layout.Context) layout.Dimensions {
 			formatExpr(gtx, f, widgets)
 		})
 	case "vmin":
 		cs := gtx.Constraints
 		cs.Height.Max = cs.Height.Min
-		ctxLayout(gtx, cs, func() {
+		ctxLayout(gtx, cs, func(gtx layout.Context) layout.Dimensions {
 			formatExpr(gtx, f, widgets)
 		})
 	case "min":
 		cs := gtx.Constraints
 		cs.Width.Max = cs.Width.Min
 		cs.Height.Max = cs.Height.Min
-		ctxLayout(gtx, cs, func() {
+		ctxLayout(gtx, cs, func(gtx layout.Context) layout.Dimensions {
 			formatExpr(gtx, f, widgets)
 		})
 	case "hcap":
@@ -190,7 +190,7 @@ func formatLayout(gtx *layout.Context, f *formatter, widgets []layout.Widget) {
 		expect(f, ",")
 		cs := gtx.Constraints
 		cs.Width.Max = cs.Width.Constrain(gtx.Px(w))
-		ctxLayout(gtx, cs, func() {
+		ctxLayout(gtx, cs, func(gtx layout.Context) layout.Dimensions {
 			formatExpr(gtx, f, widgets)
 		})
 	case "vcap":
@@ -198,7 +198,7 @@ func formatLayout(gtx *layout.Context, f *formatter, widgets []layout.Widget) {
 		expect(f, ",")
 		cs := gtx.Constraints
 		cs.Height.Max = cs.Height.Constrain(gtx.Px(h))
-		ctxLayout(gtx, cs, func() {
+		ctxLayout(gtx, cs, func(gtx layout.Context) layout.Dimensions {
 			formatExpr(gtx, f, widgets)
 		})
 	default:
@@ -247,7 +247,7 @@ loop:
 			expect(f, ",")
 		case 'r':
 			expect(f, "r(")
-			// children = append(children, st.Rigid(gtx, func() {
+			// children = append(children, st.Rigid(gtx, func(gtx layout.Context)layout.Dimensions{
 			//	formatExpr(gtx, f, widgets)
 			// }))
 			expect(f, ")")
@@ -285,7 +285,7 @@ loop:
 			child++
 		case 'e':
 			expect(f, "e(")
-			// children[child] = st.Expand(gtx, func() {
+			// children[child] = st.Expand(gtx, func(gtx layout.Context)layout.Dimensions{
 			//	formatExpr(gtx, f, widgets)
 			// })
 			expect(f, ")")
@@ -324,7 +324,7 @@ loop:
 			expect(f, ",")
 		case 'r':
 			expect(f, "r(")
-			// children = append(children, fl.Rigid(gtx, func() {
+			// children = append(children, fl.Rigid(gtx, func(gtx layout.Context)layout.Dimensions{
 			//	formatExpr(gtx, f, widgets)
 			// }))
 			expect(f, ")")
@@ -366,7 +366,7 @@ loop:
 			expect(f, "f(")
 			// weight := parseFloat(f)
 			expect(f, ",")
-			// children[child] = fl.Flex(gtx, weight, func() {
+			// children[child] = fl.Flex(gtx, weight, func(gtx layout.Context)layout.Dimensions{
 			//	formatExpr(gtx, f, widgets)
 			// })
 			expect(f, ")")
@@ -571,7 +571,7 @@ func (e formatError) Error() string {
 // layout a widget with a set of constraints and return its
 // dimensions. The widget dimensions are constrained abd the previous
 // constraints are restored after layout.
-func ctxLayout(gtx *layout.Context, cs layout.Constraints, w layout.Widget) layout.Dimensions {
+func ctxLayout(gtx layout.Context, cs layout.Constraints, w layout.Widget) layout.Dimensions {
 	saved := gtx.Constraints
 	gtx.Constraints = cs
 	gtx.Dimensions = layout.Dimensions{}

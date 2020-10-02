@@ -45,12 +45,12 @@ func (b *Button) Clicked(gtx *layout.Context) bool {
 
 func (b *Button) Hover(gtx *layout.Context) bool {
 	b.processEvents(gtx)
-	switch b.click.State() {
-	case gesture.StateFocused:
-		return false
-	case gesture.StateNormal:
-		return false
-	}
+	//switch b.click.State() {
+	//case gesture.StateFocused:
+	//	return false
+	//case gesture.StateNormal:
+	//	return false
+	//}
 	return false
 }
 
@@ -65,10 +65,10 @@ func (b *Button) Layout(gtx *layout.Context) {
 	b.processEvents(gtx)
 	b.click.Add(gtx.Ops)
 	for len(b.history) > 0 {
-		c := b.history[0]
-		if gtx.Now().Sub(c.Time) < 1*time.Second {
-			break
-		}
+		//c := b.history[0]
+		//if gtx.Now().Sub(c.Time) < 1*time.Second {
+		//	break
+		//}
 		copy(b.history, b.history[1:])
 		b.history = b.history[:len(b.history)-1]
 	}
@@ -82,7 +82,7 @@ func (b *Button) processEvents(gtx *layout.Context) {
 		case gesture.TypePress:
 			b.history = append(b.history, Click{
 				Position: e.Position,
-				Time:     gtx.Now(),
+				//Time:     gtx.Now(),
 			})
 		}
 	}

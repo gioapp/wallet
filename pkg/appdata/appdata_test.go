@@ -12,7 +12,7 @@ import (
 	"testing"
 	"unicode"
 
-	"git.parallelcoin.io/dev/btcd/btcutil/appdata"
+	"github.com/btcsuite/btcd/appdata"
 )
 
 // TestAppDataDir tests the API for AppDataDir to ensure it gives expected

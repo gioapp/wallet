@@ -1,11 +1,7 @@
 package rcd
 
 import (
-	"time"
-
 	"go.uber.org/atomic"
-
-	blockchain "github.com/p9c/pod/pkg/chain"
 )
 
 const (
@@ -22,7 +18,7 @@ type Event struct {
 var EventsChan = make(chan Event, 1)
 
 func (r *RcVar) ListenInit(trigger chan struct{}) {
-	Debug("listeninit")
+	//Debug("listeninit")
 	r.Events = EventsChan
 	r.UpdateTrigger = trigger
 
@@ -32,58 +28,58 @@ func (r *RcVar) ListenInit(trigger chan struct{}) {
 
 	var ready atomic.Bool
 	ready.Store(false)
-	r.cx.RealNode.Chain.Subscribe(func(callback *blockchain.Notification) {
-		switch callback.Type {
-		case blockchain.NTBlockAccepted,
-			blockchain.NTBlockConnected,
-			blockchain.NTBlockDisconnected:
-			if !ready.Load() {
-				return
-			}
-			update(r)
-			// go r.toastAdd("New block: "+fmt.Sprint(callback.Data.(*util.Block).Height()), callback.Data.(*util.Block).Hash().String())
-		}
-	})
-	go func() {
-		ticker := time.NewTicker(time.Second)
-	out:
-		for {
-			select {
-			case <-ticker.C:
-				if !ready.Load() {
-					if r.cx.IsCurrent() {
-						ready.Store(true)
-						// 		go func() {
-						// 			r.cx.WalletServer.Rescan(nil, nil)
-						// 			r.Ready <- struct{}{}
-						// 			r.UpdateTrigger <- struct{}{}
-						// 		}()
-					}
-				}
-				r.GetDuoUIconnectionCount()
-				r.UpdateTrigger <- struct{}{}
-			// Warn("GetDuoUIconnectionCount")
-			case <-r.cx.WalletServer.Update:
-				update(r)
-			case <-r.cx.KillAll:
-				break out
-			}
-		}
-	}()
-	Warn("event update listener started")
+	//r.cx.RealNode.Chain.Subscribe(func(callback *blockchain.Notification) {
+	//	switch callback.Type {
+	//	case blockchain.NTBlockAccepted,
+	//		blockchain.NTBlockConnected,
+	//		blockchain.NTBlockDisconnected:
+	//		if !ready.Load() {
+	//			return
+	//		}
+	//		update(r)
+	// go r.toastAdd("New block: "+fmt.Sprint(callback.Data.(*util.Block).Height()), callback.Data.(*util.Block).Hash().String())
+	//}
+	//})
+	//go func(gtx layout.Context)layout.Dimensions{
+	//	ticker := time.NewTicker(time.Second)
+	//out:
+	//	for {
+	//		select {
+	//		case <-ticker.C:
+	//			if !ready.Load() {
+	//				if r.cx.IsCurrent() {
+	//					ready.Store(true)
+	//					// 		go func(gtx layout.Context)layout.Dimensions{
+	//					// 			r.cx.WalletServer.Rescan(nil, nil)
+	//					// 			r.Ready <- struct{}{}
+	//					// 			r.UpdateTrigger <- struct{}{}
+	//					// 		}()
+	//				}
+	//			}
+	//			r.GetDuoUIconnectionCount()
+	//			r.UpdateTrigger <- struct{}{}
+	//		// Warn("GetDuoUIconnectionCount")
+	//		case <-r.cx.WalletServer.Update:
+	//			update(r)
+	//		case <-r.cx.KillAll:
+	//			break out
+	//		}
+	//	}
+	//}()
+	//Warn("event update listener started")
 	return
 }
 
 func update(r *RcVar) {
 	// Warn("GetDuoUIbalance")
-	r.GetDuoUIbalance()
+	//r.GetDuoUIbalance()
 	// Warn("GetDuoUIunconfirmedBalance")
-	r.GetDuoUIunconfirmedBalance()
+	//r.GetDuoUIunconfirmedBalance()
 	// Warn("GetDuoUItransactionsNumber")
-	r.GetDuoUItransactionsNumber()
+	//r.GetDuoUItransactionsNumber()
 	// r.GetTransactions()
 	// Warn("GetLatestTransactions")
-	r.GetLatestTransactions()
+	//r.GetLatestTransactions()
 	// Info("")
 	// Info("UPDATE")
 	// Trace(r.History.PerPage)
@@ -92,9 +88,9 @@ func update(r *RcVar) {
 	// r.GetDuoUIlocalLost()
 	// r.GetDuoUIblockHeight()
 	// Warn("GetDuoUIblockCount")
-	r.GetDuoUIdifficulty()
-	r.GetDuoUIblockCount()
-	r.GetPeerInfo()
+	//r.GetDuoUIdifficulty()
+	//r.GetDuoUIblockCount()
+	//r.GetPeerInfo()
 	// Warn("GetDuoUIdifficulty")
 	r.UpdateTrigger <- struct{}{}
 }

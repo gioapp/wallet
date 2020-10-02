@@ -4,9 +4,6 @@ import (
 	"time"
 
 	"go.uber.org/atomic"
-
-	"github.com/p9c/pod/pkg/data/ring"
-	"github.com/p9c/pod/pkg/rpc/btcjson"
 )
 
 // System Ststus
@@ -34,11 +31,11 @@ type NodeStatus struct {
 type KopachStatus struct {
 	// update every second
 	Hashrate uint64
-	Hps      *ring.BufferFloat64
+	//Hps      *ring.BufferFloat64
 }
 type WalletStatus struct {
 	// unchanging
-	WalletVersion map[string]btcjson.VersionResult `json:"walletver"`
+	//WalletVersion map[string]btcjson.VersionResult `json:"walletver"`
 	// update on new block and at start
 	Balance     atomic.String
 	Unconfirmed atomic.String

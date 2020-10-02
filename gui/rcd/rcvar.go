@@ -1,16 +1,15 @@
 package rcd
 
 import (
+	"gioui.org/widget"
+	"github.com/gioapp/gel/page"
 	"time"
 
 	"gioui.org/layout"
 	"gioui.org/text"
 
-	"github.com/gioapp/wallet/pkg/gel"
-	"github.com/gioapp/wallet/pkg/gelook"
-
 	"github.com/gioapp/wallet/gui/model"
-	"github.com/p9c/pod/pkg/rpc/btcjson"
+	"github.com/gioapp/wallet/pkg/gel"
 )
 
 type RcVar struct {
@@ -34,7 +33,7 @@ type RcVar struct {
 
 	AddressBook *model.DuoUIaddressBook
 	ShowPage    string
-	CurrentPage *gelook.DuoUIpage
+	CurrentPage *page.DuoUIpage
 	// NodeChan   chan *rpc.Server
 	// WalletChan chan *wallet.Wallet
 	Explorer *model.DuoUIexplorer
@@ -77,8 +76,8 @@ func RcInit() (r *RcVar) {
 	}
 	// d := models.DuoUIdialog{
 	//	Show:   true,
-	//	Ok:     func() { r.Dialog.Show = false },
-	//	Cancel: func() { r.Dialog.Show = false },
+	//	Ok:     func(gtx layout.Context)layout.Dimensions{ r.Dialog.Show = false },
+	//	Cancel: func(gtx layout.Context)layout.Dimensions{ r.Dialog.Show = false },
 	//	Title:  "Dialog!",
 	//	Text:   "Dialog text",
 	// }
@@ -92,8 +91,8 @@ func RcInit() (r *RcVar) {
 		Status: &model.DuoUIstatus{
 			Node: &model.NodeStatus{},
 			Wallet: &model.WalletStatus{
-				WalletVersion: make(map[string]btcjson.VersionResult),
-				LastTxs:       &model.DuoUItransactionsExcerpts{},
+				//WalletVersion: make(map[string]btcjson.VersionResult),
+				LastTxs: &model.DuoUItransactionsExcerpts{},
 			},
 			Kopach: &model.KopachStatus{},
 		},
@@ -122,29 +121,29 @@ func RcInit() (r *RcVar) {
 				OperateValue: 1,
 				From:         0,
 				To:           50,
-				CounterInput: &gel.Editor{
+				CounterInput: &widget.Editor{
 					Alignment:  text.Middle,
 					SingleLine: true,
 				},
-				CounterIncrease: new(gel.Button),
-				CounterDecrease: new(gel.Button),
-				CounterReset:    new(gel.Button),
+				CounterIncrease: new(widget.Clickable),
+				CounterDecrease: new(widget.Clickable),
+				CounterReset:    new(widget.Clickable),
 			},
 			Page: &gel.DuoUIcounter{
 				Value:        0,
 				OperateValue: 1,
 				From:         0,
 				To:           50,
-				CounterInput: &gel.Editor{
+				CounterInput: &widget.Editor{
 					Alignment:  text.Middle,
 					SingleLine: true,
 				},
-				CounterIncrease: new(gel.Button),
-				CounterDecrease: new(gel.Button),
-				CounterReset:    new(gel.Button),
+				CounterIncrease: new(widget.Clickable),
+				CounterDecrease: new(widget.Clickable),
+				CounterReset:    new(widget.Clickable),
 			},
-			Blocks:      []model.DuoUIblock{},
-			SingleBlock: btcjson.GetBlockVerboseResult{},
+			Blocks: []model.DuoUIblock{},
+			//SingleBlock: btcjson.GetBlockVerboseResult{},
 		},
 
 		Network: &model.DuoUInetwork{
@@ -153,26 +152,26 @@ func RcInit() (r *RcVar) {
 				OperateValue: 1,
 				From:         0,
 				To:           50,
-				CounterInput: &gel.Editor{
+				CounterInput: &widget.Editor{
 					Alignment:  text.Middle,
 					SingleLine: true,
 				},
-				CounterIncrease: new(gel.Button),
-				CounterDecrease: new(gel.Button),
-				CounterReset:    new(gel.Button),
+				CounterIncrease: new(widget.Clickable),
+				CounterDecrease: new(widget.Clickable),
+				CounterReset:    new(widget.Clickable),
 			},
 			Page: &gel.DuoUIcounter{
 				Value:        0,
 				OperateValue: 1,
 				From:         0,
 				To:           50,
-				CounterInput: &gel.Editor{
+				CounterInput: &widget.Editor{
 					Alignment:  text.Middle,
 					SingleLine: true,
 				},
-				CounterIncrease: new(gel.Button),
-				CounterDecrease: new(gel.Button),
-				CounterReset:    new(gel.Button),
+				CounterIncrease: new(widget.Clickable),
+				CounterDecrease: new(widget.Clickable),
+				CounterReset:    new(widget.Clickable),
 			},
 			PeersList: &layout.List{
 				Axis: layout.Vertical,
@@ -186,36 +185,36 @@ func RcInit() (r *RcVar) {
 				OperateValue: 1,
 				From:         1,
 				To:           50,
-				CounterInput: &gel.Editor{
+				CounterInput: &widget.Editor{
 					Alignment:  text.Middle,
 					SingleLine: true,
 				},
-				CounterIncrease: new(gel.Button),
-				CounterDecrease: new(gel.Button),
-				CounterReset:    new(gel.Button),
+				CounterIncrease: new(widget.Clickable),
+				CounterDecrease: new(widget.Clickable),
+				CounterReset:    new(widget.Clickable),
 			},
 			Page: &gel.DuoUIcounter{
 				Value:        0,
 				OperateValue: 1,
 				From:         0,
 				To:           50,
-				CounterInput: &gel.Editor{
+				CounterInput: &widget.Editor{
 					Alignment:  text.Middle,
 					SingleLine: true,
 				},
-				CounterIncrease: new(gel.Button),
-				CounterDecrease: new(gel.Button),
-				CounterReset:    new(gel.Button),
+				CounterIncrease: new(widget.Clickable),
+				CounterDecrease: new(widget.Clickable),
+				CounterReset:    new(widget.Clickable),
 			},
 			TransList: &layout.List{
 				Axis: layout.Vertical,
 			},
 			Categories: &model.DuoUIhistoryCategories{
-				AllTxs:      new(gel.CheckBox),
-				MintedTxs:   new(gel.CheckBox),
-				ImmatureTxs: new(gel.CheckBox),
-				SentTxs:     new(gel.CheckBox),
-				ReceivedTxs: new(gel.CheckBox),
+				AllTxs:      new(widget.Bool),
+				MintedTxs:   new(widget.Bool),
+				ImmatureTxs: new(widget.Bool),
+				SentTxs:     new(widget.Bool),
+				ReceivedTxs: new(widget.Bool),
 			},
 			Txs: &model.DuoUItransactionsExcerpts{
 				ModelTxsListNumber: 0,
@@ -225,7 +224,7 @@ func RcInit() (r *RcVar) {
 				Balance:            0,
 				BalanceHeight:      0,
 			},
-			SingleTx: btcjson.GetTransactionResult{},
+			//SingleTx: btcjson.GetTransactionResult{},
 		},
 		Quit:  make(chan struct{}),
 		Ready: make(chan struct{}),

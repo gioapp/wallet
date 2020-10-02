@@ -1,24 +1,24 @@
 package component
 
 import (
-	"fmt"
+	"gioui.org/widget"
+	"github.com/gioapp/gel/page"
+	"github.com/gioapp/gel/theme"
 
 	"gioui.org/layout"
 	"gioui.org/unit"
 
 	"github.com/gioapp/wallet/gui/model"
 	"github.com/gioapp/wallet/gui/rcd"
-	"github.com/gioapp/wallet/pkg/gel"
-	"github.com/gioapp/wallet/pkg/gelook"
 )
 
 var (
-	buttonLog        = new(gel.Button)
-	buttonSettings   = new(gel.Button)
-	buttonNetwork    = new(gel.Button)
-	buttonBlocks     = new(gel.Button)
-	buttonConsole    = new(gel.Button)
-	buttonHelp       = new(gel.Button)
+	buttonLog        = new(widget.Clickable)
+	buttonSettings   = new(widget.Clickable)
+	buttonNetwork    = new(widget.Clickable)
+	buttonBlocks     = new(widget.Clickable)
+	buttonConsole    = new(widget.Clickable)
+	buttonHelp       = new(widget.Clickable)
 	navItemIconColor = "ffacacac"
 	cornerNav        = &layout.List{
 		Axis: layout.Horizontal,
@@ -34,66 +34,71 @@ var (
 	footerMenuItemPaddingHorizontal = 0
 )
 
-func footerMenuButton(rc *rcd.RcVar, gtx *layout.Context, th *gelook.DuoUItheme, page *gelook.DuoUIpage, text, icon string, footerButton *gel.Button) func() {
-	return func() {
-		layout.UniformInset(unit.Dp(0)).Layout(gtx, func() {
-			var footerMenuItem gelook.DuoUIbutton
+func footerMenuButton(rc *rcd.RcVar, gtx *layout.Context, th *theme.DuoUItheme, page *page.DuoUIpage, text, icon string, footerButton *widget.Clickable) func(gtx layout.Context) layout.Dimensions {
+	return func(gtx layout.Context) layout.Dimensions {
+		layout.UniformInset(unit.Dp(0)).Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+			//var footerMenuItem gelook.DuoUIbutton
 			if icon != "" {
-				footerMenuItem = th.DuoUIbutton("", "", "", "", "", th.Colors["Dark"], icon, CurrentCurrentPageColor(rc.ShowPage,
-					page.Title, navItemIconColor, th.Colors["Primary"]),
-					footerMenuItemTextSize, footerMenuItemIconSize, footerMenuItemWidth, footerMenuItemHeight,
-					0, 0, 0, 0)
-				for footerButton.Clicked(gtx) {
-					rc.ShowPage = page.Title
-					SetPage(rc, page)
-				}
-				footerMenuItem.IconLayout(gtx, footerButton)
+				//footerMenuItem = th.DuoUIbutton("", "", "", "", "", th.Colors["Dark"], icon, CurrentCurrentPageColor(rc.ShowPage,
+				//	page.Title, navItemIconColor, th.Colors["Primary"]),
+				//	footerMenuItemTextSize, footerMenuItemIconSize, footerMenuItemWidth, footerMenuItemHeight,
+				//	0, 0, 0, 0)
+				//for footerButton.Clicked() {
+				//	rc.ShowPage = page.Title
+				//	SetPage(rc, page)
+				//}
+				//footerMenuItem.IconLayout(gtx, footerButton)
 			} else {
-				footerMenuItem = th.DuoUIbutton(th.Fonts["Primary"], text, CurrentCurrentPageColor(rc.ShowPage, page.Title, th.Colors["Light"], th.Colors["Primary"]), "", "", "", "", "",
-					footerMenuItemTextSize, footerMenuItemIconSize, 0,
-					footerMenuItemHeight, 13, 16, 14, 16)
-				footerMenuItem.Height = 48
-				for footerButton.Clicked(gtx) {
-					rc.ShowPage = page.Title
-					SetPage(rc, page)
-				}
-				footerMenuItem.Layout(gtx, footerButton)
+				//footerMenuItem = th.DuoUIbutton(th.Fonts["Primary"], text, CurrentCurrentPageColor(rc.ShowPage, page.Title, th.Colors["Light"], th.Colors["Primary"]), "", "", "", "", "",
+				//	footerMenuItemTextSize, footerMenuItemIconSize, 0,
+				//	footerMenuItemHeight, 13, 16, 14, 16)
+				//footerMenuItem.Height = 48
+				//for footerButton.Clicked() {
+				//	rc.ShowPage = page.Title
+				//	SetPage(rc, page)
+				//}
+				//footerMenuItem.Layout(gtx, footerButton)
 			}
+			return layout.Dimensions{}
 		})
+		return layout.Dimensions{}
 	}
 }
 
-func FooterLeftMenu(rc *rcd.RcVar, gtx *layout.Context, th *gelook.DuoUItheme, allPages *model.DuoUIpages) func() {
-	return func() {
-		layout.UniformInset(unit.Dp(0)).Layout(gtx, func() {
-			cornerButtons := []func(){
-				QuitButton(rc, gtx, th),
-				// footerMenuButton(rc, gtx, th, allPages.Theme["EXPLORER"], "BLOCKS: "+fmt.Sprint(rc.Status.Node.BlockCount), "", buttonBlocks),
-				footerMenuButton(rc, gtx, th, allPages.Theme["LOG"], "LOG", "traceIcon", buttonLog),
-			}
-			cornerNav.Layout(gtx, len(cornerButtons), func(i int) {
-				layout.UniformInset(unit.Dp(0)).Layout(gtx, cornerButtons[i])
-			})
+func FooterLeftMenu(rc *rcd.RcVar, gtx *layout.Context, th *theme.DuoUItheme, allPages *model.DuoUIpages) func(gtx layout.Context) layout.Dimensions {
+	return func(gtx layout.Context) layout.Dimensions {
+		layout.UniformInset(unit.Dp(0)).Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+			//cornerButtons := []func(){
+			//QuitButton(rc, gtx, th),
+			// footerMenuButton(rc, gtx, th, allPages.Theme["EXPLORER"], "BLOCKS: "+fmt.Sprint(rc.Status.Node.BlockCount), "", buttonBlocks),
+			//footerMenuButton(rc, gtx, th, allPages.Theme["LOG"], "LOG", "traceIcon", buttonLog),
+			//}
+			//cornerNav.Layout(gtx, len(cornerButtons), func(i int) {
+			//layout.UniformInset(unit.Dp(0)).Layout(gtx, cornerButtons[i])
+			//})
+			return layout.Dimensions{}
 		})
+		return layout.Dimensions{}
 	}
 }
 
-func FooterRightMenu(rc *rcd.RcVar, gtx *layout.Context, th *gelook.DuoUItheme, allPages *model.DuoUIpages) func() {
-	return func() {
-		navButtons := []func(){
-			// footerMenuButton(rc, gtx, th, allPages.Theme["NETWORK"], "", "networkIcon", buttonNetwork),
-			// footerMenuButton(rc, gtx, th, allPages.Theme["NETWORK"], "CONNECTIONS: "+fmt.Sprint(rc.Status.Node.ConnectionCount), "", buttonNetwork),
-			// footerMenuButton(rc, gtx, th, allPages.Theme["EXPLORER"], "", "DeviceWidgets", buttonBlocks),
-			footerMenuButton(rc, gtx, th, allPages.Theme["NETWORK"], "", "network", buttonNetwork),
-			footerMenuButton(rc, gtx, th, allPages.Theme["NETWORK"], "CONNECTIONS: "+fmt.Sprint(rc.Status.Node.ConnectionCount.Load()), "", buttonNetwork),
-			footerMenuButton(rc, gtx, th, allPages.Theme["EXPLORER"], "", "DeviceWidgets", buttonBlocks),
-			footerMenuButton(rc, gtx, th, allPages.Theme["EXPLORER"], "BLOCKS: "+fmt.Sprint(rc.Status.Node.BlockCount.Load()), "", buttonBlocks),
-			footerMenuButton(rc, gtx, th, allPages.Theme["MINER"], "", "helpIcon", buttonHelp),
-			footerMenuButton(rc, gtx, th, allPages.Theme["CONSOLE"], "", "consoleIcon", buttonConsole),
-			footerMenuButton(rc, gtx, th, allPages.Theme["SETTINGS"], "", "settingsIcon", buttonSettings),
-		}
-		footerNav.Layout(gtx, len(navButtons), func(i int) {
-			layout.UniformInset(unit.Dp(0)).Layout(gtx, navButtons[i])
-		})
+func FooterRightMenu(rc *rcd.RcVar, gtx *layout.Context, th *theme.DuoUItheme, allPages *model.DuoUIpages) func(gtx layout.Context) layout.Dimensions {
+	return func(gtx layout.Context) layout.Dimensions {
+		//navButtons := []func(){
+		// footerMenuButton(rc, gtx, th, allPages.Theme["NETWORK"], "", "networkIcon", buttonNetwork),
+		// footerMenuButton(rc, gtx, th, allPages.Theme["NETWORK"], "CONNECTIONS: "+fmt.Sprint(rc.Status.Node.ConnectionCount), "", buttonNetwork),
+		// footerMenuButton(rc, gtx, th, allPages.Theme["EXPLORER"], "", "DeviceWidgets", buttonBlocks),
+		//footerMenuButton(rc, gtx, th, allPages.Theme["NETWORK"], "", "network", buttonNetwork),
+		//footerMenuButton(rc, gtx, th, allPages.Theme["NETWORK"], "CONNECTIONS: "+fmt.Sprint(rc.Status.Node.ConnectionCount.Load()), "", buttonNetwork),
+		//footerMenuButton(rc, gtx, th, allPages.Theme["EXPLORER"], "", "DeviceWidgets", buttonBlocks),
+		//footerMenuButton(rc, gtx, th, allPages.Theme["EXPLORER"], "BLOCKS: "+fmt.Sprint(rc.Status.Node.BlockCount.Load()), "", buttonBlocks),
+		//footerMenuButton(rc, gtx, th, allPages.Theme["MINER"], "", "helpIcon", buttonHelp),
+		//footerMenuButton(rc, gtx, th, allPages.Theme["CONSOLE"], "", "consoleIcon", buttonConsole),
+		//footerMenuButton(rc, gtx, th, allPages.Theme["SETTINGS"], "", "settingsIcon", buttonSettings),
+		//}
+		//footerNav.Layout(gtx, len(navButtons), func(i int) {
+		//layout.UniformInset(unit.Dp(0)).Layout(gtx, navButtons[i])
+		//})
+		return layout.Dimensions{}
 	}
 }

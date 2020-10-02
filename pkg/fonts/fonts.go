@@ -1,10 +1,6 @@
 package fonts
 
 import (
-	"fmt"
-
-	"gioui.org/font"
-	"gioui.org/font/opentype"
 	"gioui.org/text"
 	"golang.org/x/image/font/gofont/gomono"
 	"golang.org/x/image/font/gofont/gomonobold"
@@ -36,9 +32,9 @@ func Register() {
 }
 
 func register(fnt text.Font, ttf []byte) {
-	face, err := opentype.Parse(ttf)
-	if err != nil {
-		panic(fmt.Sprintf("failed to parse font: %v", err))
-	}
-	font.Register(fnt, face)
+	//face, err := opentype.Parse(ttf)
+	//if err != nil {
+	//	panic(fmt.Sprintf("failed to parse font: %v", err))
+	//}
+	//font.Register(fnt, face)
 }

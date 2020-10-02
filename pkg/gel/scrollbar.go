@@ -42,7 +42,7 @@ type ScrollBarButton struct {
 	iconPadding float32
 }
 
-func (s *Slider) Layout(gtx *layout.Context) {
+func (s *Slider) Layout(gtx layout.Context) {
 	//fmt.Println("He::", gtx.Constraints.Height.Max)
 	//fmt.Println("wi::", gtx.Constraints.Width.Max)
 
@@ -57,12 +57,12 @@ func (s *Slider) Layout(gtx *layout.Context) {
 				s.pressed = true
 				s.Do(s.OperateValue)
 				// list.Position.First = int(s.Position)
-				Debug("RADI PRESS")
+				//Debug("RADI PRESS")
 			case pointer.Release:
 				s.pressed = false
 			}
 		}
 	}
-	cs := gtx.Constraints
-	s.Height = cs.Height.Max
+	//cs := gtx.Constraints
+	//s.Height = cs.Height.Max
 }

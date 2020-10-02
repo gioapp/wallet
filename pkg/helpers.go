@@ -44,7 +44,7 @@ type State struct {
 	W     *app.Window
 	HW    *headless.Window
 	Rc    *rcd.RcVar
-	Theme *gelook.DuoUItheme
+	Theme *theme.DuoUItheme
 	// these two values need to be updated by the main render pipeline loop
 	WindowWidth, WindowHeight int
 	DarkTheme                 bool
@@ -121,7 +121,7 @@ func Flexed(weight float32, widget func()) layout.FlexChild {
 }
 
 func (s *State) Spacer(hl bool) layout.FlexChild {
-	return Flexed(1, func() {})
+	return Flexed(1, func(gtx layout.Context) layout.Dimensions {})
 }
 
 func (s *State) Rectangle(width, height int, color string, hl bool,
@@ -143,15 +143,15 @@ func (s *State) Rectangle(width, height int, color string, hl bool,
 }
 
 func (s *State) Icon(icon []byte, fg string, size, inset int,
-	hl bool) func() {
+	hl bool) func(gtx layout.Context) layout.Dimensions {
 	gtx := s.Gtx
 	if hl {
 		gtx = s.Htx
 	}
-	return func() {
+	return func(gtx layout.Context) layout.Dimensions {
 		gtx.Constraints.Width.Min = size  //+ inset*2
 		gtx.Constraints.Height.Min = size //+ inset*2
-		s.Inset(hl, inset, func() {
+		s.Inset(hl, inset, func(gtx layout.Context) layout.Dimensions {
 			var m iconvg.Metadata
 			var err error
 			if m, err = iconvg.DecodeMetadata(icon); Check(err) {
@@ -187,7 +187,7 @@ func toPointF(p image.Point) f32.Point {
 	return f32.Point{X: float32(p.X), Y: float32(p.Y)}
 }
 
-func (s *State) IconButton(icon []byte, fg string, button *gel.Button,
+func (s *State) IconButton(icon []byte, fg string, button *widget.Clickable,
 	hl bool, hook func(), size ...int) {
 	gtx := s.Gtx
 	if hl {
@@ -197,16 +197,16 @@ func (s *State) IconButton(icon []byte, fg string, button *gel.Button,
 	if len(size) > 1 {
 		sz = size[0]
 	}
-	s.ButtonArea(hl, func() {
+	s.ButtonArea(hl, func(gtx layout.Context) layout.Dimensions {
 		s.Icon(icon, fg, sz-16, 8, hl)()
 	}, button)
-	if button.Clicked(gtx) {
+	if button.Clicked() {
 		hook()
 	}
 }
 
 func (s *State) TextButton(label, fontFace string, fontSize int, fg, bg string,
-	button *gel.Button) {
+	button *widget.Clickable) {
 	s.Theme.DuoUIbutton(
 		s.Theme.Fonts[fontFace],
 		label,
@@ -220,7 +220,7 @@ func (s *State) TextButton(label, fontFace string, fontSize int, fg, bg string,
 		Layout(s.Gtx, button)
 }
 
-func (s *State) ButtonArea(hl bool, content func(), button *gel.Button) {
+func (s *State) ButtonArea(hl bool, content func(), button *widget.Clickable) {
 	gtx := s.Gtx
 	if hl {
 		gtx = s.Htx
@@ -237,7 +237,7 @@ func (s *State) Label(hl bool, txt, fg, bg string) {
 	if hl {
 		gtx = s.Htx
 	}
-	s.Inset(hl, 10, func() {
+	s.Inset(hl, 10, func(gtx layout.Context) layout.Dimensions {
 		t := s.Theme.DuoUIlabel(unit.Dp(float32(36)), txt)
 		t.Color = s.Theme.Colors[fg]
 		t.Font.Typeface = s.Theme.Fonts["Secondary"]
@@ -251,10 +251,10 @@ func (s *State) Text(hl bool, txt, fg, face, tag string, height int) {
 	if hl {
 		gtx = s.Htx
 	}
-	s.FlexH(hl, Rigid(func() {
+	s.FlexH(hl, Rigid(func(gtx layout.Context) layout.Dimensions {
 		gtx.Constraints.Height.Min = height
 		gtx.Constraints.Height.Max = height
-		layout.SW.Layout(gtx, func() {
+		layout.SW.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
 			var desc gelook.DuoUIlabel
 			switch tag {
 			case "h1":
@@ -279,8 +279,8 @@ func (s *State) Text(hl bool, txt, fg, face, tag string, height int) {
 			desc.Layout(gtx)
 		})
 	}),
-		Rigid(func() {
-			s.Inset(hl, 4, func() {})
+		Rigid(func(gtx layout.Context) layout.Dimensions {
+			s.Inset(hl, 4, func(gtx layout.Context) layout.Dimensions {})
 		}),
 	)
 }

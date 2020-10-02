@@ -47,7 +47,7 @@ type DuoUIthemeNav struct {
 //	}
 // }
 
-func (n DuoUIthemeNav) Layout(gtx *layout.Context) {
+func (n DuoUIthemeNav) Layout(gtx layout.Context) {
 	// navList := &layout.List{
 	//	Axis: layout.Vertical,
 	// }
@@ -55,16 +55,16 @@ func (n DuoUIthemeNav) Layout(gtx *layout.Context) {
 	// navButtons := make(map[int]layout.Widget)
 	//
 	// for a, b := range n.NavButtons {
-	//	navButtons[b.Order] = func() {
+	//	navButtons[b.Order] = func(gtx layout.Context)layout.Dimensions{
 	//		n.theme.H3(a).Layout(gtx)
 	//	}
 	// }
 	// //for a, _ := range n.NavButtons {
-	// //	navButtons = append(navButtons, func() {
+	// //	navButtons = append(navButtons, func(gtx layout.Context)layout.Dimensions{
 	// //		n.theme.H3(a).Layout(gtx)
 	// //	})
 	// //}
-	// //	navButtons := func() {
+	// //	navButtons := func(gtx layout.Context)layout.Dimensions{
 	// //		n.theme.H3("button").Layout(gtx)
 	// //	}
 	//

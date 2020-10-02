@@ -1,16 +1,15 @@
 package duoui
 
 import (
+	"github.com/gioapp/gel/navigation"
+	"github.com/gioapp/gel/theme"
 	"sync"
 
+	"gioui.org/app"
+	"gioui.org/unit"
 	"github.com/gioapp/wallet/gui/component"
 	"github.com/gioapp/wallet/gui/pages"
 	"github.com/gioapp/wallet/gui/rcd"
-	"github.com/gioapp/wallet/pkg/gelook"
-
-	"gioui.org/app"
-	"gioui.org/layout"
-	"gioui.org/unit"
 
 	"github.com/gioapp/wallet/gui/model"
 )
@@ -31,7 +30,7 @@ func DuOuI(rc *rcd.RcVar) (duo *model.DuoUI, err error) {
 			app.Title("ParallelCoin"),
 		),
 	}
-	duo.Context = layout.NewContext(duo.Window.Queue())
+	//duo.Context = layout.NewContext(duo.Window.Queue())
 
 	// rc.StartLogger()
 	// sys.Components["logger"].View()
@@ -39,14 +38,14 @@ func DuOuI(rc *rcd.RcVar) (duo *model.DuoUI, err error) {
 	// d.sys.Components["logger"].View
 
 	duo.Navigation = &model.DuoUInav{
-		Items: make(map[string]*gelook.DuoUIthemeNav),
+		Items: make(map[string]*navigation.DuoUIthemeNav),
 	}
 	// navigations["mainMenu"] = mainMenu()
 
 	// Icons
 	// rc.Settings.Daemon = rcd.GetCoreSettings()
 
-	duo.Theme = gelook.NewDuoUItheme()
+	duo.Theme = theme.NewDuoUItheme()
 	// duo.Pages = components.LoadPages(duo.Context, duo.Theme, rc)
 	duo.Pages = &model.DuoUIpages{
 		Controller: nil,

@@ -3,7 +3,7 @@ package cfg
 import (
 	"path/filepath"
 
-	"github.com/gioapp/jorm/pkg/appdata"
+	"github.com/gioapp/wallet/pkg/appdata"
 )
 
 // Conf is the configuration for accessing bitnodes endpoint

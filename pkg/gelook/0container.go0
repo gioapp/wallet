@@ -3,10 +3,7 @@
 package gelook
 
 import (
-	"image"
-
 	"gioui.org/f32"
-	"gioui.org/io/pointer"
 	"gioui.org/layout"
 	"gioui.org/op/clip"
 	"gioui.org/text"
@@ -52,36 +49,39 @@ func (t *DuoUItheme) DuoUIcontainer(padding int, background string) DuoUIcontain
 	}
 }
 
-func (d DuoUIcontainer) Layout(gtx *layout.Context, direction layout.Direction, itemContent func()) {
-	hmin := gtx.Constraints.Width.Min
-	vmin := gtx.Constraints.Height.Min
+func (d DuoUIcontainer) Layout(gtx layout.Context, direction layout.Direction, itemContent func(gtx layout.Context) layout.Dimensions) {
+	//hmin := gtx.Constraints.Width.Min
+	//vmin := gtx.Constraints.Height.Min
 	if d.FullWidth {
-		hmin = gtx.Constraints.Width.Max
+		//hmin = gtx.Constraints.Width.Max
 	}
 	layout.Stack{Alignment: layout.W}.Layout(gtx,
-		layout.Expanded(func() {
+		layout.Expanded(func(gtx layout.Context) layout.Dimensions {
 			rr := float32(gtx.Px(unit.Dp(float32(d.CornerRadius))))
 			clip.Rect{
 				Rect: f32.Rectangle{Max: f32.Point{
-					X: float32(gtx.Constraints.Width.Min),
-					Y: float32(gtx.Constraints.Height.Min),
+					//X: float32(gtx.Constraints.Width.Min),
+					//Y: float32(gtx.Constraints.Height.Min),
 				}},
 				NE: rr, NW: rr, SE: rr, SW: rr,
 			}.Op(gtx.Ops).Add(gtx.Ops)
-			fill(gtx, HexARGB(d.Background))
-			pointer.Rect(image.Rectangle{Max: gtx.Dimensions.Size}).Add(gtx.Ops)
+			//fill(gtx, HexARGB(d.Background))
+			//pointer.Rect(image.Rectangle{Max: gtx.Dimensions.Size}).Add(gtx.Ops)
+			return layout.Dimensions{}
 		}),
-		layout.Stacked(func() {
-			gtx.Constraints.Width.Min = hmin
-			gtx.Constraints.Height.Min = vmin
-			direction.Layout(gtx, func() {
-				layout.Inset{
-					Top:    unit.Dp(float32(d.PaddingTop)),
-					Right:  unit.Dp(float32(d.PaddingRight)),
-					Bottom: unit.Dp(float32(d.PaddingBottom)),
-					Left:   unit.Dp(float32(d.PaddingLeft)),
-				}.Layout(gtx, itemContent)
+		layout.Stacked(func(gtx layout.Context) layout.Dimensions {
+			//gtx.Constraints.Width.Min = hmin
+			//gtx.Constraints.Height.Min = vmin
+			direction.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+				//layout.Inset{
+				//	Top:    unit.Dp(float32(d.PaddingTop)),
+				//	Right:  unit.Dp(float32(d.PaddingRight)),
+				//	Bottom: unit.Dp(float32(d.PaddingBottom)),
+				//	Left:   unit.Dp(float32(d.PaddingLeft)),
+				//}.Layout(gtx, itemContent)
+				return layout.Dimensions{}
 			})
+			return layout.Dimensions{}
 		}),
 	)
 }

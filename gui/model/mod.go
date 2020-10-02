@@ -1,17 +1,16 @@
 package model
 
 import (
+	"gioui.org/op"
+	"gioui.org/widget"
+	"github.com/gioapp/gel/navigation"
+	"github.com/gioapp/gel/page"
+	"github.com/gioapp/gel/theme"
 	"sync"
 
 	"gioui.org/app"
 	"gioui.org/layout"
 	"go.uber.org/atomic"
-
-	"github.com/gioapp/wallet/pkg/gel"
-	"github.com/gioapp/wallet/pkg/gelook"
-	log "github.com/p9c/pod/pkg/util/logi"
-
-	"github.com/p9c/pod/pkg/pod"
 )
 
 type DuOScomponent struct {
@@ -24,8 +23,9 @@ type DuOScomponent struct {
 
 type DuoUI struct {
 	Window     *app.Window
-	Context    *layout.Context
-	Theme      *gelook.DuoUItheme
+	Ops        op.Ops
+	Context    layout.Context
+	Theme      *theme.DuoUItheme
 	Pages      *DuoUIpages
 	Navigation *DuoUInav
 	// Configuration *DuoUIconfiguration
@@ -34,15 +34,15 @@ type DuoUI struct {
 }
 
 type DuoUIpages struct {
-	CurrentPage *gelook.DuoUIpage
-	Controller  map[string]*gel.DuoUIpage
-	Theme       map[string]*gelook.DuoUIpage
+	CurrentPage *page.DuoUIpage
+	Controller  map[string]*page.DuoUIpage
+	Theme       map[string]*page.DuoUIpage
 }
 type DuoUIlog struct {
 	Mx          sync.Mutex
 	LogMessages atomic.Value // []log.Entry
-	LogChan     chan log.Entry
-	StopLogger  chan struct{}
+	//LogChan     chan log.Entry
+	StopLogger chan struct{}
 }
 
 // type DuoUIconfiguration struct {
@@ -56,7 +56,7 @@ type DuoUIlog struct {
 
 type DuoUIconfTabs struct {
 	Current  string
-	TabsList map[string]*gel.Button
+	TabsList map[string]*widget.Clickable
 }
 
 // type DuoUIalert struct {
@@ -74,8 +74,8 @@ type DuoUIsettings struct {
 
 type DaemonConfig struct {
 	// Config  *pod.Config `json:"config"`
-	Config  map[string]interface{} `json:"config"`
-	Schema  pod.Schema             `json:"schema"`
+	Config map[string]interface{} `json:"config"`
+	//Schema  pod.Schema             `json:"schema"`
 	Widgets map[string]interface{}
 }
 
@@ -88,7 +88,7 @@ type DuoUIblock struct {
 	TxNum         int     `json:"txnum"`
 	Confirmations int64
 	Time          int64 `json:"time"`
-	Link          *gel.Button
+	Link          *widget.Clickable
 }
 
 type DuoUItoast struct {
@@ -97,7 +97,7 @@ type DuoUItoast struct {
 }
 
 type DuoUInav struct {
-	Items             map[string]*gelook.DuoUIthemeNav
+	Items             map[string]*navigation.DuoUIthemeNav
 	Width             int
 	Height            int
 	TextSize          int

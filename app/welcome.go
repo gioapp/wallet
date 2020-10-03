@@ -43,10 +43,8 @@ func (g *GioWallet) welcomeHeader() func(gtx C) D {
 	})
 }
 
-func (g *GioWallet) welcomeBody() []func(gtx C) D {
-	return []func(gtx C) D{
-		g.twoPanels(10, 0, g.welcomeLeft(), g.welcomeRight()),
-	}
+func (g *GioWallet) welcomeBody() func(gtx C) D {
+	return g.twoPanels(10, 0, g.welcomeLeft(), g.welcomeRight())
 }
 
 func (g *GioWallet) welcomeLeft() func(gtx C) D {

@@ -1,16 +1,15 @@
 package gwallet
 
 import (
-	"gioui.org/layout"
 	"math"
 
 	"strconv"
 )
 
 var (
-	contentList = &layout.List{
-		Axis: layout.Vertical,
-	}
+	//contentList = &layout.List{
+	//	Axis: layout.Vertical,
+	//}
 	suffixes = [7]string{
 		0: "B",
 		1: "KB",

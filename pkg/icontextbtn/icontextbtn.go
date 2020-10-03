@@ -65,8 +65,8 @@ func (b IconTextButton) Layout(gtx C) D {
 					var d D
 					if b.Icon != nil {
 						//size := gtx.Px(b.IconSize) - 2*gtx.Px(unit.Dp(16))
-						size := gtx.Px(b.IconSize) - 2*gtx.Px(unit.Dp(16))
-						b.Icon.Color = helper.HexARGB(b.IconColor)
+						size := gtx.Px(b.IconSize)
+						b.Icon.Color = helper.HexARGB(b.Theme.Colors["NavItem"])
 						b.Icon.Layout(gtx, unit.Px(float32(size)))
 						d = D{
 							Size: image.Point{X: size, Y: size},
@@ -77,15 +77,15 @@ func (b IconTextButton) Layout(gtx C) D {
 			}
 			layLabel := func(gtx C) D {
 				return layout.Inset{
-					Top:    unit.Dp(4),
+					Top:    unit.Dp(5),
 					Right:  unit.Dp(8),
-					Bottom: unit.Dp(4),
+					Bottom: unit.Dp(0),
 					Left:   unit.Dp(8),
 				}.Layout(gtx, func(gtx C) D {
 					l := theme.Body(b.Theme, b.Text)
 					l.TextSize = b.TextSize
 					l.Alignment = text.Middle
-					l.Color = helper.HexARGB(b.Theme.Colors["Black"])
+					l.Color = helper.HexARGB(b.Theme.Colors["NavItem"])
 					return l.Layout(gtx)
 				})
 			}

@@ -6,8 +6,8 @@ import (
 )
 
 func (g *GioWallet) AppMain(gtx C) {
-	g.Resposnsivity(gtx)
 
+	g.Resposnsivity(gtx)
 	g.UI.nav.mode = g.UI.res.Mode
 	g.UI.nav.navLayout = g.UI.res.mod["NavLayout"].(string)
 	g.UI.nav.itemLayout = g.UI.res.mod["NavIconAndLabel"].(string)

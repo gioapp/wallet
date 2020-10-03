@@ -32,7 +32,7 @@ func (n *Navigation) Nav(th *theme.Theme, gtx C) D {
 		func(gtx C) D {
 			return navList.Layout(gtx, len(n.Items), func(gtx C, i int) D {
 				item := n.Items[i]
-				btn := icontextbtn.IconTextBtn(th, item.Btn, item.Icon, unit.Dp(48), th.Colors["NavItem"], item.Title, n.itemLayout, n.noText)
+				btn := icontextbtn.IconTextBtn(th, item.Btn, item.Icon, n.itemIconSize, th.Colors["NavItem"], item.Title, n.itemLayout, n.noText)
 				btn.TextSize = unit.Dp(12)
 				btn.CornerRadius = unit.Dp(0)
 				btn.Background = helper.HexARGB(th.Colors["NavBg"])

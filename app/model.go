@@ -5,6 +5,7 @@ import (
 	"gioui.org/app"
 	"gioui.org/layout"
 	"gioui.org/op"
+	"gioui.org/unit"
 	"gioui.org/widget"
 	"github.com/gioapp/wallet/pkg/theme"
 	rpcclient "github.com/p9c/pod/pkg/rpc/client"
@@ -68,24 +69,25 @@ type walletSettings struct {
 type walletPage struct {
 	Title  string
 	Header func(gtx C) D
-	Body   []func(gtx C) D
+	Body   func(gtx C) D
 }
 
 type pages map[string]walletPage
 
 type Navigation struct {
-	Name       string
-	Bg         string
-	Logo       Logo
-	Items      []Item
-	wide       bool
-	mode       string
-	navLayout  string
-	itemLayout string
-	axis       layout.Axis
-	size       int
-	noText     bool
-	logo       func(gtx C) D
+	Name         string
+	Bg           string
+	Logo         Logo
+	Items        []Item
+	wide         bool
+	mode         string
+	navLayout    string
+	itemLayout   string
+	itemIconSize unit.Value
+	axis         layout.Axis
+	size         int
+	noText       bool
+	logo         func(gtx C) D
 }
 type Item struct {
 	Title string

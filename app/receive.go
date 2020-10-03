@@ -25,13 +25,11 @@ func (g *GioWallet) receiveHeader() func(gtx C) D {
 	})
 }
 
-func (g *GioWallet) receiveBody() []func(gtx C) D {
-	return []func(gtx C) D{
-		func(gtx C) D {
-			gtx.Constraints.Min.X = gtx.Constraints.Max.X
-			title := theme.H5(g.UI.Theme, "Receive Body")
-			title.Alignment = text.Start
-			return title.Layout(gtx)
-		},
+func (g *GioWallet) receiveBody() func(gtx C) D {
+	return func(gtx C) D {
+		gtx.Constraints.Min.X = gtx.Constraints.Max.X
+		title := theme.H5(g.UI.Theme, "Receive Body")
+		title.Alignment = text.Start
+		return title.Layout(gtx)
 	}
 }

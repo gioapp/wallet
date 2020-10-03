@@ -57,13 +57,26 @@ func NewGioWallet(coinName string) *GioWallet {
 	//
 	//	}
 	//}
-
+	g.UI.res.Mode = "mobile"
+	//r := map[string]interface{}{
+	//	"MainLayout":    "vflexb(start,r(_),f(1,_))",
+	//	"ContentLayout": "vflexb(start,f(1,_),r(_))",
+	//	"NavLayout":     "hflexs(start,r(_),f(1,_))",
+	//	"NavSize":       128,
+	//	"NavItemsAxis":  layout.Horizontal,
+	//	"NavIconAndLabel": "hflexs(r(_),r(_))",
+	//	"Logo":            g.UI.Theme.Icons["Logo"],
+	//	"ContentBodyLayout": "vflexs(start,r(_),f(1,_))",
+	//}
+	//g.UI.res.mod = r
 	n := Navigation{
-		Name:  "Navigacion",
-		Bg:    g.UI.Theme.Colors["NavBg"],
-		Items: g.menuItems,
+		Name:         "Navigacion",
+		Bg:           g.UI.Theme.Colors["NavBg"],
+		Items:        g.menuItems,
+		itemIconSize: unit.Px(24),
 	}
 	g.UI.nav = n
+
 	g.Status.bal = &Balances{}
 	//g.Page = gipfsPage{
 	//	Title:  "Status",
@@ -72,6 +85,7 @@ func NewGioWallet(coinName string) *GioWallet {
 	//}
 	//if g.sh.IsUp() {
 	g.GetOverview()
+
 	//g.GetFiles()
 	//}
 

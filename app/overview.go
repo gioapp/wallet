@@ -3,6 +3,7 @@ package gwallet
 import (
 	"fmt"
 	"gioui.org/text"
+	"github.com/gioapp/gel/helper"
 	"github.com/gioapp/gel/lyt"
 	"github.com/gioapp/wallet/pkg/theme"
 )
@@ -79,18 +80,17 @@ func overviewRow(th *theme.Theme, label string, content func(gtx C) D) func(gtx 
 	}
 }
 
-func (g *GioWallet) overviewBody() []func(gtx C) D {
-	return []func(gtx C) D{
-		func(gtx C) D {
-			//gtx.Constraints.Min.X = gtx.Constraints.Max.X
-			return lyt.Format(gtx, g.UI.res.mod["ContentBodyLayout"].(string),
-				g.balancesView(gtx),
-				g.recentTxView(gtx))
-		},
+func (g *GioWallet) overviewBody() func(gtx C) D {
+	return func(gtx C) D {
+		helper.Fill(gtx, helper.HexARGB(g.UI.Theme.Colors["Success"]))
+
+		return lyt.Format(gtx, g.UI.res.mod["ContentBodyLayout"].(string),
+			g.balancesView(),
+			g.recentTxView())
 	}
 }
 
-func (g *GioWallet) balancesView(gtx C) func(gtx C) D {
+func (g *GioWallet) balancesView() func(gtx C) D {
 	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["Border"], g.UI.Theme.Colors["PanelBg"], 4, 1, 8, func(gtx C) D {
 		//gtx.Constraints.Min.X = gtx.Constraints.Max.X
 		//helper.Fill(gtx, helper.HexARGB(g.UI.Theme.Colors["PanelBg"]))
@@ -109,7 +109,7 @@ func (g *GioWallet) balancesView(gtx C) func(gtx C) D {
 	})
 }
 
-func (g *GioWallet) recentTxView(gtx C) func(gtx C) D {
+func (g *GioWallet) recentTxView() func(gtx C) D {
 	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["Border"], g.UI.Theme.Colors["PanelBg"], 4, 1, 8, func(gtx C) D {
 		return lyt.Format(gtx, "vflexb(r(_),r(_),r(_),r(_),r(_))",
 			func(gtx C) D {

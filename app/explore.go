@@ -33,10 +33,8 @@ func (g *GioWallet) exploreHeader() func(gtx C) D {
 	}
 }
 
-func (g *GioWallet) exploreBody() []func(gtx C) D {
-	return []func(gtx C) D{
-		g.twoPanels(10, 0, g.exploreLeft(), g.exploreRight()),
-	}
+func (g *GioWallet) exploreBody() func(gtx C) D {
+	return g.twoPanels(10, 0, g.exploreLeft(), g.exploreRight())
 }
 
 //func (g *GioWallet) exploreBody() []func(gtx C) D {

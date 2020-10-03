@@ -25,13 +25,11 @@ func (g *GioWallet) transactionsHeader() func(gtx C) D {
 	})
 }
 
-func (g *GioWallet) transactionsBody() []func(gtx C) D {
-	return []func(gtx C) D{
-		func(gtx C) D {
-			gtx.Constraints.Min.X = gtx.Constraints.Max.X
-			title := theme.H5(g.UI.Theme, "Transactions Body")
-			title.Alignment = text.Start
-			return title.Layout(gtx)
-		},
+func (g *GioWallet) transactionsBody() func(gtx C) D {
+	return func(gtx C) D {
+		gtx.Constraints.Min.X = gtx.Constraints.Max.X
+		title := theme.H5(g.UI.Theme, "Transactions Body")
+		title.Alignment = text.Start
+		return title.Layout(gtx)
 	}
 }

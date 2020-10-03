@@ -68,25 +68,11 @@ func (g *GioWallet) settingsHeader() func(gtx C) D {
 	})
 }
 
-func (g *GioWallet) settingsBody() []func(gtx C) D {
-	return []func(gtx C) D{
-		func(gtx C) D {
-			gtx.Constraints.Min.X = gtx.Constraints.Max.X
-			title := theme.H5(g.UI.Theme, "IPFS CONFIG")
-			title.Alignment = text.Start
-			return title.Layout(gtx)
-		},
-		func(gtx C) D {
-			gtx.Constraints.Min.X = gtx.Constraints.Max.X
-			title := theme.Body(g.UI.Theme, "The IPFS config file is a JSON document. It is read once when the IPFS daemon is started. Save your changes, then restart the IPFS daemon to apply them. Check the documentation for further information.")
-			title.Alignment = text.Start
-			return title.Layout(gtx)
-		},
-		func(gtx C) D {
-			gtx.Constraints.Min.X = gtx.Constraints.Max.X
-			title := theme.H6(g.UI.Theme, "CONFIG")
-			title.Alignment = text.Start
-			return title.Layout(gtx)
-		},
+func (g *GioWallet) settingsBody() func(gtx C) D {
+	return func(gtx C) D {
+		gtx.Constraints.Min.X = gtx.Constraints.Max.X
+		title := theme.H5(g.UI.Theme, "IPFS CONFIG")
+		title.Alignment = text.Start
+		return title.Layout(gtx)
 	}
 }

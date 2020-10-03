@@ -22,7 +22,7 @@ var (
 )
 
 func (g *GioWallet) footer() func(gtx C) D {
-	return ContainerLayout(g.UI.Theme.Colors["Info"], 0, 0, 0, 0, func(gtx C) D {
+	return ContainerLayout(g.UI.Theme.Colors["Info"], g.UI.Theme.Colors["Info"], g.UI.Theme.Colors["Info"], 0, 0, 0, func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
 		return lyt.Format(gtx, "hflexb(middle,r(inset(0dp0dp0dp6dp,_)),r(inset(20dp30dp20dp3dp,_)))",
 			g.footerSearch(),
@@ -58,7 +58,7 @@ func (g *GioWallet) footerMenu() func(gtx C) D {
 func (g *GioWallet) footerSearch() func(gtx C) D {
 	return func(gtx C) D {
 		return lyt.Format(gtx, "hflexb(middle,r(inset(20dp0dp20dp30dp,_)),r(_))",
-			ContainerLayout(g.UI.Theme.Colors["White"], 8, 8, 8, 8, func(gtx C) D {
+			ContainerLayout(g.UI.Theme.Colors["White"], g.UI.Theme.Colors["Dark"], g.UI.Theme.Colors["White"], 8, 1, 8, func(gtx C) D {
 				gtx.Constraints.Min.X = 430
 				e := material.Editor(g.UI.Theme.T, footerSearchInput, "QmHash")
 				return e.Layout(gtx)

@@ -37,38 +37,38 @@ func ItemBtn(t *theme.Theme, b *widget.Clickable, c *widget.Bool, iconFolder, ic
 	}
 }
 
-func (b ItemButton) Layout(gtx layout.Context) layout.Dimensions {
+func (b ItemButton) Layout(gtx C) D {
 	return lyt.Format(gtx, "hflexb(middle,r(_),f(0.8,_),r(_),f(0.2,_),r(_))",
-		func(gtx layout.Context) layout.Dimensions {
+		func(gtx C) D {
 			return material.CheckBox(b.Theme.T, b.Check, "").Layout(gtx)
 		},
-		func(gtx layout.Context) layout.Dimensions {
+		func(gtx C) D {
 			bb := material.ButtonLayout(b.Theme.T, b.Button)
 			bb.CornerRadius = unit.Dp(0)
 			bb.Background = helper.HexARGB("ffffffff")
-			return bb.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
-				return layout.UniformInset(unit.Dp(4)).Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+			return bb.Layout(gtx, func(gtx C) D {
+				return layout.UniformInset(unit.Dp(4)).Layout(gtx, func(gtx C) D {
 					gtx.Constraints.Min.X = gtx.Constraints.Max.X
 					iconAndLabel := layout.Flex{Alignment: layout.Middle, Spacing: layout.SpaceBetween}
-					layIcon := layout.Rigid(func(gtx layout.Context) layout.Dimensions {
-						return layout.Inset{}.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+					layIcon := layout.Rigid(func(gtx C) D {
+						return layout.Inset{}.Layout(gtx, func(gtx C) D {
 							//size := gtx.Px(b.IconSize) - 2*gtx.Px(unit.Dp(16))
 							b.IconFolder.Color = b.Theme.T.Color.Text
 							b.IconFolder.Layout(gtx, unit.Px(float32(32)))
-							return layout.Dimensions{
+							return D{
 								Size: image.Point{X: 32, Y: 32},
 							}
 						})
 					})
-					layLabel := layout.Rigid(func(gtx layout.Context) layout.Dimensions {
+					layLabel := layout.Rigid(func(gtx C) D {
 
 						return lyt.Format(gtx, "vflexb(middle,r(_),r(_))",
-							func(gtx layout.Context) layout.Dimensions {
+							func(gtx C) D {
 								name := theme.Body(b.Theme, b.Name)
 								name.Alignment = text.Start
 								return name.Layout(gtx)
 							},
-							func(gtx layout.Context) layout.Dimensions {
+							func(gtx C) D {
 								hash := theme.Small(b.Theme, b.Hash)
 								hash.Alignment = text.Start
 								return hash.Layout(gtx)
@@ -79,18 +79,18 @@ func (b ItemButton) Layout(gtx layout.Context) layout.Dimensions {
 				})
 			})
 		},
-		func(gtx layout.Context) layout.Dimensions {
+		func(gtx C) D {
 			return theme.Body(b.Theme, "0").Layout(gtx)
 		},
-		func(gtx layout.Context) layout.Dimensions {
+		func(gtx C) D {
 			return theme.Body(b.Theme, fmt.Sprint(b.Size)).Layout(gtx)
 		},
-		func(gtx layout.Context) layout.Dimensions {
-			return layout.Inset{}.Layout(gtx, func(gtx layout.Context) layout.Dimensions {
+		func(gtx C) D {
+			return layout.Inset{}.Layout(gtx, func(gtx C) D {
 				//size := gtx.Px(b.IconSize) - 2*gtx.Px(unit.Dp(16))
 				b.IconDots.Color = b.Theme.T.Color.Text
 				b.IconDots.Layout(gtx, unit.Px(float32(32)))
-				return layout.Dimensions{
+				return D{
 					Size: image.Point{X: 32, Y: 32},
 				}
 			})

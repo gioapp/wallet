@@ -3,13 +3,13 @@ package gwallet
 import (
 	"fmt"
 	"gioui.org/text"
-	"github.com/gioapp/gel/helper"
 	"github.com/gioapp/gel/lyt"
 	"github.com/gioapp/wallet/pkg/theme"
 )
 
 var (
-	balances Balances
+	balances     Balances
+	transactions []Tx
 )
 
 func (g *GioWallet) GetOverview() {
@@ -21,7 +21,7 @@ func (g *GioWallet) GetOverview() {
 }
 
 func (g *GioWallet) GetBalances() {
-	b, err := g.rpc.GetBalance("*")
+	b, err := g.rpc.GetBalance("")
 	checkError(err)
 	fmt.Println("Ssss", b)
 	balances = Balances{
@@ -31,6 +31,25 @@ func (g *GioWallet) GetBalances() {
 		total:     fmt.Sprint(b),
 	}
 }
+
+func (g *GioWallet) GetLatestTransactions() {
+	txs, err := g.rpc.ListTransactionsCount("", 5)
+	checkError(err)
+	fmt.Println("txstxstxs", txs)
+
+	for _, tx := range txs {
+		t := Tx{
+			time:    fmt.Sprint(tx.Time),
+			address: fmt.Sprint(tx.Address),
+			amount:  fmt.Sprint(tx.Amount),
+		}
+		fmt.Println("Sstrtrtrtrtrtss", t)
+
+		transactions = append(transactions, t)
+	}
+
+}
+
 func (g *GioWallet) overviewHeader() func(gtx C) D {
 	return func(gtx C) D {
 		return D{}
@@ -47,10 +66,10 @@ func row(th *theme.Theme, label string) func(gtx C) D {
 
 func overviewRow(th *theme.Theme, label string, content func(gtx C) D) func(gtx C) D {
 	return func(gtx C) D {
-		return lyt.Format(gtx, "hflexb(start,r(inset(0dp16dp0dp0dp,_)),f(1,_))",
+		return lyt.Format(gtx, "hflexb(start,r(inset(0dp0dp0dp0dp,_)),f(1,_))",
 			//gtx.Constraints.Min.X = gtx.Constraints.Max.X
 			func(gtx C) D {
-				gtx.Constraints.Min.X = 100
+				//gtx.Constraints.Min.X = 100
 				title := theme.Body(th, label)
 				title.Alignment = text.Start
 				return title.Layout(gtx)
@@ -63,21 +82,21 @@ func overviewRow(th *theme.Theme, label string, content func(gtx C) D) func(gtx 
 func (g *GioWallet) overviewBody() []func(gtx C) D {
 	return []func(gtx C) D{
 		func(gtx C) D {
-			return lyt.Format(gtx, "hflexb(start,f(0.5,inset(8dp8dp8dp8dp,_)),f(0.5,inset(8dp8dp8dp8dp,_)))",
-				//gtx.Constraints.Min.X = gtx.Constraints.Max.X
-				g.balancesView(),
-				g.recentTxView())
+			//gtx.Constraints.Min.X = gtx.Constraints.Max.X
+			return lyt.Format(gtx, g.UI.res.mod["ContentBodyLayout"].(string),
+				g.balancesView(gtx),
+				g.recentTxView(gtx))
 		},
 	}
 }
 
-func (g *GioWallet) balancesView() func(gtx C) D {
-	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], 1, 1, 1, 1, func(gtx C) D {
-		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		helper.Fill(gtx, helper.HexARGB(g.UI.Theme.Colors["PanelBg"]))
-		return lyt.Format(gtx, "vflexb(middle,r(inset(8dp8dp8dp8dp,_)),r(inset(8dp8dp8dp8dp,_)),r(inset(8dp8dp8dp8dp,_)),r(inset(8dp8dp8dp8dp,_)),r(inset(8dp8dp8dp8dp,_)),r(inset(8dp8dp8dp8dp,_)))",
+func (g *GioWallet) balancesView(gtx C) func(gtx C) D {
+	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["Border"], g.UI.Theme.Colors["PanelBg"], 4, 1, 8, func(gtx C) D {
+		//gtx.Constraints.Min.X = gtx.Constraints.Max.X
+		//helper.Fill(gtx, helper.HexARGB(g.UI.Theme.Colors["PanelBg"]))
+		return lyt.Format(gtx, "vflexb(r(_),r(_),r(_),r(_),r(_))",
 			func(gtx C) D {
-				gtx.Constraints.Min.X = gtx.Constraints.Max.X
+				//gtx.Constraints.Min.X = gtx.Constraints.Max.X
 				title := theme.H1(g.UI.Theme, "Balances")
 				title.Alignment = text.Start
 				return title.Layout(gtx)
@@ -85,19 +104,16 @@ func (g *GioWallet) balancesView() func(gtx C) D {
 			overviewRow(g.UI.Theme, "Available", row(g.UI.Theme, g.Status.bal.available)),
 			overviewRow(g.UI.Theme, "Pending", row(g.UI.Theme, g.Status.bal.pending)),
 			overviewRow(g.UI.Theme, "Immature", row(g.UI.Theme, g.Status.bal.immature)),
-			helper.DuoUIline(false, 1, 0, 1, g.UI.Theme.Colors["Black"]),
 			overviewRow(g.UI.Theme, "Total", row(g.UI.Theme, g.Status.bal.total)),
 		)
 	})
 }
 
-func (g *GioWallet) recentTxView() func(gtx C) D {
-	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], 1, 1, 1, 1, func(gtx C) D {
-		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		helper.Fill(gtx, helper.HexARGB(g.UI.Theme.Colors["PanelBg"]))
-		return lyt.Format(gtx, "vflexb(middle,r(inset(8dp8dp8dp8dp,_)),r(inset(8dp8dp8dp8dp,_)),r(inset(8dp8dp8dp8dp,_)),r(inset(8dp8dp8dp8dp,_)),r(inset(8dp8dp8dp8dp,_)),r(inset(8dp8dp8dp8dp,_)))",
+func (g *GioWallet) recentTxView(gtx C) func(gtx C) D {
+	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["Border"], g.UI.Theme.Colors["PanelBg"], 4, 1, 8, func(gtx C) D {
+		return lyt.Format(gtx, "vflexb(r(_),r(_),r(_),r(_),r(_))",
 			func(gtx C) D {
-				gtx.Constraints.Min.X = gtx.Constraints.Max.X
+				//gtx.Constraints.Min.X = gtx.Constraints.Max.X
 				title := theme.H1(g.UI.Theme, "Recent transactions")
 				title.Alignment = text.Start
 				return title.Layout(gtx)
@@ -105,7 +121,6 @@ func (g *GioWallet) recentTxView() func(gtx C) D {
 			overviewRow(g.UI.Theme, "Available", row(g.UI.Theme, g.Status.bal.available)),
 			overviewRow(g.UI.Theme, "Pending", row(g.UI.Theme, g.Status.bal.pending)),
 			overviewRow(g.UI.Theme, "Immature", row(g.UI.Theme, g.Status.bal.immature)),
-			helper.DuoUIline(false, 1, 0, 1, g.UI.Theme.Colors["Black"]),
 			overviewRow(g.UI.Theme, "Total", row(g.UI.Theme, g.Status.bal.total)),
 		)
 	})

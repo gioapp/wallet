@@ -12,7 +12,7 @@ func (g *GioWallet) GetTransactions() {
 }
 
 func (g *GioWallet) transactionsHeader() func(gtx C) D {
-	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], 10, 10, 10, 10, func(gtx C) D {
+	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["PanelBg"], 10, 10, 10, func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
 		helper.Fill(gtx, helper.HexARGB(g.UI.Theme.Colors["PanelBg"]))
 		return lyt.Format(gtx, "vflexb(middle,r(inset(5dp0dp5dp0dp,_))))",

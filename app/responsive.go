@@ -1,24 +1,76 @@
 package gwallet
 
-func (g *GioWallet) Resposnsivity() {
-	g.setMode(g.UI.Context.Constraints.Max.X)
-	r := make(map[string]interface{})
+import (
+	"gioui.org/layout"
+)
 
-	r["MainLayout"] = "vflexb(start,f(1,_),r(_))"
-	r["NavSize"] = 255
-	r["Logo"] = g.UI.Theme.Icons["Logo"]
-	//r["xxxx"] = xxx
-	//r["xxxx"] = xxx
-	//r["xxxx"] = xxx
-	//r["xxxx"] = xxx
-	g.UI.res.mod = r
-	return
-}
+func (g *GioWallet) Resposnsivity(gtx C) {
+	g.UI.res.Mode = "mobile"
 
-func (g *GioWallet) setMode(w int) {
-	switch w {
-	case w < 640:
+	r := map[string]interface{}{
+		"MainLayout":    "hflexb(start,r(_),f(1,_))",
+		"ContentLayout": "vflexb(start,f(1,_),r(_))",
+		"NavLayout":     "hflexs(start,r(_),f(1,_))",
+		"NavSize":       128,
+		"NavItemsAxis":  layout.Horizontal,
+
+		"NavIconAndLabel": "hflexs(r(_),r(_))",
+		"Logo":            g.UI.Theme.Icons["Logo"],
+
+		"ContentBodyLayout": "vflexs(r(_),f(1,_))",
+	}
+
+	switch w := gtx.Constraints.Max.X; {
+	//case w > 2560:
+	//	g.UI.res.Mode = "desktopXL"
+	//case w > 1920:
+	//	g.UI.res.Mode = "desktopL"
+	//case w > 1680:
+	//	g.UI.res.Mode = "desktopM"
+	//case w > 1440:
+	//	g.UI.res.Mode = "desktopS"
+
+	case w > 960:
+		g.UI.res.Mode = "tablet"
+		r["MainLayout"] = "hflexb(start,r(_),f(1,_))"
+		r["NavLayout"] = "vflexs(start,r(_),f(1,_))"
+		r["NavItemsAxis"] = layout.Vertical
+		r["ContentBodyLayout"] = "hflexs(f(0.5,_),f(0.5,_))"
+
+	case w > 600:
+		r["ContentBodyLayout"] = "vflexs(r(_),f(1,_))"
+	//case w > 1136:
+	//	g.UI.res.Mode = "tabletS"
+	//case w > 1024:
+	//	g.UI.res.Mode = "tabletM"
+	//case w > 960:
+	//	g.UI.res.Mode = "mobileXXXL"
+	//case w > 800:
+	//	g.UI.res.Mode = "mobileXXL"
+	//case w > 640:
+	//	g.UI.res.Mode = "mobileXL"
+	//case w > 480:
+	//	g.UI.res.Mode = "mobileL"
+	//case w > 320:
+	//	g.UI.res.Mode = "mobileM"
+	//case w > 240:
+	//	g.UI.res.Mode = "mobileS"
+	case w > 0:
+		g.UI.res.Mode = "mobile"
+		r["MainLayout"] = "hflexb(start,r(_),f(1,_))"
+		r["ContentLayout"] = "vflexb(start,f(1,_),r(_))"
+		r["NavLayout"] = "hflexs(start,r(_),f(1,_))"
+		r["NavSize"] = 128
+		r["NavIconAndLabel"] = "hflexs(r(_),r(_))"
+		r["Logo"] = g.UI.Theme.Icons["Logo"]
+		r["NavItemsAxis"] = layout.Horizontal
+
+		r["ContentBodyLayout"] = "vflexs(r(_),f(1,_))"
 
 	}
 
+	g.UI.res.mod = r
+	//fmt.Println("MODE", g.UI.res.Mode)
+	//fmt.Println("MAX", g.UI.Context.Constraints.Max.X)
+	return
 }

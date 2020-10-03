@@ -41,17 +41,16 @@ func loop(g *gwallet.GioWallet) error {
 			case system.DestroyEvent:
 				return e.Err
 			case system.FrameEvent:
-				g.UI.Context = layout.NewContext(&g.UI.Ops, e)
-				g.Resposnsivity()
+				gtx := layout.NewContext(&g.UI.Ops, e)
 				g.BeforeMain()
 				//if !g.API.OK {
 				//g.GreskaEkran()
 				//} else {
-				g.AppMain()
+				g.AppMain(gtx)
 				//}
 				g.AfterMain()
 
-				e.Frame(g.UI.Context.Ops)
+				e.Frame(gtx.Ops)
 			}
 			g.UI.Window.Invalidate()
 		}

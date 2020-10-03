@@ -36,7 +36,7 @@ func (g *GioWallet) GetWelcome() {
 }
 
 func (g *GioWallet) welcomeHeader() func(gtx C) D {
-	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], 10, 10, 10, 10, func(gtx C) D {
+	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["PanelBg"], 10, 10, 10, func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
 		helper.Fill(gtx, helper.HexARGB(g.UI.Theme.Colors["PanelBg"]))
 		return D{}
@@ -137,7 +137,7 @@ func (g *GioWallet) welcomeLeftBottom() func(gtx C) D {
 				title.Alignment = text.Start
 				return title.Layout(gtx)
 			},
-			ContainerLayout(g.UI.Theme.Colors["White"], 8, 8, 8, 8, func(gtx C) D {
+			ContainerLayout(g.UI.Theme.Colors["White"], g.UI.Theme.Colors["White"], g.UI.Theme.Colors["White"], 8, 8, 8, func(gtx C) D {
 				gtx.Constraints.Min.X = 430
 				e := material.Editor(g.UI.Theme.T, apiAddressInput, "Api address")
 				return e.Layout(gtx)
@@ -158,7 +158,7 @@ func (g *GioWallet) welcomeLeftBottom() func(gtx C) D {
 }
 
 func (g *GioWallet) welcomeRight() func(gtx C) D {
-	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], 10, 10, 10, 10, func(gtx C) D {
+	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["PanelBg"], 10, 10, 10, func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
 		return lyt.Format(gtx, "vflexb(start,r(inset(0dp0dp0dp0dp,_)),r(inset(0dp0dp0dp0dp,_)))",
 			func(gtx C) D {

@@ -31,10 +31,10 @@ func NewGioWallet(coinName string) *GioWallet {
 	if err != nil {
 
 	}
-	defer client.Shutdown()
 
 	g.rpc = client
 
+	defer g.rpc.Shutdown()
 	g.UI = walletUI{
 		Theme: theme.NewTheme(),
 		//mob:   make(chan bool),

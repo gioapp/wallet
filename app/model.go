@@ -10,14 +10,14 @@ import (
 	rpcclient "github.com/p9c/pod/pkg/rpc/client"
 )
 
-type (
-	D = layout.Dimensions
-	C = layout.Context
-)
-
 var (
 	selected int
 	pwd      []string
+)
+
+type (
+	D = layout.Dimensions
+	C = layout.Context
 )
 
 type GioWallet struct {
@@ -43,11 +43,10 @@ type folderListItem struct {
 }
 
 type walletUI struct {
-	Device  string
-	Window  *app.Window
-	Theme   *theme.Theme
-	Context layout.Context
-	//Ekran   func(gtx layout.Context) layout.Dimensions
+	Device string
+	Window *app.Window
+	Theme  *theme.Theme
+	//Ekran   func(gtx C) D
 	FontSize float32
 
 	res   walletResponsivity
@@ -75,11 +74,18 @@ type walletPage struct {
 type pages map[string]walletPage
 
 type Navigation struct {
-	Name  string
-	Bg    string
-	Logo  Logo
-	Items []Item
-	wide  bool
+	Name       string
+	Bg         string
+	Logo       Logo
+	Items      []Item
+	wide       bool
+	mode       string
+	navLayout  string
+	itemLayout string
+	axis       layout.Axis
+	size       int
+	noText     bool
+	logo       func(gtx C) D
 }
 type Item struct {
 	Title string

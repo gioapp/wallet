@@ -4,8 +4,8 @@ import (
 	"gioui.org/layout"
 	"gioui.org/unit"
 	"github.com/gioapp/gel/helper"
-	"github.com/gioapp/gel/lyt"
-	"github.com/gioapp/wallet/pkg/icontextbtn"
+	"github.com/gioapp/wallet/pkg/btn"
+	"github.com/gioapp/wallet/pkg/lyt"
 	"github.com/gioapp/wallet/pkg/theme"
 )
 
@@ -32,10 +32,13 @@ func (n *Navigation) Nav(th *theme.Theme, gtx C) D {
 		func(gtx C) D {
 			return navList.Layout(gtx, len(n.Items), func(gtx C, i int) D {
 				item := n.Items[i]
-				btn := icontextbtn.IconTextBtn(th, item.Btn, item.Icon, n.itemIconSize, th.Colors["NavItem"], item.Title, n.itemLayout, n.noText)
+				btn := btn.IconTextBtn(th, item.Btn, n.itemLayout, n.noContent, item.Title)
 				btn.TextSize = unit.Dp(12)
+				btn.Icon = item.Icon
+				btn.IconSize = n.itemIconSize
 				btn.CornerRadius = unit.Dp(0)
-				btn.Background = helper.HexARGB(th.Colors["NavBg"])
+				btn.Background = th.Colors["NavBg"]
+				btn.TextColor = th.Colors["NavItem"]
 				for item.Btn.Clicked() {
 					currentPage = item.Title
 				}

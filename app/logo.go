@@ -5,7 +5,7 @@ import (
 	"gioui.org/widget"
 	"gioui.org/widget/material"
 	"github.com/gioapp/gel/helper"
-	"github.com/gioapp/gel/lyt"
+	"github.com/gioapp/wallet/pkg/lyt"
 	"image"
 )
 

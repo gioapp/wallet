@@ -9,6 +9,7 @@ import (
 	gwallet "github.com/gioapp/wallet/app"
 	"github.com/gioapp/wallet/cfg"
 	in "github.com/gioapp/wallet/cfg/ini"
+	"github.com/gioapp/wallet/pkg/lyt"
 	"log"
 	"os"
 	"time"
@@ -43,10 +44,11 @@ func loop(g *gwallet.GioWallet) error {
 			case system.FrameEvent:
 				gtx := layout.NewContext(&g.UI.Ops, e)
 				g.BeforeMain()
+
 				//if !g.API.OK {
 				//g.GreskaEkran()
 				//} else {
-				g.AppMain(gtx)
+				lyt.Format(gtx, g.UI.Res.Mod["ScreenLayout"].(string), g.AppMain())
 				//}
 				g.AfterMain()
 

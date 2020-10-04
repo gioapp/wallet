@@ -7,7 +7,7 @@ import (
 	"gioui.org/widget"
 	"gioui.org/widget/material"
 	"github.com/gioapp/gel/helper"
-	"github.com/gioapp/gel/lyt"
+	"github.com/gioapp/wallet/pkg/lyt"
 	"github.com/gioapp/wallet/pkg/theme"
 )
 
@@ -50,7 +50,7 @@ func (g *GioWallet) welcomeBody() func(gtx C) D {
 func (g *GioWallet) welcomeLeft() func(gtx C) D {
 	return func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		return lyt.Format(gtx, "vflexb(start,r(_),r(_))",
+		return lyt.Format(gtx, "vflex(start,r(_),r(_))",
 			g.welcomeLeftTop(),
 			g.welcomeLeftBottom())
 	}
@@ -64,7 +64,7 @@ func (g *GioWallet) welcomeLeftTop() func(gtx C) D {
 	if tt {
 		d = func(gtx C) D {
 			gtx.Constraints.Min.X = gtx.Constraints.Max.X
-			return lyt.Format(gtx, "vflexb(start,r(inset(0dp0dp30dp0dp,_)),r(inset(0dp0dp80dp0dp,_)))",
+			return lyt.Format(gtx, "vflex(start,r(inset(0dp0dp30dp0dp,_)),r(inset(0dp0dp80dp0dp,_)))",
 				func(gtx C) D {
 					title := theme.H3(g.UI.Theme, "Connected to IPFS")
 					title.Alignment = text.Start
@@ -82,7 +82,7 @@ func (g *GioWallet) welcomeLeftTop() func(gtx C) D {
 	} else {
 		d = func(gtx C) D {
 			gtx.Constraints.Min.X = gtx.Constraints.Max.X
-			return lyt.Format(gtx, "vflexb(start,r(inset(0dp0dp30dp0dp,_)),r(inset(0dp0dp80dp0dp,_)),r(inset(0dp0dp30dp0dp,_)),r(inset(0dp0dp80dp0dp,_))r(inset(0dp0dp30dp0dp,_)))",
+			return lyt.Format(gtx, "vflex(start,r(inset(0dp0dp30dp0dp,_)),r(inset(0dp0dp80dp0dp,_)),r(inset(0dp0dp30dp0dp,_)),r(inset(0dp0dp80dp0dp,_))r(inset(0dp0dp30dp0dp,_)))",
 				func(gtx C) D {
 					title := theme.H3(g.UI.Theme, "Is your IPFS daemon running?")
 					title.Alignment = text.Start
@@ -118,7 +118,7 @@ func (g *GioWallet) welcomeLeftTop() func(gtx C) D {
 func (g *GioWallet) welcomeLeftBottom() func(gtx C) D {
 	return func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		return lyt.Format(gtx, "vflexb(start,r(inset(0dp0dp10dp0dp,_)),r(inset(0dp0dp10dp0dp,_)),r(inset(0dp0dp10dp0dp,_)),r(inset(0dp0dp0dp0dp,_)),r(inset(0dp0dp0dp0dp,_)))",
+		return lyt.Format(gtx, "vflex(start,r(inset(0dp0dp10dp0dp,_)),r(inset(0dp0dp10dp0dp,_)),r(inset(0dp0dp10dp0dp,_)),r(inset(0dp0dp0dp0dp,_)),r(inset(0dp0dp0dp0dp,_)))",
 			func(gtx C) D {
 				title := theme.H3(g.UI.Theme, "Is your API on a port other than 5001?")
 				title.Alignment = text.Start
@@ -158,7 +158,7 @@ func (g *GioWallet) welcomeLeftBottom() func(gtx C) D {
 func (g *GioWallet) welcomeRight() func(gtx C) D {
 	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["PanelBg"], 10, 10, 10, func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		return lyt.Format(gtx, "vflexb(start,r(inset(0dp0dp0dp0dp,_)),r(inset(0dp0dp0dp0dp,_)))",
+		return lyt.Format(gtx, "vflex(start,r(inset(0dp0dp0dp0dp,_)),r(inset(0dp0dp0dp0dp,_)))",
 			func(gtx C) D {
 				title := theme.H3(g.UI.Theme, "What is IPFS?")
 				title.Alignment = text.Start

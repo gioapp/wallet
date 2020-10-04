@@ -3,7 +3,7 @@ package gwallet
 import (
 	"gioui.org/text"
 	"github.com/gioapp/gel/helper"
-	"github.com/gioapp/gel/lyt"
+	"github.com/gioapp/wallet/pkg/lyt"
 	"github.com/gioapp/wallet/pkg/theme"
 )
 
@@ -40,7 +40,7 @@ func (g *GioWallet) exploreBody() func(gtx C) D {
 //func (g *GioWallet) exploreBody() []func(gtx C) D {
 //	retu//		ContainerLayout(g.UI.Theme.Colors["Silver"], 1, 1, 1, 1, ContainerLayout(g.UI.Theme.Colors["PanelBg"], 30, 30, 30, 30, func(gtx C) D {
 //			gtx.Constraints.Min.X = gtx.Constraints.Max.X
-//			return lyt.Format(gtx, "vflexb(middle,f(0.6,inset(5dp0dp5dp0dp,_)),f(0.4, inset(5dp0dp5dp0dp,_))))",
+//			return lyt.Format(gtx, "vflex(middle,f(0.6,inset(5dp0dp5dp0dp,_)),f(0.4, inset(5dp0dp5dp0dp,_))))",
 //				func(gtx C) D {
 //					gtx.Constraints.Max.Y = gtx.Constraints.Min.Y
 //					return g.6UI.logoIpld.Layout(gtx)
@@ -57,7 +57,7 @@ func (g *GioWallet) exploreBody() func(gtx C) D {
 func (g *GioWallet) exploreLeft() func(gtx C) D {
 	return func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		return lyt.Format(gtx, "vflexb(start,r(inset(0dp0dp30dp0dp,_)),r(inset(0dp0dp80dp0dp,_))))",
+		return lyt.Format(gtx, "vflex(start,r(inset(0dp0dp30dp0dp,_)),r(inset(0dp0dp80dp0dp,_))))",
 			func(gtx C) D {
 				title := theme.H3(g.UI.Theme, "Explore the blockchain")
 				title.Alignment = text.Start
@@ -75,7 +75,7 @@ func (g *GioWallet) exploreLeft() func(gtx C) D {
 func (g *GioWallet) exploreRight() func(gtx C) D {
 	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["PanelBg"], 10, 10, 10, func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		return lyt.Format(gtx, "vflexb(start,r(inset(0dp0dp0dp0dp,_)),r(inset(0dp0dp0dp0dp,_)))",
+		return lyt.Format(gtx, "vflex(start,r(inset(0dp0dp0dp0dp,_)),r(inset(0dp0dp0dp0dp,_)))",
 			func(gtx C) D {
 				title := theme.H3(g.UI.Theme, "What is ParallelCoin?")
 				title.Alignment = text.Start

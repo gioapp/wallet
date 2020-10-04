@@ -2,15 +2,22 @@ package gwallet
 
 import (
 	"fmt"
+	"gioui.org/layout"
 	"gioui.org/text"
+	"gioui.org/unit"
+	"gioui.org/widget"
 	"github.com/gioapp/gel/helper"
-	"github.com/gioapp/gel/lyt"
+	"github.com/gioapp/wallet/pkg/btn"
+	"github.com/gioapp/wallet/pkg/lyt"
 	"github.com/gioapp/wallet/pkg/theme"
 )
 
 var (
-	balances     Balances
-	transactions []Tx
+	balances               Balances
+	transactions           []Tx
+	recentTransactionsList = &layout.List{
+		Axis: layout.Vertical,
+	}
 )
 
 func (g *GioWallet) GetOverview() {
@@ -40,9 +47,11 @@ func (g *GioWallet) GetLatestTransactions() {
 
 	for _, tx := range txs {
 		t := Tx{
-			time:    fmt.Sprint(tx.Time),
-			address: fmt.Sprint(tx.Address),
-			amount:  fmt.Sprint(tx.Amount),
+			Id:      fmt.Sprint(tx.TxID),
+			Time:    fmt.Sprint(tx.Time),
+			Address: fmt.Sprint(tx.Address),
+			Amount:  fmt.Sprint(tx.Amount),
+			Btn:     new(widget.Clickable),
 		}
 		fmt.Println("Sstrtrtrtrtrtss", t)
 
@@ -67,10 +76,8 @@ func row(th *theme.Theme, label string) func(gtx C) D {
 
 func overviewRow(th *theme.Theme, label string, content func(gtx C) D) func(gtx C) D {
 	return func(gtx C) D {
-		return lyt.Format(gtx, "hflexb(start,r(inset(0dp0dp0dp0dp,_)),f(1,_))",
-			//gtx.Constraints.Min.X = gtx.Constraints.Max.X
+		return lyt.Format(gtx, "hflex(start,r(inset(0dp0dp0dp0dp,_)),f(1,_))",
 			func(gtx C) D {
-				//gtx.Constraints.Min.X = 100
 				title := theme.Body(th, label)
 				title.Alignment = text.Start
 				return title.Layout(gtx)
@@ -81,47 +88,73 @@ func overviewRow(th *theme.Theme, label string, content func(gtx C) D) func(gtx 
 }
 
 func (g *GioWallet) overviewBody() func(gtx C) D {
-	return func(gtx C) D {
-		helper.Fill(gtx, helper.HexARGB(g.UI.Theme.Colors["Success"]))
-
-		return lyt.Format(gtx, g.UI.res.mod["ContentBodyLayout"].(string),
+	return stack(g.UI.Theme.Colors["PanelBg"], 4, func(gtx C) D {
+		return lyt.Format(gtx, g.UI.Res.Mod["ContentBodyLayout"].(string),
 			g.balancesView(),
 			g.recentTxView())
-	}
+	})
 }
 
 func (g *GioWallet) balancesView() func(gtx C) D {
-	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["Border"], g.UI.Theme.Colors["PanelBg"], 4, 1, 8, func(gtx C) D {
-		//gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		//helper.Fill(gtx, helper.HexARGB(g.UI.Theme.Colors["PanelBg"]))
-		return lyt.Format(gtx, "vflexb(r(_),r(_),r(_),r(_),r(_))",
-			func(gtx C) D {
-				//gtx.Constraints.Min.X = gtx.Constraints.Max.X
-				title := theme.H1(g.UI.Theme, "Balances")
-				title.Alignment = text.Start
-				return title.Layout(gtx)
-			},
+	return g.panelView("Balances", func(gtx C) D {
+		return lyt.Format(gtx, "vflex(r(_),r(_),r(_),r(_),r(_))",
 			overviewRow(g.UI.Theme, "Available", row(g.UI.Theme, g.Status.bal.available)),
 			overviewRow(g.UI.Theme, "Pending", row(g.UI.Theme, g.Status.bal.pending)),
 			overviewRow(g.UI.Theme, "Immature", row(g.UI.Theme, g.Status.bal.immature)),
+			helper.DuoUIline(false, 1, 0, 1, g.UI.Theme.Colors["Border"]),
 			overviewRow(g.UI.Theme, "Total", row(g.UI.Theme, g.Status.bal.total)),
 		)
 	})
 }
 
 func (g *GioWallet) recentTxView() func(gtx C) D {
+	return g.panelView("Recent transactions", func(gtx C) D {
+		return recentTransactionsList.Layout(gtx, len(transactions), func(gtx C, i int) D {
+			tx := transactions[i]
+			btn := btn.IconTextBtn(g.UI.Theme, tx.Btn, "hflex(r(_),f(1,_)", false, func(gtx C) D {
+				return lyt.Format(gtx, "vflex(r(_),r(_))",
+					func(gtx C) D {
+						return lyt.Format(gtx, "hflex(r(_),r(_))",
+							func(gtx C) D {
+								title := theme.H1(g.UI.Theme, "title")
+								title.Alignment = text.Start
+								return title.Layout(gtx)
+							},
+							func(gtx C) D {
+								title := theme.H1(g.UI.Theme, "title")
+								title.Alignment = text.Start
+								return title.Layout(gtx)
+							},
+						)
+					},
+					func(gtx C) D {
+						title := theme.H1(g.UI.Theme, "title")
+						title.Alignment = text.Start
+						return title.Layout(gtx)
+					},
+				)
+			})
+			btn.TextSize = unit.Dp(12)
+			btn.Icon = g.UI.Theme.Icons["MapsLayers"]
+			btn.CornerRadius = unit.Dp(0)
+			btn.Background = g.UI.Theme.Colors["NavBg"]
+			for tx.Btn.Clicked() {
+				currentPage = tx.Id
+			}
+			return btn.Layout(gtx)
+		})
+	})
+}
+
+func (g *GioWallet) panelView(title string, content func(gtx C) D) func(gtx C) D {
 	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["Border"], g.UI.Theme.Colors["PanelBg"], 4, 1, 8, func(gtx C) D {
-		return lyt.Format(gtx, "vflexb(r(_),r(_),r(_),r(_),r(_))",
+		return lyt.Format(gtx, "vflex(r(_),r(_))",
 			func(gtx C) D {
-				//gtx.Constraints.Min.X = gtx.Constraints.Max.X
-				title := theme.H1(g.UI.Theme, "Recent transactions")
+				title := theme.H1(g.UI.Theme, title)
 				title.Alignment = text.Start
 				return title.Layout(gtx)
 			},
-			overviewRow(g.UI.Theme, "Available", row(g.UI.Theme, g.Status.bal.available)),
-			overviewRow(g.UI.Theme, "Pending", row(g.UI.Theme, g.Status.bal.pending)),
-			overviewRow(g.UI.Theme, "Immature", row(g.UI.Theme, g.Status.bal.immature)),
-			overviewRow(g.UI.Theme, "Total", row(g.UI.Theme, g.Status.bal.total)),
+			content,
 		)
 	})
 }

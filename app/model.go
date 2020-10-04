@@ -50,7 +50,7 @@ type walletUI struct {
 	//Ekran   func(gtx C) D
 	FontSize float32
 
-	res   walletResponsivity
+	Res   walletResponsivity
 	pages pages
 	nav   Navigation
 	Ops   op.Ops
@@ -58,7 +58,7 @@ type walletUI struct {
 
 type walletResponsivity struct {
 	Mode string
-	mod  map[string]interface{}
+	Mod  map[string]interface{}
 }
 
 type walletSettings struct {
@@ -86,7 +86,7 @@ type Navigation struct {
 	itemIconSize unit.Value
 	axis         layout.Axis
 	size         int
-	noText       bool
+	noContent    bool
 	logo         func(gtx C) D
 }
 type Item struct {
@@ -114,7 +114,9 @@ type Balances struct {
 	total     string
 }
 type Tx struct {
-	time    string
-	address string
-	amount  string
+	Id      string
+	Time    string
+	Address string
+	Amount  string
+	Btn     *widget.Clickable
 }

@@ -7,6 +7,8 @@ import (
 )
 
 var (
+	noReturn = func(gtx C) D { return D{} }
+
 	//contentList = &layout.List{
 	//	Axis: layout.Vertical,
 	//}

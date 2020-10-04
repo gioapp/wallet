@@ -6,7 +6,7 @@ import (
 	"gioui.org/widget"
 	"gioui.org/widget/material"
 	"github.com/gioapp/gel/helper"
-	"github.com/gioapp/gel/lyt"
+	"github.com/gioapp/wallet/pkg/lyt"
 )
 
 func (g *GioWallet) getPages() pages {
@@ -56,16 +56,16 @@ func (g *GioWallet) getPages() pages {
 
 func (g *GioWallet) page(page walletPage) func(gtx C) D {
 	return ContainerLayout(g.UI.Theme.Colors["White"], g.UI.Theme.Colors["White"], g.UI.Theme.Colors["White"], 0, 0, 0, func(gtx C) D {
-		return lyt.Format(gtx, "vflexs(start,r(inset(0dp0dp0dp0dp,_)),f(1,inset(0dp0dp0dp0dp,_)))", page.Header, page.Body)
+		return lyt.Format(gtx, "vflex(start,r(inset(0dp0dp0dp0dp,_)),f(1,inset(0dp0dp0dp0dp,_)))", page.Header, page.Body)
 	})
 }
 
-func ContainerLayout(marginColor, borderColor, paddingColor string, margin, border, padding int, itemContent func(gtx C) D) func(gtx C) D {
+func ContainerLayout(outsideColor, borderColor, insideColor string, margin, border, padding int, itemContent func(gtx C) D) func(gtx C) D {
 	//vmin := gtx.Constraints.Min.Y
 	//if d.FullWidth {
 	//	hmin = gtx.Constraints.Max.Y
 	//}
-	return stack(marginColor, margin, stack(borderColor, border, stack(paddingColor, padding, stack(paddingColor, padding, itemContent))))
+	return stack(outsideColor, margin, stack(borderColor, border, stack(insideColor, padding, stack(insideColor, padding, itemContent))))
 }
 
 func (g *GioWallet) pageButton(b *widget.Clickable, f func(), icon, page string) func(gtx C) D {
@@ -79,23 +79,5 @@ func (g *GioWallet) pageButton(b *widget.Clickable, f func(), icon, page string)
 			currentPage = page
 		}
 		return btn.Layout(gtx)
-	}
-}
-
-func stack(color string, size int, content func(gtx C) D) func(gtx C) D {
-	return func(gtx C) D {
-		return layout.Stack{Alignment: layout.W}.Layout(gtx,
-			layout.Expanded(func(gtx C) D {
-				return helper.Fill(gtx, helper.HexARGB(color))
-			}),
-			layout.Stacked(func(gtx C) D {
-				return layout.Inset{
-					Top:    unit.Dp(float32(size)),
-					Right:  unit.Dp(float32(size)),
-					Bottom: unit.Dp(float32(size)),
-					Left:   unit.Dp(float32(size)),
-				}.Layout(gtx, content)
-			}),
-		)
 	}
 }

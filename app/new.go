@@ -57,18 +57,18 @@ func NewGioWallet(coinName string) *GioWallet {
 	//
 	//	}
 	//}
-	g.UI.res.Mode = "mobile"
+	g.UI.Res.Mode = "mobile"
 	//r := map[string]interface{}{
-	//	"MainLayout":    "vflexb(start,r(_),f(1,_))",
-	//	"ContentLayout": "vflexb(start,f(1,_),r(_))",
-	//	"NavLayout":     "hflexs(start,r(_),f(1,_))",
+	//	"MainLayout":    "vflex(start,r(_),f(1,_))",
+	//	"ContentLayout": "vflex(start,f(1,_),r(_))",
+	//	"NavLayout":     "hflex(start,r(_),f(1,_))",
 	//	"NavSize":       128,
 	//	"NavItemsAxis":  layout.Horizontal,
-	//	"NavIconAndLabel": "hflexs(r(_),r(_))",
+	//	"NavIconAndLabel": "hflex(r(_),r(_))",
 	//	"Logo":            g.UI.Theme.Icons["Logo"],
-	//	"ContentBodyLayout": "vflexs(start,r(_),f(1,_))",
+	//	"ContentBodyLayout": "vflex(start,r(_),f(1,_))",
 	//}
-	//g.UI.res.mod = r
+	//g.UI.Res.Mod = r
 	n := Navigation{
 		Name:         "Navigacion",
 		Bg:           g.UI.Theme.Colors["NavBg"],

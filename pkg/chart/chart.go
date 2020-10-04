@@ -21,7 +21,7 @@ var (
 //}
 
 //func verticalPx(topSize, bottomSize float64) func(gtx C) D {
-//	lF := "vflexb(start,f(" + fmt.Sprintf("%.2f", topSize) + ",_)),f(" + fmt.Sprintf("%.2f", bottomSize) + ",_))"
+//	lF := "vflex(start,f(" + fmt.Sprintf("%.2f", topSize) + ",_)),f(" + fmt.Sprintf("%.2f", bottomSize) + ",_))"
 //	top := "ff664825"
 //	bottom := "ff994672"
 //	return func(gtx C) D {

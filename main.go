@@ -15,14 +15,14 @@ import (
 func main() {
 	apps := make(map[string]interface{})
 	apps["ParallelCoinWallet"] = gwallet.NewGioWallet("parallelcoin")
-	d := dap.NewDap(apps)
+	d := dap.NewDap("ParallelCoin - DUO - True Story", apps)
 
 	if cfg.Initial {
 		fmt.Println("running initial sync")
 	}
 
 	//ticker(d.Apps["ParallelcoinWallet"].(gwallet.GioWallet)).Tik()
-
+	fmt.Println("111")
 	go func() {
 		defer os.Exit(0)
 		if err := d.DAppP(); err != nil {

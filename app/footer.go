@@ -34,7 +34,7 @@ func (g *GioWallet) footer(ui *mod.UserInterface) func(gtx C) D {
 func (g *GioWallet) footerMenu(ui *mod.UserInterface) func(gtx C) D {
 	return func(gtx C) D {
 		for syncBtn.Clicked() {
-			ui.N.CurrentPage = "Welcome"
+			//ui.N.CurrentPage = "Welcome"
 		}
 		return lyt.Format(gtx, "hflex(middle,r(_),r(_),r(_))",
 			//g.pageButton(d, syncBtn, func() {}, "StrokeCase", ""),
@@ -48,7 +48,7 @@ func (g *GioWallet) footerMenu(ui *mod.UserInterface) func(gtx C) D {
 				btn.Background = helper.HexARGB(ui.Theme.Colors["Secondary"])
 				for connectionsBtn.Clicked() {
 					//f()
-					ui.N.CurrentPage = "Welcome"
+					//ui.N.CurrentPage = "Welcome"
 				}
 				return btn.Layout(gtx)
 			},

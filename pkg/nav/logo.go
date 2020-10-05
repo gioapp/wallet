@@ -26,25 +26,25 @@ type Logo struct {
 	Logo  string
 }
 
-func (n *Navigation) logoLayout(th *theme.Theme) func(gtx C) D {
+func (n *Navigation) LogoLayout(th *theme.Theme) func(gtx C) D {
 	return func(gtx C) D {
 		return material.Clickable(gtx, logoBtn, func(gtx C) D {
 			gtx.Constraints.Min.X = gtx.Constraints.Max.X
 			for logoBtn.Clicked() {
-				switch n.wide {
+				switch n.Wide {
 				case false:
-					n.wide = true
+					n.Wide = true
 				default:
-					n.wide = false
+					n.Wide = false
 				}
 			}
 			inset := "inset(8dp18dp8dp8dp,_)"
-			if n.wide {
+			if n.Wide {
 				inset = "inset(8dp8dp8dp8dp,_)"
 			}
 			return lyt.Format(gtx, inset, func(gtx C) D {
 				logo := th.Icons["Logo"]
-				if n.wide {
+				if n.Wide {
 					logo = th.Icons["Logo"]
 				}
 				var d D

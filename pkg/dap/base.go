@@ -19,6 +19,7 @@ func (d *dap) DAppP() error {
 			case system.FrameEvent:
 				gtx := layout.NewContext(&d.boot.UI.Ops, e)
 				d.BeforeMain()
+
 				lyt.Format(gtx, "max(inset(0dp0dp0dp0dp,_))", d.Main())
 				//d.AfterMain()
 				e.Frame(gtx.Ops)
@@ -29,7 +30,14 @@ func (d *dap) DAppP() error {
 }
 
 func (d *dap) BeforeMain() {
-
+	//Resposnsivity(d)
+	d.boot.UI.N.Mode = d.boot.UI.R.Mode
+	d.boot.UI.N.NavLayout = d.boot.UI.R.Mod["Nav"].(string)
+	d.boot.UI.N.ItemLayout = d.boot.UI.R.Mod["NavIconAndLabel"].(string)
+	d.boot.UI.N.Axis = d.boot.UI.R.Mod["NavItemsAxis"].(layout.Axis)
+	d.boot.UI.N.Size = d.boot.UI.R.Mod["NavSize"].(int)
+	d.boot.UI.N.NoContent = d.boot.UI.N.Wide
+	d.boot.UI.N.LogoWidget = d.boot.UI.N.LogoLayout(d.boot.UI.Theme)
 }
 
 func (d *dap) AfterMain() {
@@ -52,10 +60,10 @@ func (d *dap) Main() W {
 			},
 			func(gtx C) D {
 				return lyt.Format(gtx, d.boot.UI.R.Mod["Content"].(string),
+					//noReturn,
 					noReturn,
-					noReturn,
-					//Page(d.boot.UI.Theme, d.boot.UI.P[d.boot.UI.N.CurrentPage]),
-					noReturn,
+					//d.boot.UI.N.CurrentPage.P(d.boot.UI.Theme),
+					//noReturn,
 				)
 			})
 	}

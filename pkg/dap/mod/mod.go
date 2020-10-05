@@ -7,6 +7,7 @@ import (
 	"gioui.org/app"
 	"gioui.org/layout"
 	"gioui.org/op"
+	"github.com/gioapp/wallet/pkg/dap/res"
 	"github.com/gioapp/wallet/pkg/nav"
 	"github.com/gioapp/wallet/pkg/theme"
 )
@@ -34,23 +35,11 @@ type UserInterface struct {
 	Theme  *theme.Theme
 	//Ekran   func(gtx C) D
 	FontSize float32
-	R        Responsivity
-	P        Pages
-	N        nav.Navigation
-	G        layout.Context
-	Ops      op.Ops
+	R        res.Responsivity
+	//P        Pages
+	N   nav.Navigation
+	G   layout.Context
+	Ops op.Ops
 }
 
-type Responsivity struct {
-	Mode string
-	Mod  map[string]interface{}
-}
-
-type Page struct {
-	Title  string
-	Header layout.Widget
-	Body   layout.Widget
-	Footer layout.Widget
-}
-
-type Pages map[string]Page
+//type Pages map[string]Page

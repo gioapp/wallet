@@ -69,7 +69,7 @@ func (g *GioWallet) sendBody(ui *mod.UserInterface) func(gtx C) D {
 						btn.Size = unit.Dp(21)
 						btn.Background = helper.HexARGB(ui.Theme.Colors["Secondary"])
 						for connectionsBtn.Clicked() {
-							ui.N.CurrentPage = "Welcome"
+							//ui.N.CurrentPage = "Welcome"
 						}
 						return btn.Layout(gtx)
 					},
@@ -79,7 +79,7 @@ func (g *GioWallet) sendBody(ui *mod.UserInterface) func(gtx C) D {
 						btn.Size = unit.Dp(21)
 						btn.Background = helper.HexARGB(ui.Theme.Colors["Secondary"])
 						for connectionsBtn.Clicked() {
-							ui.N.CurrentPage = "Welcome"
+							//ui.N.CurrentPage = "Welcome"
 						}
 						return btn.Layout(gtx)
 					},
@@ -89,7 +89,7 @@ func (g *GioWallet) sendBody(ui *mod.UserInterface) func(gtx C) D {
 						btn.Size = unit.Dp(21)
 						btn.Background = helper.HexARGB(ui.Theme.Colors["Secondary"])
 						for connectionsBtn.Clicked() {
-							ui.N.CurrentPage = "Welcome"
+							//ui.N.CurrentPage = "Welcome"
 						}
 						return btn.Layout(gtx)
 					},

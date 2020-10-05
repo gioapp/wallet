@@ -140,7 +140,7 @@ func (g *GioWallet) recentTxView(d *mod.Dap) func(gtx C) D {
 			btn.CornerRadius = unit.Dp(0)
 			btn.Background = d.UI.Theme.Colors["NavBg"]
 			for tx.Btn.Clicked() {
-				d.UI.N.CurrentPage = tx.Id
+				//d.UI.N.CurrentPage = tx.Id
 			}
 			return btn.Layout(gtx)
 		})

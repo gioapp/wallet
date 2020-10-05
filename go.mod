@@ -8,4 +8,5 @@ require (
 	github.com/p9c/pod v0.3.9
 	github.com/w-ingsolutions/c v0.0.0-20200817204459-76d55bd42e37
 	golang.org/x/exp v0.0.0-20200924195034-c827fd4f18b9
+	golang.org/x/tools v0.0.0-20200207183749-b753a1ba74fa
 )

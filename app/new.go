@@ -59,6 +59,7 @@ func (g *GioWallet) getMenuItems(ui *mod.UserInterface) []nav.Item {
 				Title:  "Overview",
 				Header: g.overviewHeader(),
 				Body:   g.overviewBody(ui),
+				Footer: noReturn,
 			},
 		},
 		nav.Item{
@@ -68,7 +69,8 @@ func (g *GioWallet) getMenuItems(ui *mod.UserInterface) []nav.Item {
 			Page: page.Page{
 				Title:  "Send",
 				Header: g.sendHeader(ui.Theme),
-				//Body:   g.sendBody(d.UI),
+				Body:   g.sendBody(ui),
+				Footer: noReturn,
 			},
 		},
 		//nav.Item{

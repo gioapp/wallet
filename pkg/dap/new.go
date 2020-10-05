@@ -74,16 +74,19 @@ func NewDap(title string) dap {
 	r := res.Responsivity{
 		Mode: "mobile",
 		Mod: map[string]interface{}{
-			"Screen":          "max(inset(80dp0dp80dp0dp,_))",
-			"Main":            "max(hflex(start,r(_),f(1,_)))",
-			"Content":         "max(inset(80dp0dp80dp0dp,_))",
+			"Screen":  "max(inset(80dp0dp80dp0dp,_))",
+			"Main":    "max(vflex(start,r(_),f(1,_)))",
+			"Content": "max(inset(0dp0dp0dp0dp,_))",
+
+			"Page":     "max(hflex(start,r(_),f(1,_),r(_)))",
+			"TwoEqual": "vflex(start,r(inset(0dp,_)),f(1,inset(0dp,_))))",
+
 			"Nav":             "hflex(start,r(_),f(1,_))",
 			"NavSize":         128,
 			"NavIconSize":     128,
 			"NavIconAndLabel": "hflex(r(_),r(_))",
 			"Logo":            d.UI.Theme.Icons["Logo"],
 			"NavItemsAxis":    layout.Horizontal,
-			"TwoEqual":        "vflex(start,r(inset(0dp,_)),f(1,inset(0dp,_))))",
 
 			"MainLayout":    "vflex(start,r(_),f(1,_))",
 			"ContentLayout": "vflex(start,f(1,_),r(_))",

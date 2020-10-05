@@ -150,7 +150,7 @@ func (g *GioWallet) recentTxView(th *theme.Theme, n *nav.Navigation) func(gtx C)
 
 func (g *GioWallet) panelView(th *theme.Theme, title string, content func(gtx C) D) func(gtx C) D {
 	return boxPanel(th, func(gtx C) D {
-		return lyt.Format(gtx, "vflex(r(_),r(_))",
+		return lyt.Format(gtx, "hmax(vflex(r(_),r(_)))",
 			func(gtx C) D {
 				title := theme.H1(th, title)
 				title.Alignment = text.Start

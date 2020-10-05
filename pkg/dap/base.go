@@ -87,8 +87,8 @@ func (d *dap) Main() W {
 			func(gtx C) D {
 				return lyt.Format(gtx, d.boot.UI.R.Mod["Content"].(string),
 					//noReturn,
-					noReturn,
-					//d.boot.UI.N.CurrentPage.P(d.boot.UI.Theme),
+					//noReturn,
+					d.boot.UI.N.CurrentPage.P(d.boot.UI.Theme, d.boot.UI.R.Mod["Page"].(string)),
 					//noReturn,
 				)
 			})

@@ -25,7 +25,7 @@ type Page struct {
 	Footer layout.Widget
 }
 
-func (page Page) P(th *theme.Theme) func(gtx C) D {
+func (p *Page) P(th *theme.Theme, ly string) func(gtx C) D {
 	return container.C().
 		OutsideColor(th.Colors["PanelBg"]).
 		BorderColor(th.Colors["Border"]).
@@ -36,7 +36,7 @@ func (page Page) P(th *theme.Theme) func(gtx C) D {
 		Layout(func(gtx C) D {
 			fmt.Println("TestRRR11sdsadasdasd11")
 			//return D{}
-			return lyt.Format(gtx, "max(hflex(start,r(_),f(1,_)))", page.Header, page.Body)
+			return lyt.Format(gtx, ly, p.Header, p.Body, p.Footer)
 		})
 }
 

@@ -27,14 +27,17 @@ type (
 type dap struct {
 	boot *mod.Dap
 }
+type sap struct {
+	boot *mod.Sap
+}
 
 func NewDap(title string) *dap {
 	d := &mod.Dap{
 		Ctx:  context.Background(),
-		Apps: make(map[string]interface{}),
+		Apps: make(map[string]*mod.Sap),
 	}
 
-	d.UI = &mod.UserInterface{
+	d.UI = mod.UserInterface{
 		Theme: theme.NewTheme(),
 		//mob:   make(chan bool),
 	}
@@ -50,7 +53,7 @@ func NewDap(title string) *dap {
 
 	d.UI.R.Mode = "mobile"
 
-	n := nav.Navigation{
+	n := &nav.Navigation{
 		Name:         "Navigacion",
 		Bg:           d.UI.Theme.Colors["NavBg"],
 		Items:        make(map[int]nav.Item),
@@ -96,10 +99,19 @@ func NewDap(title string) *dap {
 	return &dap{boot: d}
 }
 
-func (d *dap) NewSap(title string, sap interface{}) {
-	d.boot.Apps[title] = sap
+func (d *dap) NewSap(s *mod.Sap) {
+	s.UI = &d.boot.UI
+	initSap := sap{boot: s}
+	//d.boot.Apps[s.Title] = initSap.Sap()
+	d.boot.Apps[s.Title] = initSap.boot
 	return
 }
+
+//func (s *sap) Sap()*mod.Sap {
+//	return &mod.Sap{
+//		//Nav:   g.getMenuItems(ui),
+//	}
+//}
 
 func checkError(err error) {
 	if err != nil {

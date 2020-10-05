@@ -13,7 +13,7 @@ import (
 
 func main() {
 	d := dap.NewDap("Duo App Plan9")
-	d.NewSap("ParallelCoinWallet", gwallet.NewGioWallet("parallelcoin"))
+	d.NewSap(gwallet.NewGioWallet())
 	if cfg.Initial {
 		fmt.Println("running initial setup")
 	}

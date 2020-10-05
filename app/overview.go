@@ -10,6 +10,7 @@ import (
 	"github.com/gioapp/wallet/pkg/btn"
 	"github.com/gioapp/wallet/pkg/dap/mod"
 	"github.com/gioapp/wallet/pkg/lyt"
+	"github.com/gioapp/wallet/pkg/nav"
 	"github.com/gioapp/wallet/pkg/theme"
 )
 
@@ -88,59 +89,59 @@ func overviewRow(th *theme.Theme, label string, content func(gtx C) D) func(gtx 
 	}
 }
 
-func (g *GioWallet) overviewBody(d *mod.Dap) func(gtx C) D {
-	return boxBase(d.UI.Theme, func(gtx C) D {
-		return lyt.Format(gtx, d.UI.R.Mod["TwoEqual"].(string),
-			g.balancesView(d),
-			g.recentTxView(d))
+func (g *GioWallet) overviewBody(ui *mod.UserInterface) func(gtx C) D {
+	return boxBase(ui.Theme, func(gtx C) D {
+		return lyt.Format(gtx, ui.R.Mod["TwoEqual"].(string),
+			g.balancesView(ui.Theme),
+			g.recentTxView(ui.Theme, ui.N))
 	})
 }
 
-func (g *GioWallet) balancesView(d *mod.Dap) func(gtx C) D {
-	return g.panelView(d.UI.Theme, "Balances", func(gtx C) D {
+func (g *GioWallet) balancesView(th *theme.Theme) func(gtx C) D {
+	return g.panelView(th, "Balances", func(gtx C) D {
 		return lyt.Format(gtx, "vflex(r(_),r(_),r(_),r(_),r(_))",
-			overviewRow(d.UI.Theme, "Available", row(d.UI.Theme, g.Status.bal.available)),
-			overviewRow(d.UI.Theme, "Pending", row(d.UI.Theme, g.Status.bal.pending)),
-			overviewRow(d.UI.Theme, "Immature", row(d.UI.Theme, g.Status.bal.immature)),
-			helper.DuoUIline(false, 1, 0, 1, d.UI.Theme.Colors["Border"]),
-			overviewRow(d.UI.Theme, "Total", row(d.UI.Theme, g.Status.bal.total)),
+			overviewRow(th, "Available", row(th, g.Status.bal.available)),
+			overviewRow(th, "Pending", row(th, g.Status.bal.pending)),
+			overviewRow(th, "Immature", row(th, g.Status.bal.immature)),
+			helper.DuoUIline(false, 1, 0, 1, th.Colors["Border"]),
+			overviewRow(th, "Total", row(th, g.Status.bal.total)),
 		)
 	})
 }
 
-func (g *GioWallet) recentTxView(d *mod.Dap) func(gtx C) D {
-	return g.panelView(d.UI.Theme, "Recent transactions", func(gtx C) D {
+func (g *GioWallet) recentTxView(th *theme.Theme, n *nav.Navigation) func(gtx C) D {
+	return g.panelView(th, "Recent transactions", func(gtx C) D {
 		return recentTransactionsList.Layout(gtx, len(transactions), func(gtx C, i int) D {
 			tx := transactions[i]
-			btn := btn.IconTextBtn(d.UI.Theme, tx.Btn, "hflex(r(_),f(1,_)", false, func(gtx C) D {
+			btn := btn.IconTextBtn(th, tx.Btn, "hflex(r(_),f(1,_)", false, func(gtx C) D {
 				return lyt.Format(gtx, "vflex(r(_),r(_))",
 					func(gtx C) D {
 						return lyt.Format(gtx, "hflex(r(_),r(_))",
 							func(gtx C) D {
-								title := theme.H1(d.UI.Theme, "title")
+								title := theme.H1(th, "title")
 								title.Alignment = text.Start
 								return title.Layout(gtx)
 							},
 							func(gtx C) D {
-								title := theme.H1(d.UI.Theme, "title")
+								title := theme.H1(th, "title")
 								title.Alignment = text.Start
 								return title.Layout(gtx)
 							},
 						)
 					},
 					func(gtx C) D {
-						title := theme.H1(d.UI.Theme, "title")
+						title := theme.H1(th, "title")
 						title.Alignment = text.Start
 						return title.Layout(gtx)
 					},
 				)
 			})
 			btn.TextSize = unit.Dp(12)
-			btn.Icon = d.UI.Theme.Icons["MapsLayers"]
+			btn.Icon = th.Icons["MapsLayers"]
 			btn.CornerRadius = unit.Dp(0)
-			btn.Background = d.UI.Theme.Colors["NavBg"]
+			btn.Background = th.Colors["NavBg"]
 			for tx.Btn.Clicked() {
-				//d.UI.N.CurrentPage = tx.Id
+				//n.CurrentPage = tx.Id
 			}
 			return btn.Layout(gtx)
 		})

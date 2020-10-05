@@ -5,7 +5,6 @@ package dap
 import (
 	"gioui.org/io/system"
 	"gioui.org/layout"
-	gwallet "github.com/gioapp/wallet/app"
 	"github.com/gioapp/wallet/pkg/lyt"
 	"time"
 )
@@ -47,9 +46,9 @@ func (d *dap) AfterMain() {
 
 func Tik(d *dap) func() {
 	return func() {
-		gw := d.boot.Apps["ParallelCoinWallet"].(gwallet.GioWallet)
-		gw.GetBalances()
-		gw.GetLatestTransactions()
+		//gw := d.boot.Apps["ParallelCoinWallet"].App.(gwallet.GioWallet)
+		//gw.GetBalances()
+		//gw.GetLatestTransactions()
 	}
 }
 

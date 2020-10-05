@@ -3,12 +3,16 @@ package gwallet
 import (
 	"fmt"
 	"gioui.org/widget"
+	"github.com/gioapp/wallet/pkg/dap/mod"
+	"github.com/gioapp/wallet/pkg/dap/page"
 	"github.com/gioapp/wallet/pkg/nav"
-	"github.com/gioapp/wallet/pkg/theme"
 	rpcclient "github.com/p9c/pod/pkg/rpc/client"
 )
 
-func NewGioWallet(th *theme.Theme, coinName string) (*GioWallet, []nav.Item) {
+func NewGioWallet() *mod.Sap {
+	s := &mod.Sap{
+		Title: "ParallelCoin Wallet",
+	}
 	g := &GioWallet{}
 
 	// Connect to local bitcoin core RPC server using HTTP POST mode.
@@ -34,7 +38,9 @@ func NewGioWallet(th *theme.Theme, coinName string) (*GioWallet, []nav.Item) {
 
 	g.Status.bal = &Balances{}
 	g.GetOverview()
-	return g, g.getMenuItems(th)
+	s.App = g
+	//s.UI.N.MenuItems = append(g.getMenuItems(s.UI))
+	return s
 }
 
 func checkError(err error) {
@@ -43,42 +49,77 @@ func checkError(err error) {
 	}
 }
 
-func (g *GioWallet) getMenuItems(th *theme.Theme) []nav.Item {
+func (g *GioWallet) getMenuItems(ui *mod.UserInterface) []nav.Item {
 	return []nav.Item{
 		nav.Item{
 			Title: "Overview",
-			Icon:  th.Icons["Overview"],
+			Icon:  ui.Theme.Icons["Overview"],
 			Btn:   new(widget.Clickable),
+			Page: page.Page{
+				Title:  "Overview",
+				Header: g.overviewHeader(),
+				Body:   g.overviewBody(ui),
+			},
 		},
-		nav.Item{
-			Title: "Send",
-			Icon:  th.Icons["Send"],
-			Btn:   new(widget.Clickable),
-		},
-		nav.Item{
-			Title: "Receive",
-			Icon:  th.Icons["Receive"],
-			Btn:   new(widget.Clickable),
-		},
-		nav.Item{
-			Title: "Transactions",
-			Icon:  th.Icons["History"],
-			Btn:   new(widget.Clickable),
-		},
-		nav.Item{
-			Title: "Explore",
-			Icon:  th.Icons["Blocks"],
-			Btn:   new(widget.Clickable),
-		},
-		nav.Item{
-			Title: "Peers",
-			Icon:  th.Icons["Network"],
-			Btn:   new(widget.Clickable),
-		},
-		nav.Item{
-			Title: "Settings",
-			Icon:  th.Icons["Settings"],
-			Btn:   new(widget.Clickable),
-		},
+		//nav.Item{
+		//	Title: "Send",
+		//	Icon:  th.Icons["Send"],
+		//	Btn:   new(widget.Clickable),
+		//	Page: page.Page{
+		//		Title:  "Send",
+		//		Header: g.sendHeader(th),
+		//		//Body:   g.sendBody(d.UI),
+		//	},
+		//},
+		//nav.Item{
+		//	Title: "Receive",
+		//	Icon:  th.Icons["Receive"],
+		//	Btn:   new(widget.Clickable),
+		//	Page: page.Page{
+		//		Title:  "Receive",
+		//		Header: g.receiveHeader(th),
+		//		Body:   g.receiveBody(th),
+		//	},
+		//},
+		//nav.Item{
+		//	Title: "Transactions",
+		//	Icon:  th.Icons["History"],
+		//	Btn:   new(widget.Clickable),
+		//	Page: page.Page{
+		//		Title:  "Transactions",
+		//		Header: g.transactionsHeader(th),
+		//		Body:   g.transactionsBody(th),
+		//	},
+		//},
+		//nav.Item{
+		//	Title: "Explore",
+		//	Icon:  th.Icons["Blocks"],
+		//	Btn:   new(widget.Clickable),
+		//	Page: page.Page{
+		//		Title:  "Explore",
+		//		Header: g.exploreHeader(),
+		//		Body:   g.exploreBody(),
+		//	},
+		//},
+		//nav.Item{
+		//	Title: "Peers",
+		//	Icon:  th.Icons["Network"],
+		//	Btn:   new(widget.Clickable),
+		//	Page: page.Page{
+		//		Title:  "Peers",
+		//		Header: g.peersHeader(th),
+		//		Body:   g.peersBody(),
+		//	},
+		//},
+		//nav.Item{
+		//	Title: "Settings",
+		//	Icon:  th.Icons["Settings"],
+		//	Btn:   new(widget.Clickable),
+		//	Page: page.Page{
+		//		Title: "Settings",
+		//		//			Header: g.settingsHeader(th),
+		//		//			Body:   g.settingsBody(th),
+		//	},
+		//},
 	}
 }

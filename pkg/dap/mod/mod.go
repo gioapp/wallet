@@ -19,9 +19,15 @@ type Dap struct {
 	AfterMain  map[int]func()
 	Ctx        context.Context
 	Tik        map[int]func()
-	UI         *UserInterface
+	UI         UserInterface
 	S          *Settings
-	Apps       map[string]interface{}
+	Apps       map[string]*Sap
+}
+
+type Sap struct {
+	Title string
+	App   interface{}
+	UI    *UserInterface
 }
 
 type Settings struct {
@@ -37,7 +43,7 @@ type UserInterface struct {
 	FontSize float32
 	R        res.Responsivity
 	//P        Pages
-	N   nav.Navigation
+	N   *nav.Navigation
 	G   layout.Context
 	Ops op.Ops
 }

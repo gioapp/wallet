@@ -28,10 +28,10 @@ type dap struct {
 	boot *mod.Dap
 }
 
-func NewDap(title string, apps map[string]interface{}) *dap {
+func NewDap(title string) *dap {
 	d := &mod.Dap{
 		Ctx:  context.Background(),
-		Apps: apps,
+		Apps: make(map[string]interface{}),
 	}
 
 	d.UI = &mod.UserInterface{
@@ -94,6 +94,11 @@ func NewDap(title string, apps map[string]interface{}) *dap {
 	d.UI.R = r
 
 	return &dap{boot: d}
+}
+
+func (d *dap) NewSap(title string, sap interface{}) {
+	d.boot.Apps[title] = sap
+	return
 }
 
 func checkError(err error) {

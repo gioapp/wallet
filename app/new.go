@@ -8,14 +8,14 @@ import (
 	rpcclient "github.com/p9c/pod/pkg/rpc/client"
 )
 
-func NewGioWallet(coinName string) *GioWallet {
+func NewGioWallet(th *theme.Theme, coinName string) (*GioWallet, []nav.Item) {
 	g := &GioWallet{}
 
 	// Connect to local bitcoin core RPC server using HTTP POST mode.
 	connCfg := &rpcclient.ConnConfig{
 		Host:         "localhost:18444",
 		User:         "bitnode",
-		Pass:         "javazac",
+		Pass:         "44444",
 		HTTPPostMode: true,  // Bitcoin core only supports HTTP POST mode
 		TLS:          false, // Bitcoin core does not provide TLS by default
 	}
@@ -29,13 +29,12 @@ func NewGioWallet(coinName string) *GioWallet {
 
 	defer g.rpc.Shutdown()
 
-	//th.Icons = icons.NewIPFSicons()
 	//g.UI.pages = g.getPages()
 	//g.menuItems = g.getMenuItems()
 
 	g.Status.bal = &Balances{}
 	g.GetOverview()
-	return g
+	return g, g.getMenuItems(th)
 }
 
 func checkError(err error) {

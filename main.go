@@ -9,20 +9,14 @@ import (
 	"github.com/gioapp/wallet/pkg/dap"
 	"log"
 	"os"
-	"time"
 )
 
 func main() {
-	apps := make(map[string]interface{})
-	apps["ParallelCoinWallet"] = gwallet.NewGioWallet("parallelcoin")
-	d := dap.NewDap("ParallelCoin - DUO - True Story", apps)
-
+	d := dap.NewDap("Duo App Plan9")
+	d.NewSap("ParallelCoinWallet", gwallet.NewGioWallet("parallelcoin"))
 	if cfg.Initial {
-		fmt.Println("running initial sync")
+		fmt.Println("running initial setup")
 	}
-
-	//ticker(d.Apps["ParallelcoinWallet"].(gwallet.GioWallet)).Tik()
-	fmt.Println("111")
 	go func() {
 		defer os.Exit(0)
 		if err := d.DAppP(); err != nil {
@@ -30,20 +24,4 @@ func main() {
 		}
 	}()
 	app.Main()
-}
-
-func ticker(f func()) {
-	ticker := time.NewTicker(1 * time.Second)
-	quit := make(chan struct{})
-	go func() {
-		for {
-			select {
-			case <-ticker.C:
-				f()
-			case <-quit:
-				ticker.Stop()
-				return
-			}
-		}
-	}()
 }

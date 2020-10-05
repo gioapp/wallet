@@ -7,6 +7,7 @@ import (
 	"gioui.org/layout"
 	gwallet "github.com/gioapp/wallet/app"
 	"github.com/gioapp/wallet/pkg/lyt"
+	"time"
 )
 
 func (d *dap) DAppP() error {
@@ -50,6 +51,22 @@ func Tik(d *dap) func() {
 		gw.GetBalances()
 		gw.GetLatestTransactions()
 	}
+}
+
+func ticker(f func()) {
+	ticker := time.NewTicker(1 * time.Second)
+	quit := make(chan struct{})
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				f()
+			case <-quit:
+				ticker.Stop()
+				return
+			}
+		}
+	}()
 }
 
 func (d *dap) Main() W {

@@ -8,6 +8,7 @@ import (
 	"gioui.org/widget"
 	"github.com/gioapp/gel/helper"
 	"github.com/gioapp/wallet/pkg/btn"
+	"github.com/gioapp/wallet/pkg/dap/mod"
 	"github.com/gioapp/wallet/pkg/lyt"
 	"github.com/gioapp/wallet/pkg/theme"
 )
@@ -87,70 +88,70 @@ func overviewRow(th *theme.Theme, label string, content func(gtx C) D) func(gtx 
 	}
 }
 
-func (g *GioWallet) overviewBody() func(gtx C) D {
-	return stack(g.UI.Theme.Colors["PanelBg"], 4, func(gtx C) D {
-		return lyt.Format(gtx, g.UI.Res.Mod["ContentBodyLayout"].(string),
-			g.balancesView(),
-			g.recentTxView())
+func (g *GioWallet) overviewBody(d *mod.Dap) func(gtx C) D {
+	return boxBase(d.UI.Theme, func(gtx C) D {
+		return lyt.Format(gtx, d.UI.R.Mod["TwoEqual"].(string),
+			g.balancesView(d),
+			g.recentTxView(d))
 	})
 }
 
-func (g *GioWallet) balancesView() func(gtx C) D {
-	return g.panelView("Balances", func(gtx C) D {
+func (g *GioWallet) balancesView(d *mod.Dap) func(gtx C) D {
+	return g.panelView(d.UI.Theme, "Balances", func(gtx C) D {
 		return lyt.Format(gtx, "vflex(r(_),r(_),r(_),r(_),r(_))",
-			overviewRow(g.UI.Theme, "Available", row(g.UI.Theme, g.Status.bal.available)),
-			overviewRow(g.UI.Theme, "Pending", row(g.UI.Theme, g.Status.bal.pending)),
-			overviewRow(g.UI.Theme, "Immature", row(g.UI.Theme, g.Status.bal.immature)),
-			helper.DuoUIline(false, 1, 0, 1, g.UI.Theme.Colors["Border"]),
-			overviewRow(g.UI.Theme, "Total", row(g.UI.Theme, g.Status.bal.total)),
+			overviewRow(d.UI.Theme, "Available", row(d.UI.Theme, g.Status.bal.available)),
+			overviewRow(d.UI.Theme, "Pending", row(d.UI.Theme, g.Status.bal.pending)),
+			overviewRow(d.UI.Theme, "Immature", row(d.UI.Theme, g.Status.bal.immature)),
+			helper.DuoUIline(false, 1, 0, 1, d.UI.Theme.Colors["Border"]),
+			overviewRow(d.UI.Theme, "Total", row(d.UI.Theme, g.Status.bal.total)),
 		)
 	})
 }
 
-func (g *GioWallet) recentTxView() func(gtx C) D {
-	return g.panelView("Recent transactions", func(gtx C) D {
+func (g *GioWallet) recentTxView(d *mod.Dap) func(gtx C) D {
+	return g.panelView(d.UI.Theme, "Recent transactions", func(gtx C) D {
 		return recentTransactionsList.Layout(gtx, len(transactions), func(gtx C, i int) D {
 			tx := transactions[i]
-			btn := btn.IconTextBtn(g.UI.Theme, tx.Btn, "hflex(r(_),f(1,_)", false, func(gtx C) D {
+			btn := btn.IconTextBtn(d.UI.Theme, tx.Btn, "hflex(r(_),f(1,_)", false, func(gtx C) D {
 				return lyt.Format(gtx, "vflex(r(_),r(_))",
 					func(gtx C) D {
 						return lyt.Format(gtx, "hflex(r(_),r(_))",
 							func(gtx C) D {
-								title := theme.H1(g.UI.Theme, "title")
+								title := theme.H1(d.UI.Theme, "title")
 								title.Alignment = text.Start
 								return title.Layout(gtx)
 							},
 							func(gtx C) D {
-								title := theme.H1(g.UI.Theme, "title")
+								title := theme.H1(d.UI.Theme, "title")
 								title.Alignment = text.Start
 								return title.Layout(gtx)
 							},
 						)
 					},
 					func(gtx C) D {
-						title := theme.H1(g.UI.Theme, "title")
+						title := theme.H1(d.UI.Theme, "title")
 						title.Alignment = text.Start
 						return title.Layout(gtx)
 					},
 				)
 			})
 			btn.TextSize = unit.Dp(12)
-			btn.Icon = g.UI.Theme.Icons["MapsLayers"]
+			btn.Icon = d.UI.Theme.Icons["MapsLayers"]
 			btn.CornerRadius = unit.Dp(0)
-			btn.Background = g.UI.Theme.Colors["NavBg"]
+			btn.Background = d.UI.Theme.Colors["NavBg"]
 			for tx.Btn.Clicked() {
-				currentPage = tx.Id
+				d.UI.N.CurrentPage = tx.Id
 			}
 			return btn.Layout(gtx)
 		})
 	})
 }
 
-func (g *GioWallet) panelView(title string, content func(gtx C) D) func(gtx C) D {
-	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["Border"], g.UI.Theme.Colors["PanelBg"], 4, 1, 8, func(gtx C) D {
+func (g *GioWallet) panelView(th *theme.Theme, title string, content func(gtx C) D) func(gtx C) D {
+	return boxPanel(th, func(gtx C) D {
 		return lyt.Format(gtx, "vflex(r(_),r(_))",
 			func(gtx C) D {
-				title := theme.H1(g.UI.Theme, title)
+				title := theme.H1(th, title)
 				title.Alignment = text.Start
 				return title.Layout(gtx)
 			},

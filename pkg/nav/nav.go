@@ -1,8 +1,9 @@
-package gwallet
+package nav
 
 import (
 	"gioui.org/layout"
 	"gioui.org/unit"
+	"gioui.org/widget"
 	"github.com/gioapp/gel/helper"
 	"github.com/gioapp/wallet/pkg/btn"
 	"github.com/gioapp/wallet/pkg/lyt"
@@ -13,7 +14,37 @@ var (
 	navList = &layout.List{}
 )
 
+type Navigation struct {
+	Name         string
+	Bg           string
+	Logo         Logo
+	Items        []Item
+	wide         bool
+	mode         string
+	navLayout    string
+	itemLayout   string
+	ItemIconSize unit.Value
+	axis         layout.Axis
+	size         int
+	noContent    bool
+	logo         layout.Widget
+	menuItems    []Item
+	CurrentPage  string
+}
+type Item struct {
+	Title string
+	Bg    string
+	Icon  *widget.Icon
+	Btn   *widget.Clickable
+}
+
 func (n *Navigation) Nav(th *theme.Theme, gtx C) D {
+	n.size = 128
+	n.noContent = true
+	if n.wide {
+		n.size = 64
+		n.noContent = false
+	}
 	switch n.mode {
 	case "mobile":
 		gtx.Constraints.Min.Y = n.size
@@ -35,12 +66,12 @@ func (n *Navigation) Nav(th *theme.Theme, gtx C) D {
 				btn := btn.IconTextBtn(th, item.Btn, n.itemLayout, n.noContent, item.Title)
 				btn.TextSize = unit.Dp(12)
 				btn.Icon = item.Icon
-				btn.IconSize = n.itemIconSize
+				btn.IconSize = n.ItemIconSize
 				btn.CornerRadius = unit.Dp(0)
 				btn.Background = th.Colors["NavBg"]
 				btn.TextColor = th.Colors["NavItem"]
 				for item.Btn.Clicked() {
-					currentPage = item.Title
+					n.CurrentPage = item.Title
 				}
 				return btn.Layout(gtx)
 			})

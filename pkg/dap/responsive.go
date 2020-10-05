@@ -1,11 +1,12 @@
-package gwallet
+package dap
 
 import (
 	"gioui.org/layout"
+	"github.com/gioapp/wallet/pkg/dap/mod"
 )
 
-func (g *GioWallet) Resposnsivity(gtx C) {
-	g.UI.Res.Mode = "mobile"
+func Resposnsivity(d *mod.Dap) {
+	d.UI.R.Mode = "mobile"
 
 	r := map[string]interface{}{
 		"MainLayout":    "vflex(start,r(_),f(1,_))",
@@ -15,12 +16,12 @@ func (g *GioWallet) Resposnsivity(gtx C) {
 		"NavItemsAxis":  layout.Horizontal,
 
 		"NavIconAndLabel": "hflex(r(_),r(_))",
-		"Logo":            g.UI.Theme.Icons["Logo"],
+		"Logo":            d.UI.Theme.Icons["Logo"],
 
 		"ContentBodyLayout": "vflex(start,r(inset(0dp,_)),f(1,inset(0dp,_))))",
 	}
 
-	switch w := gtx.Constraints.Max.X; {
+	switch w := d.UI.G.Constraints.Max.X; {
 	//case w > 2560:
 	//	g.UI.Res.Mode = "desktopXL"
 	//case w > 1920:
@@ -30,14 +31,15 @@ func (g *GioWallet) Resposnsivity(gtx C) {
 	//case w > 1440:
 	//	g.UI.Res.Mode = "desktopS"
 	case w > 960:
-		g.UI.Res.Mode = "tablet"
-		r["ScreenLayout"] = "max(inset(0dp0dp0dp0dp,_))"
-		r["MainLayout"] = "hflex(start,r(_),f(1,_))"
-		r["NavLayout"] = "vflex(start,r(_),f(1,_))"
+		d.UI.R.Mode = "tablet"
+		r["Screen"] = "max(inset(0dp90dp50dp10dp,_))"
+		r["Main"] = "max(hflex(start,r(_),f(1,_)))"
+		r["Nav"] = "vflex(start,r(_),f(1,_))"
 		r["NavItemsAxis"] = layout.Vertical
-		r["ContentBodyLayout"] = "hflex(start,f(0.5,_),f(0.5,_))"
+		r["Content"] = "max(vflex(start,r(_),f(1,_),r(_)))"
+		r["TwoEqual"] = "max(hflex(start,f(0.5,_),f(0.5,_)))"
 	case w > 600:
-		r["ContentBodyLayout"] = "vflex(start,f(0.5,_),f(0.5,_))"
+		r["TwoEqual"] = "vflex(start,f(0.5,_),f(0.5,_))"
 	//case w > 1136:
 	//	g.UI.Res.Mode = "tabletS"
 	//case w > 1024:
@@ -55,19 +57,20 @@ func (g *GioWallet) Resposnsivity(gtx C) {
 	//case w > 240:
 	//	g.UI.Res.Mode = "mobileS"
 	case w > 0:
-		g.UI.Res.Mode = "mobile"
-		r["ScreenLayout"] = "max(inset(80dp0dp80dp0dp,_))"
-		r["MainLayout"] = "vflex(start,r(_),f(1,_))"
-		r["ContentLayout"] = "vflex(start,f(1,_),r(_))"
-		r["NavLayout"] = "hflex(start,r(_),f(1,_))"
+		d.UI.R.Mode = "mobile"
+		r["Screen"] = "max(inset(80dp0dp80dp0dp,_))"
+		r["Main"] = "max(inset(80dp0dp80dp0dp,_))"
+		r["Content"] = "max(vflex(f(1,_),r(_))"
+		r["Nav"] = "hflex(start,r(_),f(1,_))"
 		r["NavSize"] = 128
 		r["NavIconSize"] = 128
 		r["NavIconAndLabel"] = "hflex(r(_),r(_))"
-		r["Logo"] = g.UI.Theme.Icons["Logo"]
+		r["Logo"] = d.UI.Theme.Icons["Logo"]
 		r["NavItemsAxis"] = layout.Horizontal
-		r["ContentBodyLayout"] = "vflex(start,r(inset(0dp,_)),f(1,inset(0dp,_))))"
+
+		r["TwoEqual"] = "vflex(start,r(inset(0dp,_)),f(1,inset(0dp,_))))"
 	}
-	g.UI.Res.Mod = r
+	d.UI.R.Mod = r
 	//fmt.Println("MODE", g.UI.Res.Mode)
 	//fmt.Println("MAX", g.UI.Context.Constraints.Max.X)
 	return

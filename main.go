@@ -4,59 +4,32 @@ import (
 	"fmt"
 	"gioui.org/app"
 	_ "gioui.org/app/permission/storage"
-	"gioui.org/io/system"
-	"gioui.org/layout"
 	gwallet "github.com/gioapp/wallet/app"
 	"github.com/gioapp/wallet/cfg"
-	in "github.com/gioapp/wallet/cfg/ini"
-	"github.com/gioapp/wallet/pkg/lyt"
+	"github.com/gioapp/wallet/pkg/dap"
 	"log"
 	"os"
 	"time"
 )
 
 func main() {
-
-	g := gwallet.NewGioWallet("bitcoin")
+	apps := make(map[string]interface{})
+	apps["ParallelCoinWallet"] = gwallet.NewGioWallet("parallelcoin")
+	d := dap.NewDap(apps)
 
 	if cfg.Initial {
 		fmt.Println("running initial sync")
 	}
-	in.Init(g.Settings.File)
-	ticker(g.Tik())
+
+	//ticker(d.Apps["ParallelcoinWallet"].(gwallet.GioWallet)).Tik()
 
 	go func() {
 		defer os.Exit(0)
-		if err := loop(g); err != nil {
+		if err := d.DAppP(); err != nil {
 			log.Fatal(err)
 		}
 	}()
 	app.Main()
-}
-
-func loop(g *gwallet.GioWallet) error {
-	for {
-		select {
-		case e := <-g.UI.Window.Events():
-			switch e := e.(type) {
-			case system.DestroyEvent:
-				return e.Err
-			case system.FrameEvent:
-				gtx := layout.NewContext(&g.UI.Ops, e)
-				g.BeforeMain()
-
-				//if !g.API.OK {
-				//g.GreskaEkran()
-				//} else {
-				lyt.Format(gtx, g.UI.Res.Mod["ScreenLayout"].(string), g.AppMain())
-				//}
-				g.AfterMain()
-
-				e.Frame(gtx.Ops)
-			}
-			g.UI.Window.Invalidate()
-		}
-	}
 }
 
 func ticker(f func()) {

@@ -1,6 +1,9 @@
 package gwallet
 
 import (
+	"gioui.org/layout"
+	"github.com/gioapp/wallet/pkg/container"
+	"github.com/gioapp/wallet/pkg/theme"
 	"math"
 
 	"strconv"
@@ -44,4 +47,35 @@ func formatByteSize(size float64) string {
 	getSuffix := suffixes[int(math.Floor(base))]
 	//fmt.Println("dole", strconv.FormatFloat(getSize, 'f', -1, 64)+" "+string(getSuffix))
 	return strconv.FormatFloat(getSize, 'f', -1, 64) + " " + string(getSuffix)
+}
+
+func boxBase(th *theme.Theme, content layout.Widget) layout.Widget {
+	return container.C().
+		OutsideColor(th.Colors["PanelBg"]).
+		BorderColor(th.Colors["Border"]).
+		InsideColor(th.Colors["PanelBg"]).
+		Margin(0).
+		Border(0).
+		Padding(0).
+		Layout(content)
+}
+func boxPanel(th *theme.Theme, content layout.Widget) layout.Widget {
+	return container.C().
+		OutsideColor(th.Colors["PanelBg"]).
+		BorderColor(th.Colors["Border"]).
+		InsideColor(th.Colors["PanelBg"]).
+		Margin(4).
+		Border(1).
+		Padding(8).
+		Layout(content)
+}
+func boxEditor(th *theme.Theme, content layout.Widget) layout.Widget {
+	return container.C().
+		OutsideColor(th.Colors["White"]).
+		BorderColor(th.Colors["White"]).
+		InsideColor(th.Colors["White"]).
+		Margin(8).
+		Border(8).
+		Padding(8).
+		Layout(content)
 }

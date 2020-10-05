@@ -5,6 +5,7 @@ import (
 	"gioui.org/unit"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
+	"github.com/gioapp/wallet/pkg/theme"
 )
 
 var (
@@ -28,9 +29,9 @@ func (g *GioWallet) GetPeers() {
 	//}
 }
 
-func (g *GioWallet) peersHeader() func(gtx C) D {
-	return ContainerLayout(g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["PanelBg"], g.UI.Theme.Colors["PanelBg"], 10, 10, 10, func(gtx C) D {
-		e := material.Button(g.UI.Theme.T, browseBtn, "Submit")
+func (g *GioWallet) peersHeader(th *theme.Theme) func(gtx C) D {
+	return boxBase(th, func(gtx C) D {
+		e := material.Button(th.T, browseBtn, "Submit")
 		e.Inset = layout.Inset{
 			Top:    unit.Dp(4),
 			Right:  unit.Dp(4),

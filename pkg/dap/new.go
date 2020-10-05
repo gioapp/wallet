@@ -6,7 +6,7 @@ import (
 	"gioui.org/app"
 	"gioui.org/layout"
 	"gioui.org/unit"
-	"github.com/gioapp/gel/helper"
+	"github.com/gioapp/wallet/cfg"
 	"github.com/gioapp/wallet/pkg/appdata"
 	"github.com/gioapp/wallet/pkg/dap/mod"
 	"github.com/gioapp/wallet/pkg/dap/page"
@@ -25,16 +25,16 @@ type (
 	W = layout.Widget
 )
 type dap struct {
-	boot *mod.Dap
-}
-type sap struct {
-	boot *mod.Sap
+	boot mod.Dap
 }
 
-func NewDap(title string) *dap {
-	d := &mod.Dap{
+func NewDap(title string) dap {
+	if cfg.Initial {
+		fmt.Println("running initial setup")
+	}
+	d := mod.Dap{
 		Ctx:  context.Background(),
-		Apps: make(map[string]*mod.Sap),
+		Apps: make(map[string]mod.Sap),
 	}
 
 	d.UI = mod.UserInterface{
@@ -42,9 +42,7 @@ func NewDap(title string) *dap {
 		//mob:   make(chan bool),
 	}
 	//d.UI.P = g.getPages()
-	d.UI.Theme.T.Color.Primary = helper.HexARGB(d.UI.Theme.Colors["Primary"])
-	d.UI.Theme.T.Color.Text = helper.HexARGB(d.UI.Theme.Colors["Charcoal"])
-	d.UI.Theme.T.Color.Hint = helper.HexARGB(d.UI.Theme.Colors["Silver"])
+
 	d.UI.Window = app.NewWindow(
 		app.Size(unit.Dp(1024), unit.Dp(800)),
 		app.Title(title),
@@ -54,9 +52,9 @@ func NewDap(title string) *dap {
 	d.UI.R.Mode = "mobile"
 
 	n := &nav.Navigation{
-		Name:         "Navigacion",
-		Bg:           d.UI.Theme.Colors["NavBg"],
-		Items:        make(map[int]nav.Item),
+		Name: "Navigacion",
+		Bg:   d.UI.Theme.Colors["NavBg"],
+		//Items:        make(map[int]nav.Item),
 		ItemIconSize: unit.Px(24),
 		//CurrentPage:  "Overview",
 		CurrentPage: page.Page{
@@ -96,22 +94,16 @@ func NewDap(title string) *dap {
 	}
 	d.UI.R = r
 
-	return &dap{boot: d}
+	return dap{boot: d}
 }
 
-func (d *dap) NewSap(s *mod.Sap) {
-	s.UI = &d.boot.UI
-	initSap := sap{boot: s}
-	//d.boot.Apps[s.Title] = initSap.Sap()
-	d.boot.Apps[s.Title] = initSap.boot
+func (d *dap) NewSap(s mod.Sap) {
+	d.boot.Apps[s.Title] = s
 	return
 }
-
-//func (s *sap) Sap()*mod.Sap {
-//	return &mod.Sap{
-//		//Nav:   g.getMenuItems(ui),
-//	}
-//}
+func (d *dap) BOOT() *mod.Dap {
+	return &d.boot
+}
 
 func checkError(err error) {
 	if err != nil {

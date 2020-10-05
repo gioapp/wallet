@@ -9,10 +9,7 @@ import (
 	rpcclient "github.com/p9c/pod/pkg/rpc/client"
 )
 
-func NewGioWallet() *mod.Sap {
-	s := &mod.Sap{
-		Title: "ParallelCoin Wallet",
-	}
+func NewGioWallet(d *mod.Dap) mod.Sap {
 	g := &GioWallet{}
 
 	// Connect to local bitcoin core RPC server using HTTP POST mode.
@@ -38,9 +35,12 @@ func NewGioWallet() *mod.Sap {
 
 	g.Status.bal = &Balances{}
 	g.GetOverview()
-	s.App = g
-	//s.UI.N.MenuItems = append(g.getMenuItems(s.UI))
-	return s
+	d.UI.N.MenuItems = append(g.getMenuItems(&d.UI))
+
+	return mod.Sap{
+		Title: "ParallelCoin",
+		App:   g,
+	}
 }
 
 func checkError(err error) {
@@ -61,19 +61,19 @@ func (g *GioWallet) getMenuItems(ui *mod.UserInterface) []nav.Item {
 				Body:   g.overviewBody(ui),
 			},
 		},
-		//nav.Item{
-		//	Title: "Send",
-		//	Icon:  th.Icons["Send"],
-		//	Btn:   new(widget.Clickable),
-		//	Page: page.Page{
-		//		Title:  "Send",
-		//		Header: g.sendHeader(th),
-		//		//Body:   g.sendBody(d.UI),
-		//	},
-		//},
+		nav.Item{
+			Title: "Send",
+			Icon:  ui.Theme.Icons["Send"],
+			Btn:   new(widget.Clickable),
+			Page: page.Page{
+				Title:  "Send",
+				Header: g.sendHeader(ui.Theme),
+				//Body:   g.sendBody(d.UI),
+			},
+		},
 		//nav.Item{
 		//	Title: "Receive",
-		//	Icon:  th.Icons["Receive"],
+		//	Icon:  ui.Theme.Icons["Receive"],
 		//	Btn:   new(widget.Clickable),
 		//	Page: page.Page{
 		//		Title:  "Receive",
@@ -83,7 +83,7 @@ func (g *GioWallet) getMenuItems(ui *mod.UserInterface) []nav.Item {
 		//},
 		//nav.Item{
 		//	Title: "Transactions",
-		//	Icon:  th.Icons["History"],
+		//	Icon:  ui.Theme.Icons["History"],
 		//	Btn:   new(widget.Clickable),
 		//	Page: page.Page{
 		//		Title:  "Transactions",
@@ -93,7 +93,7 @@ func (g *GioWallet) getMenuItems(ui *mod.UserInterface) []nav.Item {
 		//},
 		//nav.Item{
 		//	Title: "Explore",
-		//	Icon:  th.Icons["Blocks"],
+		//	Icon:  ui.Theme.Icons["Blocks"],
 		//	Btn:   new(widget.Clickable),
 		//	Page: page.Page{
 		//		Title:  "Explore",
@@ -103,7 +103,7 @@ func (g *GioWallet) getMenuItems(ui *mod.UserInterface) []nav.Item {
 		//},
 		//nav.Item{
 		//	Title: "Peers",
-		//	Icon:  th.Icons["Network"],
+		//	Icon:  ui.Theme.Icons["Network"],
 		//	Btn:   new(widget.Clickable),
 		//	Page: page.Page{
 		//		Title:  "Peers",
@@ -113,7 +113,7 @@ func (g *GioWallet) getMenuItems(ui *mod.UserInterface) []nav.Item {
 		//},
 		//nav.Item{
 		//	Title: "Settings",
-		//	Icon:  th.Icons["Settings"],
+		//	Icon:  ui.Theme.Icons["Settings"],
 		//	Btn:   new(widget.Clickable),
 		//	Page: page.Page{
 		//		Title: "Settings",

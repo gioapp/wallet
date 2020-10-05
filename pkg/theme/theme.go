@@ -5,6 +5,7 @@ import (
 	"gioui.org/text"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
+	"github.com/gioapp/gel/helper"
 	"github.com/gioapp/wallet/pkg/ico"
 )
 
@@ -44,6 +45,10 @@ func NewTheme() *Theme {
 	t.Colors = NewColors()
 	//t.TextSize = unit.Sp(16)
 	t.Icons = ico.NewDuoUIicons()
+
+	t.T.Color.Primary = helper.HexARGB(t.Colors["Primary"])
+	t.T.Color.Text = helper.HexARGB(t.Colors["Charcoal"])
+	t.T.Color.Hint = helper.HexARGB(t.Colors["Silver"])
 	return t
 }
 

@@ -6,8 +6,17 @@ import (
 	"gioui.org/io/system"
 	"gioui.org/layout"
 	"github.com/gioapp/wallet/pkg/lyt"
+	"log"
+	"os"
 	"time"
 )
+
+func (d *dap) DAP() {
+	defer os.Exit(0)
+	if err := d.DAppP(); err != nil {
+		log.Fatal(err)
+	}
+}
 
 func (d *dap) DAppP() error {
 	for {
@@ -70,6 +79,7 @@ func ticker(f func()) {
 
 func (d *dap) Main() W {
 	return func(gtx C) D {
+
 		return lyt.Format(gtx, d.boot.UI.R.Mod["Main"].(string),
 			func(gtx C) D {
 				return d.boot.UI.N.Nav(d.boot.UI.Theme, gtx)

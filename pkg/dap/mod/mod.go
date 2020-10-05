@@ -21,13 +21,12 @@ type Dap struct {
 	Tik        map[int]func()
 	UI         UserInterface
 	S          *Settings
-	Apps       map[string]*Sap
+	Apps       map[string]Sap
 }
 
 type Sap struct {
 	Title string
 	App   interface{}
-	UI    *UserInterface
 }
 
 type Settings struct {

@@ -20,7 +20,6 @@ type Navigation struct {
 	Name         string
 	Bg           string
 	Logo         Logo
-	Items        map[int]Item
 	Wide         bool
 	Mode         string
 	NavLayout    string
@@ -58,7 +57,7 @@ func (n *Navigation) Nav(th *theme.Theme, gtx C) D {
 		gtx.Constraints.Max.X = n.Size
 		//gtx.Constraints.Min.Y = gtx.Constraints.Max.Y
 	}
-	fmt.Println("runssssssssssssssssssssssssning initial setup")
+	fmt.Println("1111 getMenuItemsgetMenuItemsgetMenuItems", n.MenuItems)
 
 	helper.Fill(gtx, helper.HexARGB(n.Bg))
 	navList.Axis = n.Axis
@@ -67,8 +66,9 @@ func (n *Navigation) Nav(th *theme.Theme, gtx C) D {
 		n.LogoWidget,
 		//func(gtx C)D{ return D{}},
 		func(gtx C) D {
-			return navList.Layout(gtx, len(n.Items), func(gtx C, i int) D {
-				item := n.Items[i]
+			return navList.Layout(gtx, len(n.MenuItems), func(gtx C, i int) D {
+				item := n.MenuItems[i]
+				fmt.Println("runssssssssssssssssssssssssning initial setup", i)
 				btn := btn.IconTextBtn(th, item.Btn, n.ItemLayout, n.NoContent, item.Title)
 				btn.TextSize = unit.Dp(12)
 				btn.Icon = item.Icon

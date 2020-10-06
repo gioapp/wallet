@@ -11,24 +11,24 @@ func (g *GioWallet) GetTransactions() {
 
 }
 
-func (g *GioWallet) transactionsHeader(th *theme.Theme) func(gtx C) D {
-	return boxBase(th, func(gtx C) D {
+func (g *GioWallet) transactionsHeader() func(gtx C) D {
+	return boxBase(g.ui.Theme, func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		helper.Fill(gtx, helper.HexARGB(th.Colors["PanelBg"]))
+		helper.Fill(gtx, helper.HexARGB(g.ui.Theme.Colors["PanelBg"]))
 		return lyt.Format(gtx, "vflex(middle,r(inset(5dp0dp5dp0dp,_))))",
 			func(gtx C) D {
 				gtx.Constraints.Min.X = gtx.Constraints.Max.X
-				title := theme.H6(th, "Transactions Header")
+				title := theme.H6(g.ui.Theme, "Transactions Header")
 				title.Alignment = text.Start
 				return title.Layout(gtx)
 			})
 	})
 }
 
-func (g *GioWallet) transactionsBody(th *theme.Theme) func(gtx C) D {
+func (g *GioWallet) transactionsBody() func(gtx C) D {
 	return func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		title := theme.H5(th, "Transactions Body")
+		title := theme.H5(g.ui.Theme, "Transactions Body")
 		title.Alignment = text.Start
 		return title.Layout(gtx)
 	}

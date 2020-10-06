@@ -11,24 +11,24 @@ func (g *GioWallet) GetReceive() {
 
 }
 
-func (g *GioWallet) receiveHeader(th *theme.Theme) func(gtx C) D {
-	return boxBase(th, func(gtx C) D {
+func (g *GioWallet) receiveHeader() func(gtx C) D {
+	return boxBase(g.ui.Theme, func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		helper.Fill(gtx, helper.HexARGB(th.Colors["PanelBg"]))
+		helper.Fill(gtx, helper.HexARGB(g.ui.Theme.Colors["PanelBg"]))
 		return lyt.Format(gtx, "vflex(middle,r(inset(5dp0dp5dp0dp,_))))",
 			func(gtx C) D {
 				gtx.Constraints.Min.X = gtx.Constraints.Max.X
-				title := theme.H6(th, "Receive Header")
+				title := theme.H6(g.ui.Theme, "Receive Header")
 				title.Alignment = text.Start
 				return title.Layout(gtx)
 			})
 	})
 }
 
-func (g *GioWallet) receiveBody(th *theme.Theme) func(gtx C) D {
+func (g *GioWallet) receiveBody() func(gtx C) D {
 	return func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		title := theme.H5(th, "Receive Body")
+		title := theme.H5(g.ui.Theme, "Receive Body")
 		title.Alignment = text.Start
 		return title.Layout(gtx)
 	}

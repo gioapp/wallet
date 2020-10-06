@@ -3,8 +3,10 @@
 package dap
 
 import (
+	"fmt"
 	"gioui.org/io/system"
 	"gioui.org/layout"
+	"github.com/gioapp/wallet/pkg/dap/res"
 	"github.com/gioapp/wallet/pkg/lyt"
 	"log"
 	"os"
@@ -27,7 +29,9 @@ func (d *dap) DAppP() error {
 				return e.Err
 			case system.FrameEvent:
 				gtx := layout.NewContext(&d.boot.UI.Ops, e)
-				d.BeforeMain()
+
+				d.BeforeMain(&gtx)
+				fmt.Println("d.UI.R", d.boot.UI.R.Mode)
 
 				lyt.Format(gtx, "max(inset(0dp0dp0dp0dp,_))", d.Main())
 				//d.AfterMain()
@@ -38,8 +42,8 @@ func (d *dap) DAppP() error {
 	}
 }
 
-func (d *dap) BeforeMain() {
-	//Resposnsivity(d)
+func (d *dap) BeforeMain(gtx *C) {
+	d.boot.UI.R = res.Resposnsivity(gtx.Constraints.Max.X, gtx.Constraints.Max.Y)
 	d.boot.UI.N.Mode = d.boot.UI.R.Mode
 	d.boot.UI.N.NavLayout = d.boot.UI.R.Mod["Nav"].(string)
 	d.boot.UI.N.ItemLayout = d.boot.UI.R.Mod["NavIconAndLabel"].(string)
@@ -79,7 +83,6 @@ func ticker(f func()) {
 
 func (d *dap) Main() W {
 	return func(gtx C) D {
-
 		return lyt.Format(gtx, d.boot.UI.R.Mod["Main"].(string),
 			func(gtx C) D {
 				return d.boot.UI.N.Nav(d.boot.UI.Theme, gtx)

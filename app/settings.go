@@ -24,54 +24,54 @@ func (g *GioWallet) GetSettings() {
 	//}
 }
 
-func (g *GioWallet) settingsHeader(th *theme.Theme) func(gtx C) D {
-	return boxBase(th, func(gtx C) D {
+func (g *GioWallet) settingsHeader() func(gtx C) D {
+	return boxBase(g.ui.Theme, func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		helper.Fill(gtx, helper.HexARGB(th.Colors["PanelBg"]))
+		helper.Fill(gtx, helper.HexARGB(g.ui.Theme.Colors["PanelBg"]))
 		return lyt.Format(gtx, "vflex(middle,r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_))))",
 			func(gtx C) D {
 				gtx.Constraints.Min.X = gtx.Constraints.Max.X
-				title := theme.H5(th, "LANGUAGE")
+				title := theme.H5(g.ui.Theme, "LANGUAGE")
 				title.Alignment = text.Start
 				return title.Layout(gtx)
 			},
 			func(gtx C) D {
 				gtx.Constraints.Min.X = gtx.Constraints.Max.X
-				title := theme.H4(th, "BUTTONS")
+				title := theme.H4(g.ui.Theme, "BUTTONS")
 				title.Alignment = text.Start
 				return title.Layout(gtx)
 			},
 			func(gtx C) D {
 				gtx.Constraints.Min.X = gtx.Constraints.Max.X
-				title := theme.H6(th, "ANALYTICS")
+				title := theme.H6(g.ui.Theme, "ANALYTICS")
 				title.Alignment = text.Start
 				return title.Layout(gtx)
 			},
 			func(gtx C) D {
 				gtx.Constraints.Min.X = gtx.Constraints.Max.X
-				title := theme.Body(th, "Help improve this app by sending anonymous usage data")
+				title := theme.Body(g.ui.Theme, "Help improve this app by sending anonymous usage data")
 				title.Alignment = text.Start
 				return title.Layout(gtx)
 			},
 			func(gtx C) D {
 				gtx.Constraints.Min.X = gtx.Constraints.Max.X
-				title := theme.Body(th, "No CIDs, filenames, or other personal information are collected. We want metrics to show us which features are useful to help us prioritise what to work on next, and system configuration information to guide our testing.")
+				title := theme.Body(g.ui.Theme, "No CIDs, filenames, or other personal information are collected. We want metrics to show us which features are useful to help us prioritise what to work on next, and system configuration information to guide our testing.")
 				title.Alignment = text.Start
 				return title.Layout(gtx)
 			},
 			func(gtx C) D {
 				gtx.Constraints.Min.X = gtx.Constraints.Max.X
-				title := theme.H6(th, "Configure what is collected")
+				title := theme.H6(g.ui.Theme, "Configure what is collected")
 				title.Alignment = text.Start
 				return title.Layout(gtx)
 			})
 	})
 }
 
-func (g *GioWallet) settingsBody(th *theme.Theme) func(gtx C) D {
+func (g *GioWallet) settingsBody() func(gtx C) D {
 	return func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		title := theme.H5(th, "IPFS CONFIG")
+		title := theme.H5(g.ui.Theme, "Duo CONFIG")
 		title.Alignment = text.Start
 		return title.Layout(gtx)
 	}

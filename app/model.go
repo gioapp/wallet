@@ -3,6 +3,7 @@ package gwallet
 import (
 	"gioui.org/layout"
 	"gioui.org/widget"
+	"github.com/gioapp/wallet/pkg/dap/mod"
 	rpcclient "github.com/p9c/pod/pkg/rpc/client"
 )
 
@@ -20,6 +21,7 @@ type (
 type GioWallet struct {
 	rpc    *rpcclient.Client
 	Status Status
+	ui     *mod.UserInterface
 }
 
 type folderListItem struct {

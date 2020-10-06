@@ -19,7 +19,7 @@ type Dap struct {
 	AfterMain  map[int]func()
 	Ctx        context.Context
 	Tik        map[int]func()
-	UI         UserInterface
+	UI         *UserInterface
 	S          *Settings
 	Apps       map[string]Sap
 }
@@ -40,7 +40,7 @@ type UserInterface struct {
 	Theme  *theme.Theme
 	//Ekran   func(gtx C) D
 	FontSize float32
-	R        res.Responsivity
+	R        *res.Responsive
 	//P        Pages
 	N   *nav.Navigation
 	G   layout.Context

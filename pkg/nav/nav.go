@@ -1,7 +1,6 @@
 package nav
 
 import (
-	"fmt"
 	"gioui.org/layout"
 	"gioui.org/unit"
 	"gioui.org/widget"
@@ -33,15 +32,16 @@ type Navigation struct {
 	CurrentPage  page.Page
 }
 type Item struct {
-	Title string
-	Bg    string
-	Icon  *widget.Icon
-	Btn   *widget.Clickable
-	Page  page.Page
+	Title     string
+	Bg        string
+	Icon      *widget.Icon
+	Btn       *widget.Clickable
+	Page      page.Page
+	HideOnMob bool
 }
 
 func (n *Navigation) Nav(th *theme.Theme, gtx C) D {
-	n.Size = 128
+	n.Size = 64
 	n.NoContent = true
 	if n.Wide {
 		n.Size = 64
@@ -57,7 +57,6 @@ func (n *Navigation) Nav(th *theme.Theme, gtx C) D {
 		gtx.Constraints.Max.X = n.Size
 		//gtx.Constraints.Min.Y = gtx.Constraints.Max.Y
 	}
-	fmt.Println("1111 getMenuItemsgetMenuItemsgetMenuItems", n.MenuItems)
 
 	helper.Fill(gtx, helper.HexARGB(n.Bg))
 	navList.Axis = n.Axis
@@ -67,20 +66,23 @@ func (n *Navigation) Nav(th *theme.Theme, gtx C) D {
 		//func(gtx C)D{ return D{}},
 		func(gtx C) D {
 			return navList.Layout(gtx, len(n.MenuItems), func(gtx C, i int) D {
+				b := D{}
 				item := n.MenuItems[i]
-				fmt.Println("runssssssssssssssssssssssssning initial setup", i)
-				btn := btn.IconTextBtn(th, item.Btn, n.ItemLayout, n.NoContent, item.Title)
-				btn.TextSize = unit.Dp(12)
-				btn.Icon = item.Icon
-				btn.IconSize = n.ItemIconSize
-				btn.CornerRadius = unit.Dp(0)
-				btn.Background = th.Colors["NavBg"]
-				btn.TextColor = th.Colors["NavItem"]
-				for item.Btn.Clicked() {
-					n.CurrentPage = item.Page
+				if !item.HideOnMob && !n.Wide {
+					btn := btn.IconTextBtn(th, item.Btn, n.ItemLayout, n.NoContent, item.Title)
+					btn.TextSize = unit.Dp(12)
+					btn.Icon = item.Icon
+					btn.IconSize = n.ItemIconSize
+					btn.CornerRadius = unit.Dp(0)
+					btn.Background = th.Colors["NavBg"]
+					btn.TextColor = th.Colors["NavItem"]
+					for item.Btn.Clicked() {
+						n.CurrentPage = item.Page
+					}
+					b = btn.Layout(gtx)
 				}
-				return btn.Layout(gtx)
+				return b
+				//func(gtx C)D{ return D{}})
 			})
-			//func(gtx C)D{ return D{}})
 		})
 }

@@ -1,7 +1,6 @@
 package page
 
 import (
-	"fmt"
 	"gioui.org/layout"
 	"gioui.org/unit"
 	"gioui.org/widget"
@@ -34,8 +33,6 @@ func (p *Page) P(th *theme.Theme, ly string) func(gtx C) D {
 		Border(0).
 		Padding(0).
 		Layout(func(gtx C) D {
-			fmt.Println("TestRRR11sdsadasdasd11")
-			//return D{}
 			return lyt.Format(gtx, ly, p.Header, p.Body, p.Footer)
 		})
 }

@@ -8,7 +8,6 @@ import (
 	"gioui.org/widget"
 	"github.com/gioapp/gel/helper"
 	"github.com/gioapp/wallet/pkg/btn"
-	"github.com/gioapp/wallet/pkg/dap/mod"
 	"github.com/gioapp/wallet/pkg/lyt"
 	"github.com/gioapp/wallet/pkg/nav"
 	"github.com/gioapp/wallet/pkg/theme"
@@ -89,11 +88,11 @@ func overviewRow(th *theme.Theme, label string, content func(gtx C) D) func(gtx 
 	}
 }
 
-func (g *GioWallet) overviewBody(ui *mod.UserInterface) func(gtx C) D {
-	return boxBase(ui.Theme, func(gtx C) D {
-		return lyt.Format(gtx, ui.R.Mod["TwoEqual"].(string),
-			g.balancesView(ui.Theme),
-			g.recentTxView(ui.Theme, ui.N))
+func (g *GioWallet) overviewBody() func(gtx C) D {
+	return boxBase(g.ui.Theme, func(gtx C) D {
+		return lyt.Format(gtx, g.ui.R.Mod["TwoEqual"].(string),
+			g.balancesView(g.ui.Theme),
+			g.recentTxView(g.ui.Theme, g.ui.N))
 	})
 }
 

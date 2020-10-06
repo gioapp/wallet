@@ -39,7 +39,7 @@ func (g *GioWallet) GetSend() {
 }
 
 func (g *GioWallet) sendHeader() func(gtx C) D {
-	return boxBase(g.ui.Theme, func(gtx C) D {
+	return boxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
 		helper.Fill(gtx, helper.HexARGB(g.ui.Theme.Colors["PanelBg"]))
 		return lyt.Format(gtx, "vflex(middle,r(inset(5dp0dp5dp0dp,_))))",
@@ -53,7 +53,7 @@ func (g *GioWallet) sendHeader() func(gtx C) D {
 }
 
 func (g *GioWallet) sendFooter() func(gtx C) D {
-	return boxBase(g.ui.Theme, func(gtx C) D {
+	return boxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
 		helper.Fill(gtx, helper.HexARGB(g.ui.Theme.Colors["PanelBg"]))
 		return lyt.Format(gtx, "vflex(middle,r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_))))",
@@ -108,7 +108,7 @@ func (g *GioWallet) sendBody() func(gtx C) D {
 			sendRow(g.ui.Theme, "Pay to:",
 				func(gtx C) D {
 					return lyt.Format(gtx, "hflex(middle,f(1,inset(8dp8dp8dp8dp,_)),r(_),r(_),r(_))",
-						boxBase(g.ui.Theme, func(gtx C) D {
+						boxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
 							gtx.Constraints.Min.X = gtx.Constraints.Max.X
 							e := material.Editor(g.ui.Theme.T, addressInput, "Enter a ParallelCoin address (e.g. 9ef0sdjifvmlkdsfnsdlkg)")
 							return e.Layout(gtx)
@@ -121,7 +121,7 @@ func (g *GioWallet) sendBody() func(gtx C) D {
 			sendRow(g.ui.Theme, "Label:",
 				func(gtx C) D {
 					return lyt.Format(gtx, "hflex(middle,f(1,inset(8dp8dp8dp8dp,_)))",
-						boxBase(g.ui.Theme, func(gtx C) D {
+						boxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
 							gtx.Constraints.Min.X = gtx.Constraints.Max.X
 							e := material.Editor(g.ui.Theme.T, labelInput, "Enter a label for this address to add it to the list of used addresses")
 							return e.Layout(gtx)

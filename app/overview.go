@@ -91,7 +91,7 @@ func overviewRow(th *theme.Theme, label string, content func(gtx C) D) func(gtx 
 }
 
 func (g *GioWallet) overviewBody() func(gtx C) D {
-	return boxBase(g.ui.Theme, func(gtx C) D {
+	return boxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
 		return lyt.Format(gtx, g.ui.R.Mod["TwoEqual"].(string),
 			g.balancesView(g.ui.Theme),
 			g.recentTxView(g.ui.Theme, g.ui.N))

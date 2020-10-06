@@ -4,7 +4,6 @@ import (
 	"gioui.org/layout"
 	"gioui.org/unit"
 	"gioui.org/widget"
-	"github.com/gioapp/gel/helper"
 	"github.com/gioapp/wallet/pkg/btn"
 	"github.com/gioapp/wallet/pkg/dap/page"
 	"github.com/gioapp/wallet/pkg/lyt"
@@ -40,7 +39,7 @@ type Item struct {
 	HideOnMob bool
 }
 
-func (n *Navigation) Nav(th *theme.Theme, gtx C) D {
+func (n *Navigation) Nav(th *theme.Theme, gtx C) layout.Widget {
 	n.Size = 64
 	n.NoContent = true
 	if n.Wide {
@@ -58,31 +57,31 @@ func (n *Navigation) Nav(th *theme.Theme, gtx C) D {
 		//gtx.Constraints.Min.Y = gtx.Constraints.Max.Y
 	}
 
-	helper.Fill(gtx, helper.HexARGB(n.Bg))
 	navList.Axis = n.Axis
-
-	return lyt.Format(gtx, n.NavLayout,
-		n.LogoWidget,
-		//func(gtx C)D{ return D{}},
-		func(gtx C) D {
-			return navList.Layout(gtx, len(n.MenuItems), func(gtx C, i int) D {
-				b := D{}
-				item := n.MenuItems[i]
-				if !item.HideOnMob && !n.Wide {
-					btn := btn.IconTextBtn(th, item.Btn, n.ItemLayout, n.NoContent, item.Title)
-					btn.TextSize = unit.Dp(12)
-					btn.Icon = item.Icon
-					btn.IconSize = n.ItemIconSize
-					btn.CornerRadius = unit.Dp(0)
-					btn.Background = th.Colors["NavBg"]
-					btn.TextColor = th.Colors["NavItem"]
-					for item.Btn.Clicked() {
-						n.CurrentPage = item.Page
+	return func(gtx C) D {
+		return lyt.Format(gtx, n.NavLayout,
+			n.LogoWidget,
+			//func(gtx C)D{ return D{}},
+			func(gtx C) D {
+				return navList.Layout(gtx, len(n.MenuItems), func(gtx C, i int) D {
+					b := D{}
+					item := n.MenuItems[i]
+					if !item.HideOnMob && !n.Wide {
+						btn := btn.IconTextBtn(th, item.Btn, n.ItemLayout, n.NoContent, item.Title)
+						btn.TextSize = unit.Dp(12)
+						btn.Icon = item.Icon
+						btn.IconSize = n.ItemIconSize
+						btn.CornerRadius = unit.Dp(0)
+						btn.Background = th.Colors["NavBg"]
+						btn.TextColor = th.Colors["NavItem"]
+						for item.Btn.Clicked() {
+							n.CurrentPage = item.Page
+						}
+						b = btn.Layout(gtx)
 					}
-					b = btn.Layout(gtx)
-				}
-				return b
-				//func(gtx C)D{ return D{}})
+					return b
+					//func(gtx C)D{ return D{}})
+				})
 			})
-		})
+	}
 }

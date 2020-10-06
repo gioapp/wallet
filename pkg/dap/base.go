@@ -80,9 +80,7 @@ func ticker(f func()) {
 func (d *dap) Main() W {
 	return func(gtx C) D {
 		return lyt.Format(gtx, d.boot.UI.R.Mod["Main"].(string),
-			func(gtx C) D {
-				return d.boot.UI.N.Nav(d.boot.UI.Theme, gtx)
-			},
+			boxBase(g.ui.Theme.Colors["PanelBg"], d.boot.UI.N.Nav(d.boot.UI.Theme, gtx)),
 			func(gtx C) D {
 				return lyt.Format(gtx, d.boot.UI.R.Mod["Content"].(string),
 					//noReturn,

@@ -29,7 +29,7 @@ func (g *GioWallet) GetPeers() {
 }
 
 func (g *GioWallet) peersHeader() func(gtx C) D {
-	return boxBase(g.ui.Theme, func(gtx C) D {
+	return boxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
 		e := material.Button(g.ui.Theme.T, browseBtn, "Submit")
 		e.Inset = layout.Inset{
 			Top:    unit.Dp(4),

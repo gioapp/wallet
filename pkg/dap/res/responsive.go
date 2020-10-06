@@ -74,7 +74,7 @@ func Desktop() *Responsive {
 			"Main":    "max(hflex(start,r(_),f(1,_)))",
 			"Content": "max(inset(0dp0dp0dp0dp,_))",
 
-			"Page":     "max(hflex(start,r(_),f(1,_),r(_)))",
+			"Page":     "max(vflex(start,r(_),f(1,_),r(_)))",
 			"TwoEqual": "hflex(start,f(0.5,inset(0dp,_)),f(0.5,inset(0dp,_))))",
 
 			"Nav":             "vflex(middle,r(_),f(1,_))",
@@ -95,7 +95,7 @@ func Mobile() *Responsive {
 			"Main":    "max(vflex(start,r(_),f(1,_)))",
 			"Content": "max(inset(0dp0dp0dp0dp,_))",
 
-			"Page":     "max(hflex(start,r(_),f(1,_),r(_)))",
+			"Page":     "max(vflex(start,r(_),f(1,_),r(_)))",
 			"TwoEqual": "vflex(start,r(inset(0dp,_)),f(1,inset(0dp,_))))",
 
 			"Nav":             "hflex(middle,r(_),f(1,_))",

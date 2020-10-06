@@ -40,28 +40,16 @@ func NewDap(title string) dap {
 		Theme: theme.NewTheme(),
 		//mob:   make(chan bool),
 	}
-	//d.UI.P = g.getPages()
 
 	d.UI.Window = app.NewWindow(
 		app.Size(unit.Dp(1024), unit.Dp(800)),
 		app.Title(title),
 	)
-	//d.UI.N.Items = g.getMenuItems()
-
-	//d.UI.R.Mode = "mobile"
 
 	n := &nav.Navigation{
-		Name: "Navigacion",
-		Bg:   d.UI.Theme.Colors["NavBg"],
-		//Items:        make(map[int]nav.Item),
+		Name:         "Navigacion",
+		Bg:           d.UI.Theme.Colors["NavBg"],
 		ItemIconSize: unit.Px(24),
-		//CurrentPage:  "Overview",
-		//CurrentPage: page.Page{
-		//	Title:  "",
-		//	Header: noReturn,
-		//	Body:   noReturn,
-		//	Footer: noReturn,
-		//},
 	}
 	d.UI.N = n
 
@@ -70,33 +58,7 @@ func NewDap(title string) dap {
 	}
 	d.S = s
 
-	//r := res.Responsivity{
-	//	Mode: "mobile",
-	//	Mod: map[string]interface{}{
-	//		"Screen":  "max(inset(80dp0dp80dp0dp,_))",
-	//		"Main":    "max(vflex(start,r(_),f(1,_)))",
-	//		"Content": "max(inset(0dp0dp0dp0dp,_))",
-	//
-	//		"Page":     "max(hflex(start,r(_),f(1,_),r(_)))",
-	//		"TwoEqual": "vflex(start,r(inset(0dp,_)),f(1,inset(0dp,_))))",
-	//
-	//		"Nav":             "hflex(middle,r(_),f(1,_))",
-	//		"NavSize":         128,
-	//		"NavIconSize":     128,
-	//		"NavIconAndLabel": "hflex(r(_),r(_))",
-	//		//"Logo":            d.UI.Theme.Icons["Logo"],
-	//		"NavItemsAxis":    layout.Horizontal,
-	//		//
-	//		//"MainLayout":    "vflex(start,r(_),f(1,_))",
-	//		//"ContentLayout": "vflex(start,f(1,_),r(_))",
-	//		//"NavLayout":     "hflex(start,r(_),f(1,_))",
-	//		//
-	//		//"ContentBodyLayout": "vflex(start,r(inset(0dp,_)),f(1,inset(0dp,_))))",
-	//	},
-	//}
 	d.UI.R = res.Resposnsivity(0, 0)
-
-	fmt.Println("d.UI.R", d.UI.R)
 
 	return dap{boot: d}
 }

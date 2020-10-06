@@ -3,7 +3,6 @@
 package dap
 
 import (
-	"fmt"
 	"gioui.org/io/system"
 	"gioui.org/layout"
 	"github.com/gioapp/wallet/pkg/dap/res"
@@ -29,10 +28,7 @@ func (d *dap) DAppP() error {
 				return e.Err
 			case system.FrameEvent:
 				gtx := layout.NewContext(&d.boot.UI.Ops, e)
-
 				d.BeforeMain(&gtx)
-				fmt.Println("d.UI.R", d.boot.UI.R.Mode)
-
 				lyt.Format(gtx, "max(inset(0dp0dp0dp0dp,_))", d.Main())
 				//d.AfterMain()
 				e.Frame(gtx.Ops)

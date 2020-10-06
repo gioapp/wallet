@@ -75,7 +75,7 @@ func (g *GioWallet) getMenuItem(hide bool, title string, header, body, footer fu
 func (g *GioWallet) getMenuItems(ui *mod.UserInterface) []nav.Item {
 	return []nav.Item{
 		g.getMenuItem(false, "Overview", g.overviewHeader(), g.overviewBody(), noReturn),
-		g.getMenuItem(false, "Send", g.sendHeader(), g.sendBody(), noReturn),
+		g.getMenuItem(false, "Send", g.sendHeader(), g.sendBody(), g.sendFooter()),
 		g.getMenuItem(false, "Receive", g.receiveHeader(), g.receiveBody(), noReturn),
 		g.getMenuItem(false, "Transactions", g.transactionsHeader(), g.transactionsBody(), noReturn),
 		g.getMenuItem(true, "Explore", g.exploreHeader(), g.exploreBody(), noReturn),

@@ -1,9 +1,27 @@
 package gwallet
 
 import (
+	"gioui.org/layout"
 	"gioui.org/text"
+	"gioui.org/unit"
+	"gioui.org/widget"
+	"gioui.org/widget/material"
+	"github.com/gioapp/gel/helper"
+	"github.com/gioapp/wallet/pkg/dap/box"
 	"github.com/gioapp/wallet/pkg/lyt"
 	"github.com/gioapp/wallet/pkg/theme"
+)
+
+var (
+	receiveClearBtn   = new(widget.Clickable)
+	receiveLabelInput = &widget.Editor{
+		SingleLine: true,
+		Submit:     true,
+	}
+	receiveMessageInput = &widget.Editor{
+		SingleLine: true,
+		Submit:     true,
+	}
 )
 
 func (g *GioWallet) GetReceive() {
@@ -11,23 +29,131 @@ func (g *GioWallet) GetReceive() {
 }
 
 func (g *GioWallet) receiveHeader() func(gtx C) D {
-	return boxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
-		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		return lyt.Format(gtx, "vflex(middle,r(inset(5dp0dp5dp0dp,_))))",
-			func(gtx C) D {
-				gtx.Constraints.Min.X = gtx.Constraints.Max.X
-				title := theme.H6(g.ui.Theme, "Receive Header")
-				title.Alignment = text.Start
-				return title.Layout(gtx)
-			})
+	return box.BoxPanel(g.ui.Theme, func(gtx C) D {
+		return lyt.Format(gtx, "vflex(start,r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_))))",
+			labeledRow(g.ui.Theme, "",
+				func(gtx C) D {
+					title := theme.Body(g.ui.Theme, "Use this form to request payments. All fields are optional.")
+					title.Alignment = text.Start
+					return title.Layout(gtx)
+				}),
+			labeledRow(g.ui.Theme, "Label:",
+				func(gtx C) D {
+					return lyt.Format(gtx, "hflex(middle,f(1,inset(8dp8dp8dp8dp,_)))",
+						box.BoxEditor(g.ui.Theme, func(gtx C) D {
+							gtx.Constraints.Min.X = gtx.Constraints.Max.X
+							e := material.Editor(g.ui.Theme.T, receiveLabelInput, "Enter a label for this address to add it to the list of used addresses")
+							return e.Layout(gtx)
+						}),
+					)
+				}),
+			labeledRow(g.ui.Theme, "Amount:",
+				func(gtx C) D {
+					return lyt.Format(gtx, "hflex(middle,r(_),r(_),r(_),r(_))",
+						func(gtx C) D {
+							btn := material.IconButton(g.ui.Theme.T, connectionsBtn, g.ui.Theme.Icons["networkIcon"])
+							btn.Inset = layout.Inset{unit.Dp(2), unit.Dp(2), unit.Dp(2), unit.Dp(2)}
+							btn.Size = unit.Dp(21)
+							btn.Background = helper.HexARGB(g.ui.Theme.Colors["Secondary"])
+							for connectionsBtn.Clicked() {
+								//ui.N.CurrentPage = "Welcome"
+							}
+							return btn.Layout(gtx)
+						},
+						func(gtx C) D {
+							btn := material.IconButton(g.ui.Theme.T, connectionsBtn, g.ui.Theme.Icons["networkIcon"])
+							btn.Inset = layout.Inset{unit.Dp(2), unit.Dp(2), unit.Dp(2), unit.Dp(2)}
+							btn.Size = unit.Dp(21)
+							btn.Background = helper.HexARGB(g.ui.Theme.Colors["Secondary"])
+							for connectionsBtn.Clicked() {
+								//ui.N.CurrentPage = "Welcome"
+							}
+							return btn.Layout(gtx)
+						},
+						func(gtx C) D {
+							btn := material.IconButton(g.ui.Theme.T, connectionsBtn, g.ui.Theme.Icons["networkIcon"])
+							btn.Inset = layout.Inset{unit.Dp(2), unit.Dp(2), unit.Dp(2), unit.Dp(2)}
+							btn.Size = unit.Dp(21)
+							btn.Background = helper.HexARGB(g.ui.Theme.Colors["Secondary"])
+							for connectionsBtn.Clicked() {
+								//ui.N.CurrentPage = "Welcome"
+							}
+							return btn.Layout(gtx)
+						},
+						func(gtx C) D {
+							btn := material.IconButton(g.ui.Theme.T, connectionsBtn, g.ui.Theme.Icons["networkIcon"])
+							btn.Inset = layout.Inset{unit.Dp(2), unit.Dp(2), unit.Dp(2), unit.Dp(2)}
+							btn.Size = unit.Dp(21)
+							btn.Background = helper.HexARGB(g.ui.Theme.Colors["Secondary"])
+							for connectionsBtn.Clicked() {
+								//ui.N.CurrentPage = "Welcome"
+							}
+							return btn.Layout(gtx)
+						},
+						func(gtx C) D {
+							btn := material.IconButton(g.ui.Theme.T, connectionsBtn, g.ui.Theme.Icons["networkIcon"])
+							btn.Inset = layout.Inset{unit.Dp(2), unit.Dp(2), unit.Dp(2), unit.Dp(2)}
+							btn.Size = unit.Dp(21)
+							btn.Background = helper.HexARGB(g.ui.Theme.Colors["Secondary"])
+							for connectionsBtn.Clicked() {
+								//ui.N.CurrentPage = "Welcome"
+							}
+							return btn.Layout(gtx)
+						},
+					)
+				}),
+			labeledRow(g.ui.Theme, "Message:",
+				func(gtx C) D {
+					return lyt.Format(gtx, "hflex(middle,f(1,inset(8dp8dp8dp8dp,_)))",
+						box.BoxEditor(g.ui.Theme, func(gtx C) D {
+							gtx.Constraints.Min.X = gtx.Constraints.Max.X
+							e := material.Editor(g.ui.Theme.T, receiveMessageInput, "Enter a label for this address to add it to the list of used addresses")
+							return e.Layout(gtx)
+						}),
+					)
+				}),
+			labeledRow(g.ui.Theme, ":",
+				func(gtx C) D {
+					return lyt.Format(gtx, "hflex(middle,r(inset(8dp8dp8dp8dp,_)),r(inset(8dp8dp8dp8dp,_)))",
+						func(gtx C) D {
+							btn := material.IconButton(g.ui.Theme.T, connectionsBtn, g.ui.Theme.Icons["networkIcon"])
+							btn.Inset = layout.Inset{unit.Dp(2), unit.Dp(2), unit.Dp(2), unit.Dp(2)}
+							btn.Size = unit.Dp(21)
+							btn.Background = helper.HexARGB(g.ui.Theme.Colors["Secondary"])
+							for connectionsBtn.Clicked() {
+								//ui.N.CurrentPage = "Welcome"
+							}
+							return btn.Layout(gtx)
+						},
+						func(gtx C) D {
+							btn := material.IconButton(g.ui.Theme.T, connectionsBtn, g.ui.Theme.Icons["networkIcon"])
+							btn.Inset = layout.Inset{unit.Dp(2), unit.Dp(2), unit.Dp(2), unit.Dp(2)}
+							btn.Size = unit.Dp(21)
+							btn.Background = helper.HexARGB(g.ui.Theme.Colors["Secondary"])
+							for connectionsBtn.Clicked() {
+								//ui.N.CurrentPage = "Welcome"
+							}
+							return btn.Layout(gtx)
+						},
+					)
+				}),
+		)
 	})
 }
 
 func (g *GioWallet) receiveBody() func(gtx C) D {
-	return func(gtx C) D {
-		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		title := theme.H5(g.ui.Theme, "Receive Body")
-		title.Alignment = text.Start
-		return title.Layout(gtx)
-	}
+	return box.BoxPanel(g.ui.Theme, func(gtx C) D {
+		return lyt.Format(gtx, "max(vflex(start,r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)))))",
+			func(gtx C) D {
+				title := theme.Body(g.ui.Theme, "Requested payments history")
+				title.Alignment = text.Start
+				return title.Layout(gtx)
+			},
+			func(gtx C) D {
+				title := theme.Body(g.ui.Theme, "Requested payments history")
+				title.Alignment = text.Start
+				return title.Layout(gtx)
+			},
+		)
+	})
 }

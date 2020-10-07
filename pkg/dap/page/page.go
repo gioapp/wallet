@@ -26,12 +26,12 @@ type Page struct {
 
 func (p *Page) P(th *theme.Theme, ly string) func(gtx C) D {
 	return container.C().
-		OutsideColor(th.Colors["PanelBg"]).
-		BorderColor(th.Colors["Border"]).
+		//OutsideColor(th.Colors["PanelBg"]).
+		//BorderColor(th.Colors["Border"]).
 		InsideColor(th.Colors["PanelBg"]).
 		Margin(0).
 		Border(0).
-		Padding(0).
+		Padding(4).
 		Layout(func(gtx C) D {
 			return lyt.Format(gtx, ly, p.Header, p.Body, p.Footer)
 		})

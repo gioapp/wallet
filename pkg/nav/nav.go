@@ -40,25 +40,26 @@ type Item struct {
 }
 
 func (n *Navigation) Nav(th *theme.Theme, gtx C) layout.Widget {
-	n.Size = 64
-	n.NoContent = true
-	if n.Wide {
-		n.Size = 64
-		n.NoContent = false
-	}
-	switch n.Mode {
-	case "mobile":
-		gtx.Constraints.Min.Y = n.Size
-		gtx.Constraints.Max.Y = n.Size
-		//gtx.Constraints.Min.X = gtx.Constraints.Max.X
-	case "tablet":
-		gtx.Constraints.Min.X = n.Size
-		gtx.Constraints.Max.X = n.Size
-		//gtx.Constraints.Min.Y = gtx.Constraints.Max.Y
-	}
-
-	navList.Axis = n.Axis
 	return func(gtx C) D {
+		n.Size = 64
+		n.NoContent = true
+		if n.Wide {
+			n.Size = 64
+			n.NoContent = false
+		}
+		switch n.Mode {
+		case "mobile":
+			gtx.Constraints.Min.Y = n.Size
+			gtx.Constraints.Max.Y = n.Size
+		case "tablet":
+			gtx.Constraints.Min.X = n.Size
+			gtx.Constraints.Max.X = n.Size
+		default:
+			gtx.Constraints.Min.X = n.Size * 2
+			gtx.Constraints.Max.X = n.Size * 2
+		}
+
+		navList.Axis = n.Axis
 		return lyt.Format(gtx, n.NavLayout,
 			n.LogoWidget,
 			//func(gtx C)D{ return D{}},
@@ -71,6 +72,7 @@ func (n *Navigation) Nav(th *theme.Theme, gtx C) layout.Widget {
 						btn.TextSize = unit.Dp(12)
 						btn.Icon = item.Icon
 						btn.IconSize = n.ItemIconSize
+						btn.IconColor = th.Colors["NavItem"]
 						btn.CornerRadius = unit.Dp(0)
 						btn.Background = th.Colors["NavBg"]
 						btn.TextColor = th.Colors["NavItem"]

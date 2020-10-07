@@ -53,7 +53,7 @@ func NewDuoUIicons() (i map[string]*widget.Icon) {
 	i["MapsLayers"] = mustIcon(widget.NewIcon(icons.MapsLayers))
 	i["MapsLayersClear"] = mustIcon(widget.NewIcon(icons.MapsLayersClear))
 	i["Minimize"] = mustIcon(widget.NewIcon(icons.NavigationExpandMore))
-	i["Network"] = mustIcon(widget.NewIcon(icons.NotificationWiFi))
+	i["Peers"] = mustIcon(widget.NewIcon(icons.NotificationWiFi))
 	i["networkIcon"] = mustIcon(widget.NewIcon(icons.ActionFingerprint))
 	i["NotificationNetworkCheck"] = mustIcon(widget.NewIcon(icons.NotificationNetworkCheck))
 	i["NotificationSync"] = mustIcon(widget.NewIcon(icons.NotificationSync))

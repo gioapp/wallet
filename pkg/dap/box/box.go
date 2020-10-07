@@ -33,10 +33,10 @@ func BoxPanel(th *theme.Theme, content layout.Widget) layout.Widget {
 func BoxEditor(th *theme.Theme, content layout.Widget) layout.Widget {
 	return container.C().
 		OutsideColor(th.Colors["White"]).
-		BorderColor(th.Colors["White"]).
+		BorderColor(th.Colors["Border"]).
 		InsideColor(th.Colors["White"]).
-		Margin(8).
-		Border(8).
-		Padding(8).
+		Margin(0).
+		Border(1).
+		Padding(4).
 		Layout(content)
 }

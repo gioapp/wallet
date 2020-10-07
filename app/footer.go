@@ -1,13 +1,14 @@
 package gwallet
 
 import (
-	"gioui.org/layout"
+	"gioui.org/text"
 	"gioui.org/unit"
 	"gioui.org/widget"
-	"gioui.org/widget/material"
 	"github.com/gioapp/gel/helper"
-	"github.com/gioapp/wallet/pkg/dap/mod"
+	"github.com/gioapp/wallet/pkg/btn"
+	"github.com/gioapp/wallet/pkg/dap/box"
 	"github.com/gioapp/wallet/pkg/lyt"
+	"github.com/gioapp/wallet/pkg/theme"
 )
 
 var (
@@ -20,12 +21,11 @@ var (
 	}
 )
 
-func (g *GioWallet) footer(ui *mod.UserInterface) func(gtx C) D {
+func (g *GioWallet) footer() func(gtx C) D {
 	//return ContainerLayout(d.UI.Theme.Colors["Info"], d.UI.Theme.Colors["Info"], d.UI.Theme.Colors["Info"], 0, 0, 0, func(gtx C) D {
-	return boxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
-		gtx.Constraints.Min.X = gtx.Constraints.Max.X
-		return lyt.Format(gtx, "hflex(middle,r(inset(0dp0dp0dp6dp,_)),r(inset(20dp30dp20dp3dp,_)))",
-			g.footerSearch(),
+	return box.BoxBase(g.ui.Theme.Colors["FooterBg"], func(gtx C) D {
+		return lyt.Format(gtx, "hflex(middle,f(1,inset(16dp0dp16dp6dp,_)),r(inset(0dp0dp0dp0dp,_)))",
+			g.footerStatus(),
 			g.footerMenu(),
 		)
 	})
@@ -33,50 +33,45 @@ func (g *GioWallet) footer(ui *mod.UserInterface) func(gtx C) D {
 
 func (g *GioWallet) footerMenu() func(gtx C) D {
 	return func(gtx C) D {
-		for syncBtn.Clicked() {
-			//ui.N.CurrentPage = "Welcome"
-		}
 		return lyt.Format(gtx, "hflex(middle,r(_),r(_),r(_))",
-			//g.pageButton(d, syncBtn, func() {}, "StrokeCase", ""),
-			noReturn,
-			helper.DuoUIline(true, 0, 2, 2, g.ui.Theme.Colors["DarkGrayI"]),
-			//g.pageButton(tourBtn, func() {}, "GlyphPencil", "Welcome"),
-			func(gtx C) D {
-				btn := material.IconButton(g.ui.Theme.T, connectionsBtn, g.ui.Theme.Icons["networkIcon"])
-				btn.Inset = layout.Inset{unit.Dp(2), unit.Dp(2), unit.Dp(2), unit.Dp(2)}
-				btn.Size = unit.Dp(21)
-				btn.Background = helper.HexARGB(g.ui.Theme.Colors["Secondary"])
-				for connectionsBtn.Clicked() {
-					//f()
-					//ui.N.CurrentPage = "Welcome"
-				}
-				return btn.Layout(gtx)
-			},
+			footerButton(g.ui.Theme, sendBtn, "Send", func() {}),
+			footerButton(g.ui.Theme, connectionsBtn, "Close", func() {}),
+			footerButton(g.ui.Theme, sendBtn, "CounterPlus", func() {}),
 		)
 	}
 
 }
 
-func (g *GioWallet) footerSearch() func(gtx C) D {
+func (g *GioWallet) footerStatus() func(gtx C) D {
 	return func(gtx C) D {
-		return lyt.Format(gtx, "hflex(middle,r(inset(8dp8dp8dp8dp,_)),r(_))",
+		return lyt.Format(gtx, "hflex(middle,r(inset(0dp0dp0dp0dp,_)),f(1,_))",
 			//ContainerLayout(d.UI.Theme.Colors["White"], d.UI.Theme.Colors["Dark"], d.UI.Theme.Colors["White"], 1, 1, 1, func(gtx C) D {
-			boxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
-				gtx.Constraints.Min.X = 430
-				e := material.Editor(g.ui.Theme.T, footerSearchInput, "Hash")
-				return e.Layout(gtx)
-			}),
 			func(gtx C) D {
-				e := material.Button(g.ui.Theme.T, unitBtn, "Browse")
-				e.Inset = layout.Inset{
-					Top:    unit.Dp(4),
-					Right:  unit.Dp(4),
-					Bottom: unit.Dp(4),
-					Left:   unit.Dp(4),
-				}
-				e.CornerRadius = unit.Dp(4)
-				return e.Layout(gtx)
+				title := theme.Body(g.ui.Theme, "Connectiong to peers...")
+				title.Alignment = text.Start
+				return title.Layout(gtx)
 			},
+			box.BoxBase(g.ui.Theme.Colors["Primary"], func(gtx C) D {
+				title := theme.Body(g.ui.Theme, "100 years and 12 weeks behind.")
+				title.Alignment = text.Start
+				title.Color = helper.HexARGB(g.ui.Theme.Colors["Light"])
+				return title.Layout(gtx)
+			}),
 		)
+	}
+}
+
+func footerButton(th *theme.Theme, c *widget.Clickable, icon string, onClick func()) func(gtx C) D {
+	return func(gtx C) D {
+		b := btn.IconTextBtn(th, c, "max(inset(0dp0dp0dp0dp,_))", true, "")
+		b.Icon = th.Icons[icon]
+		b.IconSize = unit.Dp(16)
+		b.CornerRadius = unit.Dp(0)
+		b.Background = th.Colors["NavBg"]
+		b.TextColor = th.Colors["NavItem"]
+		for c.Clicked() {
+			onClick()
+		}
+		return b.Layout(gtx)
 	}
 }

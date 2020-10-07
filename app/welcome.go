@@ -7,6 +7,7 @@ import (
 	"gioui.org/widget"
 	"gioui.org/widget/material"
 	"github.com/gioapp/gel/helper"
+	"github.com/gioapp/wallet/pkg/dap/box"
 	"github.com/gioapp/wallet/pkg/lyt"
 	"github.com/gioapp/wallet/pkg/theme"
 )
@@ -36,7 +37,7 @@ func (g *GioWallet) GetWelcome() {
 }
 
 func (g *GioWallet) welcomeHeader() func(gtx C) D {
-	return boxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
+	return box.BoxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
 		helper.Fill(gtx, helper.HexARGB(g.ui.Theme.Colors["PanelBg"]))
 		return D{}
@@ -136,7 +137,7 @@ func (g *GioWallet) welcomeLeftBottom() func(gtx C) D {
 				title.Alignment = text.Start
 				return title.Layout(gtx)
 			},
-			boxEditor(g.ui.Theme, func(gtx C) D {
+			box.BoxEditor(g.ui.Theme, func(gtx C) D {
 				gtx.Constraints.Min.X = 430
 				e := material.Editor(g.ui.Theme.T, apiAddressInput, "Api address")
 				return e.Layout(gtx)
@@ -157,7 +158,7 @@ func (g *GioWallet) welcomeLeftBottom() func(gtx C) D {
 }
 
 func (g *GioWallet) welcomeRight() func(gtx C) D {
-	return boxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
+	return box.BoxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
 		return lyt.Format(gtx, "vflex(start,r(inset(0dp0dp0dp0dp,_)),r(inset(0dp0dp0dp0dp,_)))",
 			func(gtx C) D {

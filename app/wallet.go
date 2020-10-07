@@ -1,5 +1,11 @@
 package gwallet
 
+import (
+	"gioui.org/text"
+	"github.com/gioapp/wallet/pkg/lyt"
+	"github.com/gioapp/wallet/pkg/theme"
+)
+
 //func Main(d *mod.Dap) W {
 //	return func(gtx C) D {
 //		return lyt.Format(gtx, d.UI.R.Mod["Main"].(string),
@@ -37,3 +43,17 @@ package gwallet
 //		g.GetLatestTransactions()
 //	}
 //}
+func labeledRow(th *theme.Theme, label string, content func(gtx C) D) func(gtx C) D {
+	return func(gtx C) D {
+		return lyt.Format(gtx, "hflex(start,r(inset(0dp0dp0dp0dp,_)),f(1,_))",
+			func(gtx C) D {
+				gtx.Constraints.Min.X = 80
+				gtx.Constraints.Min.X = 80
+				title := theme.Body(th, label)
+				title.Alignment = text.Start
+				return title.Layout(gtx)
+			},
+			content,
+		)
+	}
+}

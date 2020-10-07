@@ -5,6 +5,7 @@ package dap
 import (
 	"gioui.org/io/system"
 	"gioui.org/layout"
+	"github.com/gioapp/wallet/pkg/dap/box"
 	"github.com/gioapp/wallet/pkg/dap/res"
 	"github.com/gioapp/wallet/pkg/lyt"
 	"log"
@@ -79,14 +80,12 @@ func ticker(f func()) {
 
 func (d *dap) Main() W {
 	return func(gtx C) D {
-		return lyt.Format(gtx, d.boot.UI.R.Mod["Main"].(string),
-			boxBase(g.ui.Theme.Colors["PanelBg"], d.boot.UI.N.Nav(d.boot.UI.Theme, gtx)),
+		return lyt.Format(gtx, d.boot.UI.R.Mod["Container"].(string),
+			box.BoxBase(d.boot.UI.Theme.Colors["NavBg"], d.boot.UI.N.Nav(d.boot.UI.Theme, gtx)),
 			func(gtx C) D {
-				return lyt.Format(gtx, d.boot.UI.R.Mod["Content"].(string),
-					//noReturn,
-					//noReturn,
+				return lyt.Format(gtx, d.boot.UI.R.Mod["Main"].(string),
 					d.boot.UI.N.CurrentPage.P(d.boot.UI.Theme, d.boot.UI.R.Mod["Page"].(string)),
-					//noReturn,
+					d.boot.UI.F,
 				)
 			})
 	}

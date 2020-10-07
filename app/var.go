@@ -47,7 +47,7 @@ func formatByteSize(size float64) string {
 }
 
 //
-//func boxBase(color string, content layout.Widget) layout.Widget {
+//func BoxBase(color string, content layout.Widget) layout.Widget {
 //	return container.C().
 //		OutsideColor(color).
 //		BorderColor(color).

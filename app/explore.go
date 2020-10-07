@@ -3,6 +3,7 @@ package gwallet
 import (
 	"gioui.org/text"
 	"github.com/gioapp/gel/helper"
+	"github.com/gioapp/wallet/pkg/dap/box"
 	"github.com/gioapp/wallet/pkg/lyt"
 	"github.com/gioapp/wallet/pkg/theme"
 )
@@ -74,7 +75,7 @@ func (g *GioWallet) exploreLeft() func(gtx C) D {
 }
 
 func (g *GioWallet) exploreRight() func(gtx C) D {
-	return boxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
+	return box.BoxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
 
 		//return container.C().OutsideColor(th.Colors["PanelBg"],).Layout(func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X

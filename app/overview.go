@@ -8,6 +8,7 @@ import (
 	"gioui.org/widget"
 	"github.com/gioapp/gel/helper"
 	"github.com/gioapp/wallet/pkg/btn"
+	"github.com/gioapp/wallet/pkg/dap/box"
 	"github.com/gioapp/wallet/pkg/lyt"
 	"github.com/gioapp/wallet/pkg/nav"
 	"github.com/gioapp/wallet/pkg/theme"
@@ -15,7 +16,7 @@ import (
 
 var (
 	balances               Balances
-	transactions           []Tx
+	latestTransactions     []Tx
 	recentTransactionsList = &layout.List{
 		Axis: layout.Vertical,
 	}
@@ -56,7 +57,7 @@ func (g *GioWallet) GetLatestTransactions() {
 		}
 		fmt.Println("Sstrtrtrtrtrtss", t)
 
-		transactions = append(transactions, t)
+		latestTransactions = append(latestTransactions, t)
 	}
 
 }
@@ -91,29 +92,29 @@ func overviewRow(th *theme.Theme, label string, content func(gtx C) D) func(gtx 
 }
 
 func (g *GioWallet) overviewBody() func(gtx C) D {
-	return boxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
+	return box.BoxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
 		return lyt.Format(gtx, g.ui.R.Mod["TwoEqual"].(string),
-			g.balancesView(g.ui.Theme),
-			g.recentTxView(g.ui.Theme, g.ui.N))
+			balancesView(g.ui.Theme, g.Status),
+			recentTxView(g.ui.Theme, g.ui.N))
 	})
 }
 
-func (g *GioWallet) balancesView(th *theme.Theme) func(gtx C) D {
-	return g.panelView(th, "Balances", func(gtx C) D {
+func balancesView(th *theme.Theme, s Status) func(gtx C) D {
+	return panelView(th, "Balances", func(gtx C) D {
 		return lyt.Format(gtx, "vflex(r(_),r(_),r(_),r(_),r(_))",
-			overviewRow(th, "Available", row(th, g.Status.bal.available)),
-			overviewRow(th, "Pending", row(th, g.Status.bal.pending)),
-			overviewRow(th, "Immature", row(th, g.Status.bal.immature)),
+			overviewRow(th, "Available", row(th, s.bal.available)),
+			overviewRow(th, "Pending", row(th, s.bal.pending)),
+			overviewRow(th, "Immature", row(th, s.bal.immature)),
 			helper.DuoUIline(false, 1, 0, 1, th.Colors["Border"]),
-			overviewRow(th, "Total", row(th, g.Status.bal.total)),
+			overviewRow(th, "Total", row(th, s.bal.total)),
 		)
 	})
 }
 
-func (g *GioWallet) recentTxView(th *theme.Theme, n *nav.Navigation) func(gtx C) D {
-	return g.panelView(th, "Recent transactions", func(gtx C) D {
-		return recentTransactionsList.Layout(gtx, len(transactions), func(gtx C, i int) D {
-			tx := transactions[i]
+func recentTxView(th *theme.Theme, n *nav.Navigation) func(gtx C) D {
+	return panelView(th, "Recent transactions", func(gtx C) D {
+		return recentTransactionsList.Layout(gtx, len(latestTransactions), func(gtx C, i int) D {
+			tx := latestTransactions[i]
 			btn := btn.IconTextBtn(th, tx.Btn, "hflex(r(_),f(1,_)", false, func(gtx C) D {
 				return lyt.Format(gtx, "vflex(r(_),r(_))",
 					func(gtx C) D {
@@ -149,11 +150,11 @@ func (g *GioWallet) recentTxView(th *theme.Theme, n *nav.Navigation) func(gtx C)
 	})
 }
 
-func (g *GioWallet) panelView(th *theme.Theme, title string, content func(gtx C) D) func(gtx C) D {
-	return boxPanel(th, func(gtx C) D {
+func panelView(th *theme.Theme, title string, content func(gtx C) D) func(gtx C) D {
+	return box.BoxPanel(th, func(gtx C) D {
 		return lyt.Format(gtx, "hmax(vflex(r(_),r(_)))",
 			func(gtx C) D {
-				title := theme.H1(th, title)
+				title := theme.H3(th, title)
 				title.Alignment = text.Start
 				return title.Layout(gtx)
 			},

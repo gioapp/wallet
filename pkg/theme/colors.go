@@ -71,7 +71,7 @@ func NewColors() (c map[string]string) {
 	c["ContentBg"] = c["light-grayiii"]
 	c["ButtonText"] = c["light"]
 	c["ButtonTextDim"] = c["dark-white"]
-	c["Border"] = c["dark"]
+	c["Border"] = c["light-grayi"]
 	c["Charcoal"] = c["charcoal"]
 	c["Check"] = c["orange"]
 	c["Danger"] = c["red"]
@@ -92,6 +92,7 @@ func NewColors() (c map[string]string) {
 	c["NavBg"] = c["dark"]
 	c["NavItem"] = c["light"]
 
+	c["FooterBg"] = c["dark-grayi"]
 	c["PanelBg"] = c["light-grayiii"]
 	c["PanelBorder"] = c["dark"]
 	//c["PanelBg"] = c["dark-white"]

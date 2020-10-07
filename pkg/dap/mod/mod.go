@@ -43,6 +43,7 @@ type UserInterface struct {
 	R        *res.Responsive
 	//P        Pages
 	N   *nav.Navigation
+	F   func(gtx layout.Context) layout.Dimensions
 	G   layout.Context
 	Ops op.Ops
 }

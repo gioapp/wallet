@@ -80,7 +80,7 @@ func Desktop() *Responsive {
 			"Nav":             "vflex(middle,r(_),f(1,inset(0dp0dp0dp0dp,_)))",
 			"NavSize":         128,
 			"NavIconSize":     128,
-			"NavIconAndLabel": "hflex(r(_),f(1,_))",
+			"NavIconAndLabel": "hflex(start, r(_),f(1,_))",
 			//"Logo":            d.UI.Theme.Icons["Logo"],
 			"NavItemsAxis": layout.Vertical,
 		},

@@ -45,6 +45,7 @@ type UserInterface struct {
 	N   *nav.Navigation
 	F   func(gtx layout.Context) layout.Dimensions
 	G   layout.Context
+	Pop bool
 	Ops op.Ops
 }
 

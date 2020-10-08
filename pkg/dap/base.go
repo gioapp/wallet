@@ -31,7 +31,8 @@ func (d *dap) DAppP() error {
 				gtx := layout.NewContext(&d.boot.UI.Ops, e)
 				d.BeforeMain(&gtx)
 				lyt.Format(gtx, "max(inset(0dp0dp0dp0dp,_))", d.Main())
-				//d.AfterMain()
+
+				d.AfterMain(&gtx)
 				e.Frame(gtx.Ops)
 			}
 			d.boot.UI.Window.Invalidate()
@@ -50,7 +51,15 @@ func (d *dap) BeforeMain(gtx *C) {
 	d.boot.UI.N.LogoWidget = d.boot.UI.N.LogoLayout(d.boot.UI.Theme)
 }
 
-func (d *dap) AfterMain() {
+func (d *dap) AfterMain(gtx *C) {
+	//pop.Popup(gtx, d.boot.UI.Theme, func(gtx C)D{return material.H3(d.boot.UI.Theme.T,"tetstette").Layout(gtx)})
+	//return lyt.Format(gtx, "hflex(middle,f(1,inset(8dp8dp8dp8dp,_)))",
+	//pop.Popup(d.boot.UI.Theme, func(gtx C) D {
+	//	title := theme.Body(d.boot.UI.Theme, "Requested payments history")
+	//	title.Alignment = text.Start
+	//	return title.Layout(gtx)
+	//	}),
+	//})
 
 }
 

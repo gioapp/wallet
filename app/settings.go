@@ -26,7 +26,7 @@ func (g *GioWallet) GetSettings() {
 }
 
 func (g *GioWallet) settingsHeader() func(gtx C) D {
-	return box.BoxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
+	return box.BoxPanel(g.ui.Theme, func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X
 		helper.Fill(gtx, helper.HexARGB(g.ui.Theme.Colors["PanelBg"]))
 		return lyt.Format(gtx, "vflex(middle,r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_))))",

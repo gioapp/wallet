@@ -43,6 +43,7 @@ import (
 //		g.GetLatestTransactions()
 //	}
 //}
+
 func labeledRow(th *theme.Theme, label string, content func(gtx C) D) func(gtx C) D {
 	return func(gtx C) D {
 		return lyt.Format(gtx, "hflex(start,r(inset(0dp0dp0dp0dp,_)),f(1,_))",

@@ -35,7 +35,7 @@ func (g *GioWallet) transactionsHeader() func(gtx C) D {
 }
 
 func (g *GioWallet) transactionsBody() func(gtx C) D {
-	return func(gtx C) D {
+	return box.BoxPanel(g.ui.Theme, func(gtx C) D {
 		return transactionsList.Layout(gtx, len(transactions), func(gtx C, i int) D {
 			tx := transactions[i]
 			btn := btn.IconTextBtn(g.ui.Theme, tx.Btn, "hflex(r(_),f(1,_)", false, func(gtx C) D {
@@ -70,5 +70,5 @@ func (g *GioWallet) transactionsBody() func(gtx C) D {
 			}
 			return btn.Layout(gtx)
 		})
-	}
+	})
 }

@@ -110,7 +110,7 @@ func (b IconTextButton) label(label string) func(gtx C) D {
 		}.Layout(gtx, func(gtx C) D {
 			l := theme.Body(b.Theme, label)
 			l.TextSize = b.TextSize
-			l.Alignment = text.Middle
+			l.Alignment = text.Start
 			l.Color = helper.HexARGB(b.TextColor)
 			return l.Layout(gtx)
 		})

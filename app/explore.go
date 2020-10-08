@@ -75,7 +75,7 @@ func (g *GioWallet) exploreLeft() func(gtx C) D {
 }
 
 func (g *GioWallet) exploreRight() func(gtx C) D {
-	return box.BoxBase(g.ui.Theme.Colors["PanelBg"], func(gtx C) D {
+	return box.BoxPanel(g.ui.Theme, func(gtx C) D {
 
 		//return container.C().OutsideColor(th.Colors["PanelBg"],).Layout(func(gtx C) D {
 		gtx.Constraints.Min.X = gtx.Constraints.Max.X

@@ -13,9 +13,9 @@ type container struct {
 
 func C() *container {
 	return &container{
-		outsideColor: "ffffffff",
-		borderColor:  "ff000000",
-		insideColor:  "ffffffff",
+		outsideColor: "",
+		borderColor:  "",
+		insideColor:  "",
 		margin:       0,
 		border:       0,
 		padding:      0,

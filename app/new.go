@@ -45,6 +45,9 @@ func NewGioWallet(d *mod.Dap) mod.Sap {
 		Footer: noReturn,
 	}
 	d.UI.F = g.footer()
+
+	CreateSendAddressItem()()
+
 	return mod.Sap{
 		Title: "ParallelCoin",
 		App:   g,

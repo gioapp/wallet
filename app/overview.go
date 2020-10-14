@@ -6,12 +6,13 @@ import (
 	"gioui.org/text"
 	"gioui.org/unit"
 	"gioui.org/widget"
+	"gioui.org/widget/material"
 	"github.com/gioapp/gel/helper"
-	"github.com/gioapp/wallet/pkg/btn"
 	"github.com/gioapp/wallet/pkg/dap/box"
 	"github.com/gioapp/wallet/pkg/lyt"
 	"github.com/gioapp/wallet/pkg/nav"
 	"github.com/gioapp/wallet/pkg/theme"
+	"image"
 )
 
 var (
@@ -45,8 +46,6 @@ func (g *GioWallet) GetBalances() {
 func (g *GioWallet) GetLatestTransactions() {
 	txs, err := g.rpc.ListTransactionsCount("", 5)
 	checkError(err)
-	fmt.Println("txstxstxs", txs)
-
 	for _, tx := range txs {
 		t := Tx{
 			Id:      fmt.Sprint(tx.TxID),
@@ -55,8 +54,6 @@ func (g *GioWallet) GetLatestTransactions() {
 			Amount:  fmt.Sprint(tx.Amount),
 			Btn:     new(widget.Clickable),
 		}
-		fmt.Println("Sstrtrtrtrtrtss", t)
-
 		latestTransactions = append(latestTransactions, t)
 	}
 
@@ -71,15 +68,15 @@ func (g *GioWallet) overviewHeader() func(gtx C) D {
 func row(th *theme.Theme, label string) func(gtx C) D {
 	return func(gtx C) D {
 		t := theme.Body(th, label)
-		t.Alignment = text.Start
+		t.Alignment = text.End
 		return t.Layout(gtx)
 	}
 }
 
 func overviewRow(th *theme.Theme, label string, content func(gtx C) D) func(gtx C) D {
 	return func(gtx C) D {
-		gtx.Constraints.Min.X = 80
-		gtx.Constraints.Min.X = 80
+		//gtx.Constraints.Min.X = 80
+		//gtx.Constraints.Min.X = 80
 		return lyt.Format(gtx, "hflex(start,r(inset(0dp0dp0dp0dp,_)),f(1,_))",
 			func(gtx C) D {
 				title := theme.Body(th, label)
@@ -115,37 +112,51 @@ func recentTxView(th *theme.Theme, n *nav.Navigation) func(gtx C) D {
 	return panelView(th, "Recent transactions", func(gtx C) D {
 		return recentTransactionsList.Layout(gtx, len(latestTransactions), func(gtx C, i int) D {
 			tx := latestTransactions[i]
-			btn := btn.IconTextBtn(th, tx.Btn, "hflex(r(_),f(1,_)", false, func(gtx C) D {
-				return lyt.Format(gtx, "vflex(r(_),r(_))",
+			return material.Clickable(gtx, tx.Btn, func(gtx C) D {
+				return lyt.Format(gtx, "hflex(r(_),f(1,_))",
 					func(gtx C) D {
-						return lyt.Format(gtx, "hflex(r(_),r(_))",
+						var d D
+						size := gtx.Px(unit.Dp(24))
+						th.Icons["Logo"].Color = helper.HexARGB(th.Colors["Primary"])
+						th.Icons["Logo"].Layout(gtx, unit.Px(float32(size)))
+						d = D{
+							Size: image.Point{X: size, Y: size},
+						}
+						return d
+					},
+					func(gtx C) D {
+						return lyt.Format(gtx, "vflex(r(_),r(_),r(_))",
 							func(gtx C) D {
-								title := theme.H1(th, "title")
+								return lyt.Format(gtx, "hmax(hflex(r(_),f(1,_)))",
+									func(gtx C) D {
+										title := theme.Body(th, tx.Time)
+										title.Alignment = text.Start
+										return title.Layout(gtx)
+									},
+									func(gtx C) D {
+										title := theme.Body(th, tx.Amount)
+										title.Alignment = text.End
+										return title.Layout(gtx)
+									},
+								)
+							},
+							func(gtx C) D {
+								title := theme.Body(th, tx.Address)
 								title.Alignment = text.Start
 								return title.Layout(gtx)
 							},
-							func(gtx C) D {
-								title := theme.H1(th, "title")
-								title.Alignment = text.Start
-								return title.Layout(gtx)
-							},
+							helper.DuoUIline(false, 1, 0, 1, th.Colors["Border"]),
 						)
-					},
-					func(gtx C) D {
-						title := theme.H1(th, "title")
-						title.Alignment = text.Start
-						return title.Layout(gtx)
-					},
-				)
+					})
 			})
-			btn.TextSize = unit.Dp(12)
-			btn.Icon = th.Icons["MapsLayers"]
-			btn.CornerRadius = unit.Dp(0)
-			btn.Background = th.Colors["NavBg"]
-			for tx.Btn.Clicked() {
-				//n.CurrentPage = tx.Id
-			}
-			return btn.Layout(gtx)
+			//btn.TextSize = unit.Dp(12)
+			//btn.Icon = th.Icons["MapsLayers"]
+			//btn.CornerRadius = unit.Dp(0)
+			//btn.Background = th.Colors["NavBg"]
+			//for tx.Btn.Clicked() {
+			//	n.CurrentPage = tx.Id
+			//}
+			//return btn.Layout(gtx)
 		})
 	})
 }

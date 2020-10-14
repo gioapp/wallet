@@ -68,6 +68,8 @@ func (b IconTextButton) Layout(gtx C) D {
 			switch c := b.Content.(type) {
 			case func(gtx C) D:
 				layContent = c
+				fmt.Println("test2222", "aAAAA")
+
 			default:
 				layContent = b.label(fmt.Sprint(c.(string)))
 			}

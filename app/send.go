@@ -1,6 +1,7 @@
 package gwallet
 
 import (
+	"fmt"
 	"gioui.org/layout"
 	"gioui.org/text"
 	"gioui.org/unit"
@@ -8,6 +9,7 @@ import (
 	"gioui.org/widget/material"
 	"github.com/gioapp/gel/helper"
 	"github.com/gioapp/wallet/pkg/btn"
+	"github.com/gioapp/wallet/pkg/counter"
 	"github.com/gioapp/wallet/pkg/dap/box"
 	"github.com/gioapp/wallet/pkg/lyt"
 	"github.com/gioapp/wallet/pkg/theme"
@@ -22,16 +24,31 @@ var (
 	sendClearAllBtn  = new(widget.Clickable)
 	sendBtn          = new(widget.Clickable)
 	addRecipientBtn  = new(widget.Clickable)
+	amountCnt        = &counter.Counter{
+		Value:        1,
+		OperateValue: 1,
+		From:         1,
+		To:           999,
+		CounterInput: &widget.Editor{
+			Alignment:  text.Middle,
+			SingleLine: true,
+			Submit:     true,
+		},
+		PageFunction:    func() {},
+		CounterIncrease: new(widget.Clickable),
+		CounterDecrease: new(widget.Clickable),
+		CounterReset:    new(widget.Clickable),
+	}
 )
 
 type SendAddress struct {
-	sendAddressInput      *widget.Editor
-	sendLabelInput        *widget.Editor
-	sendAmountInput       *widget.Editor
-	sendAddressBookBtn    *widget.Clickable
-	sendPasteClipboardBtn *widget.Clickable
-	sendClearBtn          *widget.Clickable
-	sendAllAvailableBtn   *widget.Clickable
+	AddressInput      *widget.Editor
+	LabelInput        *widget.Editor
+	AmountInput       *counter.Counter
+	AddressBookBtn    *widget.Clickable
+	PasteClipboardBtn *widget.Clickable
+	ClearBtn          *widget.Clickable
+	AllAvailableBtn   *widget.Clickable
 }
 
 func (g *GioWallet) GetSend() {
@@ -42,23 +59,45 @@ func CreateSendAddressItem() func() {
 	return func() {
 		sendAddresses = append(sendAddresses,
 			&SendAddress{
-				sendAddressInput: &widget.Editor{
+				AddressInput: &widget.Editor{
 					SingleLine: true,
 					Submit:     true,
 				},
-				sendLabelInput: &widget.Editor{
+				LabelInput: &widget.Editor{
 					SingleLine: true,
 					Submit:     true,
 				},
-				sendAmountInput: &widget.Editor{
-					SingleLine: true,
-					Submit:     true,
+				AmountInput: &counter.Counter{
+					Value:        1,
+					OperateValue: 1,
+					From:         1,
+					To:           999,
+					CounterInput: &widget.Editor{
+						Alignment:  text.Middle,
+						SingleLine: true,
+						Submit:     true,
+					},
+					//PageFunction:    w.PrikazaniElementSumaRacunica(),
+					CounterIncrease: new(widget.Clickable),
+					CounterDecrease: new(widget.Clickable),
+					CounterReset:    new(widget.Clickable),
 				},
-				sendAddressBookBtn:    new(widget.Clickable),
-				sendPasteClipboardBtn: new(widget.Clickable),
-				sendClearBtn:          new(widget.Clickable),
-				sendAllAvailableBtn:   new(widget.Clickable),
+				AddressBookBtn:    new(widget.Clickable),
+				PasteClipboardBtn: new(widget.Clickable),
+				ClearBtn:          new(widget.Clickable),
+				AllAvailableBtn:   new(widget.Clickable),
 			})
+	}
+}
+func ClearAddress(i int) func() {
+	return func() {
+		sendAddresses = remove(sendAddresses, i)
+	}
+}
+func ClearAllAddresses() func() {
+	return func() {
+		sendAddresses = []*SendAddress{}
+		CreateSendAddressItem()()
 	}
 }
 
@@ -88,7 +127,7 @@ func sendFooterBottom(th *theme.Theme) func(gtx C) D {
 	return func(gtx C) D {
 		return lyt.Format(gtx, "hmax(hflex(middle,r(_),r(inset(0dp8dp0dp8dp,_)),r(_),f(1,inset(8dp8dp8dp8dp,_))))",
 			sendButton(th, sendBtn, "Send", "hflex(r(_),r(_)))", "Send", func() {}),
-			sendButton(th, sendClearAllBtn, "Close", "hflex(r(_),r(_)))", "Clear All", func() {}),
+			sendButton(th, sendClearAllBtn, "Close", "hflex(r(_),r(_)))", "Clear All", ClearAllAddresses()),
 			sendButton(th, addRecipientBtn, "CounterPlus", "hflex(r(_),r(_)))", "Add Recipient", CreateSendAddressItem()),
 			func(gtx C) D {
 				title := theme.H6(th, "Balance: 15.26656.5664654 DUO")
@@ -132,7 +171,10 @@ func sendFooterTop(th *theme.Theme) func(gtx C) D {
 }
 func (g *GioWallet) sendBody() func(gtx C) D {
 	return box.BoxPanel(g.ui.Theme, func(gtx C) D {
-		return sendAddressesList.Layout(gtx, len(sendAddresses), singleAddress(g.ui.Theme))
+		return lyt.Format(gtx, "max(hflex(middle,f(1,_)))",
+			func(gtx C) D {
+				return sendAddressesList.Layout(gtx, len(sendAddresses), singleAddress(g.ui.Theme))
+			})
 	})
 }
 
@@ -141,15 +183,15 @@ func singleAddress(th *theme.Theme) func(gtx C, i int) D {
 		return lyt.Format(gtx, "vflex(start,r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_))))",
 			labeledRow(th, "Pay to:",
 				func(gtx C) D {
-					return lyt.Format(gtx, "hflex(middle,f(1,inset(8dp8dp8dp8dp,_)),r(_),r(_),r(_))",
+					return lyt.Format(gtx, "hflex(middle,f(1,inset(8dp8dp8dp8dp,_)),r(_),r(inset(0dp8dp0dp8dp,_)),r(_))",
 						box.BoxEditor(th, func(gtx C) D {
 							gtx.Constraints.Min.X = gtx.Constraints.Max.X
-							e := material.Editor(th.T, sendAddresses[i].sendAddressInput, "Enter a ParallelCoin address (e.g. 9ef0sdjifvmlkdsfnsdlkg)")
+							e := material.Editor(th.T, sendAddresses[i].AddressInput, "Enter a ParallelCoin address (e.g. 9ef0sdjifvmlkdsfnsdlkg)")
 							return e.Layout(gtx)
 						}),
-						sendButton(th, sendAddresses[i].sendAddressBookBtn, "AddressBook", "max(inset(0dp0dp0dp0dp,_))", "tetet", func() {}),
-						sendButton(th, sendAddresses[i].sendPasteClipboardBtn, "Paste", "max(inset(0dp0dp0dp0dp,_))", "tetet", func() {}),
-						sendButton(th, sendAddresses[i].sendClearBtn, "Close", "max(inset(0dp0dp0dp0dp,_))", "tetet", func() {}),
+						sendButton(th, sendAddresses[i].AddressBookBtn, "AddressBook", "max(inset(0dp0dp0dp0dp,_))", "", func() {}),
+						sendButton(th, sendAddresses[i].PasteClipboardBtn, "Paste", "max(inset(0dp0dp0dp0dp,_))", "", func() {}),
+						sendButton(th, sendAddresses[i].ClearBtn, "Close", "max(inset(0dp0dp0dp0dp,_))", "", ClearAddress(i)),
 					)
 				}),
 			labeledRow(th, "Label:",
@@ -157,7 +199,7 @@ func singleAddress(th *theme.Theme) func(gtx C, i int) D {
 					return lyt.Format(gtx, "hflex(middle,f(1,inset(8dp8dp8dp8dp,_)))",
 						box.BoxEditor(th, func(gtx C) D {
 							gtx.Constraints.Min.X = gtx.Constraints.Max.X
-							e := material.Editor(th.T, sendAddresses[i].sendLabelInput, "Enter a label for this address to add it to the list of used addresses")
+							e := material.Editor(th.T, sendAddresses[i].LabelInput, "Enter a label for this address to add it to the list of used addresses")
 							return e.Layout(gtx)
 						}),
 					)
@@ -165,16 +207,8 @@ func singleAddress(th *theme.Theme) func(gtx C, i int) D {
 			labeledRow(th, "Amount:",
 				func(gtx C) D {
 					return lyt.Format(gtx, "hflex(middle,r(_),r(_),r(_),r(_))",
-						func(gtx C) D {
-							btn := material.IconButton(th.T, connectionsBtn, th.Icons["networkIcon"])
-							btn.Inset = layout.Inset{unit.Dp(2), unit.Dp(2), unit.Dp(2), unit.Dp(2)}
-							btn.Size = unit.Dp(21)
-							btn.Background = helper.HexARGB(th.Colors["Secondary"])
-							for connectionsBtn.Clicked() {
-								//ui.N.CurrentPage = "Welcome"
-							}
-							return btn.Layout(gtx)
-						},
+						counter.CounterSt(th, sendAddresses[i].AmountInput).Layout(gtx, th, "AMOUNT", fmt.Sprint(sendAddresses[i].AmountInput.Value)),
+						//func(gtx C) D {return D{}},
 						func(gtx C) D {
 							btn := material.IconButton(th.T, connectionsBtn, th.Icons["networkIcon"])
 							btn.Inset = layout.Inset{unit.Dp(2), unit.Dp(2), unit.Dp(2), unit.Dp(2)}
@@ -242,4 +276,8 @@ func sendButton(th *theme.Theme, c *widget.Clickable, icon, lay, label string, o
 		}
 		return b.Layout(gtx)
 	})
+}
+
+func remove(slice []*SendAddress, s int) []*SendAddress {
+	return append(slice[:s], slice[s+1:]...)
 }

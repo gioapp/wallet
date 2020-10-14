@@ -48,6 +48,8 @@ func NewGioWallet(d *mod.Dap) mod.Sap {
 
 	CreateSendAddressItem()()
 
+	balances = dummyBalances
+	latestTransactions = dummyTxs
 	return mod.Sap{
 		Title: "ParallelCoin",
 		App:   g,

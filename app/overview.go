@@ -117,8 +117,9 @@ func recentTxView(th *theme.Theme, n *nav.Navigation) func(gtx C) D {
 					func(gtx C) D {
 						var d D
 						size := gtx.Px(unit.Dp(24))
-						th.Icons["Logo"].Color = helper.HexARGB(th.Colors["Primary"])
-						th.Icons["Logo"].Layout(gtx, unit.Px(float32(size)))
+						l := th.Icons["Explore"]
+						l.Color = helper.HexARGB(th.Colors["Primary"])
+						l.Layout(gtx, unit.Px(float32(size)))
 						d = D{
 							Size: image.Point{X: size, Y: size},
 						}

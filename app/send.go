@@ -207,7 +207,7 @@ func singleAddress(th *theme.Theme) func(gtx C, i int) D {
 			labeledRow(th, "Amount:",
 				func(gtx C) D {
 					return lyt.Format(gtx, "hflex(middle,r(_),r(_),r(_),r(_))",
-						counter.CounterSt(th, sendAddresses[i].AmountInput).Layout(gtx, th, "AMOUNT", fmt.Sprint(sendAddresses[i].AmountInput.Value)),
+						counter.CounterSt(th, sendAddresses[i].AmountInput).Layout(th, fmt.Sprint(sendAddresses[i].AmountInput.Value)),
 						//func(gtx C) D {return D{}},
 						func(gtx C) D {
 							btn := material.IconButton(th.T, connectionsBtn, th.Icons["networkIcon"])

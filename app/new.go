@@ -49,7 +49,10 @@ func NewGioWallet(d *mod.Dap) mod.Sap {
 	CreateSendAddressItem()()
 
 	balances = dummyBalances
-	latestTransactions = dummyTxs
+	latestTransactions = dummyLatestTxs
+
+	transactions = dummyTxs
+
 	return mod.Sap{
 		Title: "ParallelCoin",
 		App:   g,
@@ -83,8 +86,8 @@ func (g *GioWallet) getMenuItems(ui *mod.UserInterface) []nav.Item {
 		g.getMenuItem(false, "Send", g.sendHeader(), g.sendBody(), g.sendFooter()),
 		g.getMenuItem(false, "Receive", g.receiveHeader(), g.receiveBody(), noReturn),
 		g.getMenuItem(false, "Transactions", g.transactionsHeader(), g.transactionsBody(), noReturn),
-		g.getMenuItem(true, "Explore", g.exploreHeader(), g.exploreBody(), noReturn),
-		g.getMenuItem(true, "Peers", g.peersHeader(), g.peersBody(), noReturn),
-		g.getMenuItem(true, "Settings", g.settingsHeader(), g.settingsBody(), noReturn),
+		//g.getMenuItem(true, "Explore", g.exploreHeader(), g.exploreBody(), noReturn),
+		//g.getMenuItem(true, "Peers", g.peersHeader(), g.peersBody(), noReturn),
+		//g.getMenuItem(true, "Settings", g.settingsHeader(), g.settingsBody(), noReturn),
 	}
 }

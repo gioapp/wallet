@@ -183,7 +183,7 @@ func singleAddress(th *theme.Theme) func(gtx C, i int) D {
 		return lyt.Format(gtx, "vflex(start,r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_)),r(inset(5dp0dp5dp0dp,_))))",
 			labeledRow(th, "Pay to:",
 				func(gtx C) D {
-					return lyt.Format(gtx, "hflex(middle,f(1,inset(8dp8dp8dp8dp,_)),r(_),r(inset(0dp8dp0dp8dp,_)),r(_))",
+					return lyt.Format(gtx, "hflex(middle,f(1,inset(8dp8dp8dp0dp,_)),r(_),r(inset(0dp8dp0dp8dp,_)),r(_))",
 						box.BoxEditor(th, func(gtx C) D {
 							gtx.Constraints.Min.X = gtx.Constraints.Max.X
 							e := material.Editor(th.T, sendAddresses[i].AddressInput, "Enter a ParallelCoin address (e.g. 9ef0sdjifvmlkdsfnsdlkg)")
@@ -196,7 +196,7 @@ func singleAddress(th *theme.Theme) func(gtx C, i int) D {
 				}),
 			labeledRow(th, "Label:",
 				func(gtx C) D {
-					return lyt.Format(gtx, "hflex(middle,f(1,inset(8dp8dp8dp8dp,_)))",
+					return lyt.Format(gtx, "hflex(middle,f(1,inset(8dp8dp8dp0dp,_)))",
 						box.BoxEditor(th, func(gtx C) D {
 							gtx.Constraints.Min.X = gtx.Constraints.Max.X
 							e := material.Editor(th.T, sendAddresses[i].LabelInput, "Enter a label for this address to add it to the list of used addresses")
@@ -206,7 +206,7 @@ func singleAddress(th *theme.Theme) func(gtx C, i int) D {
 				}),
 			labeledRow(th, "Amount:",
 				func(gtx C) D {
-					return lyt.Format(gtx, "hflex(middle,r(_),r(_),r(_),r(_))",
+					return lyt.Format(gtx, "hmax(hflex(middle,r(_),r(_),r(_),r(_)))",
 						counter.CounterSt(th, sendAddresses[i].AmountInput).Layout(th, fmt.Sprint(sendAddresses[i].AmountInput.Value)),
 						//func(gtx C) D {return D{}},
 						func(gtx C) D {
@@ -230,19 +230,8 @@ func singleAddress(th *theme.Theme) func(gtx C, i int) D {
 							return btn.Layout(gtx)
 						},
 						func(gtx C) D {
-							btn := material.IconButton(th.T, connectionsBtn, th.Icons["networkIcon"])
+							btn := material.Button(th.T, sendAddresses[i].AllAvailableBtn, "Use available balance")
 							btn.Inset = layout.Inset{unit.Dp(2), unit.Dp(2), unit.Dp(2), unit.Dp(2)}
-							btn.Size = unit.Dp(21)
-							btn.Background = helper.HexARGB(th.Colors["Secondary"])
-							for connectionsBtn.Clicked() {
-								//ui.N.CurrentPage = "Welcome"
-							}
-							return btn.Layout(gtx)
-						},
-						func(gtx C) D {
-							btn := material.IconButton(th.T, connectionsBtn, th.Icons["networkIcon"])
-							btn.Inset = layout.Inset{unit.Dp(2), unit.Dp(2), unit.Dp(2), unit.Dp(2)}
-							btn.Size = unit.Dp(21)
 							btn.Background = helper.HexARGB(th.Colors["Secondary"])
 							for connectionsBtn.Clicked() {
 								//ui.N.CurrentPage = "Welcome"

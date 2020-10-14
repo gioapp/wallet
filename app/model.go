@@ -45,9 +45,11 @@ type Balances struct {
 	total     string
 }
 type Tx struct {
-	Id      string
-	Time    string
-	Address string
-	Amount  string
-	Btn     *widget.Clickable
+	Id            string
+	Time          string
+	Type          string
+	Address       string
+	Amount        string
+	Verifications int
+	Btn           *widget.Clickable
 }

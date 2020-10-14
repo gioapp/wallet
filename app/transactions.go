@@ -4,16 +4,19 @@ import (
 	"gioui.org/layout"
 	"gioui.org/text"
 	"gioui.org/unit"
+	"gioui.org/widget/material"
 	"github.com/gioapp/gel/helper"
-	"github.com/gioapp/wallet/pkg/btn"
 	"github.com/gioapp/wallet/pkg/dap/box"
 	"github.com/gioapp/wallet/pkg/lyt"
 	"github.com/gioapp/wallet/pkg/theme"
+	"image"
 )
 
 var (
 	transactions     []Tx
-	transactionsList = &layout.List{}
+	transactionsList = &layout.List{
+		Axis: layout.Vertical,
+	}
 )
 
 func (g *GioWallet) GetTransactions() {
@@ -38,37 +41,45 @@ func (g *GioWallet) transactionsBody() func(gtx C) D {
 	return box.BoxPanel(g.ui.Theme, func(gtx C) D {
 		return transactionsList.Layout(gtx, len(transactions), func(gtx C, i int) D {
 			tx := transactions[i]
-			btn := btn.IconTextBtn(g.ui.Theme, tx.Btn, "hflex(r(_),f(1,_)", false, func(gtx C) D {
+			return material.Clickable(gtx, tx.Btn, func(gtx C) D {
 				return lyt.Format(gtx, "vflex(r(_),r(_))",
 					func(gtx C) D {
-						return lyt.Format(gtx, "hflex(r(_),r(_))",
+						return lyt.Format(gtx, "hflex(r(_),r(inset(4dp4dp4dp4dp,_)),r(inset(4dp4dp4dp4dp,_)),f(1,inset(4dp4dp4dp4dp,_)),r(inset(4dp4dp4dp4dp,_)))",
 							func(gtx C) D {
-								title := theme.H1(g.ui.Theme, "title")
+								var d D
+								size := gtx.Px(unit.Dp(24))
+								l := g.ui.Theme.Icons["Explore"]
+								l.Color = helper.HexARGB(g.ui.Theme.Colors["Primary"])
+								l.Layout(gtx, unit.Px(float32(size)))
+								d = D{
+									Size: image.Point{X: size, Y: size},
+								}
+								return d
+							},
+							func(gtx C) D {
+								title := theme.Body(g.ui.Theme, tx.Time)
 								title.Alignment = text.Start
 								return title.Layout(gtx)
 							},
 							func(gtx C) D {
-								title := theme.H1(g.ui.Theme, "title")
+								title := theme.Body(g.ui.Theme, tx.Type)
+								title.Alignment = text.End
+								return title.Layout(gtx)
+							},
+							func(gtx C) D {
+								title := theme.Body(g.ui.Theme, tx.Address)
+								title.Alignment = text.Start
+								return title.Layout(gtx)
+							},
+							func(gtx C) D {
+								title := theme.Body(g.ui.Theme, tx.Amount)
 								title.Alignment = text.Start
 								return title.Layout(gtx)
 							},
 						)
 					},
-					func(gtx C) D {
-						title := theme.H1(g.ui.Theme, "title")
-						title.Alignment = text.Start
-						return title.Layout(gtx)
-					},
-				)
+					helper.DuoUIline(false, 1, 0, 1, g.ui.Theme.Colors["Border"]))
 			})
-			btn.TextSize = unit.Dp(12)
-			btn.Icon = g.ui.Theme.Icons["MapsLayers"]
-			btn.CornerRadius = unit.Dp(0)
-			btn.Background = g.ui.Theme.Colors["NavBg"]
-			for tx.Btn.Clicked() {
-				//n.CurrentPage = tx.Id
-			}
-			return btn.Layout(gtx)
 		})
 	})
 }
